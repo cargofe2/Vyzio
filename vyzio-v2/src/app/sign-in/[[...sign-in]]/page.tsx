@@ -1,9 +1,0 @@
-import { SignIn } from "@clerk/nextjs";
-
-export default function SignInPage() {
-  return (
-    <main className="min-h-screen flex items-center justify-center" style={{ background: "#111" }}>
-      <SignIn afterSignInUrl="/dashboard" signUpUrl="/sign-up" />
-    </main>
-  );
-}
