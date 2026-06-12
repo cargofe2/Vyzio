@@ -53,9 +53,7 @@ export const communityRouter = createTRPCRouter({
       // Get requesting user's rank if logged in
       let userRank = null;
       if (ctx.user) {
-        const rank = await redis.zrank(LEADERBOARD_KEYS.weekly, ctx.user.id, {
-          rev: true,
-        });
+       const rank = await redis.zrevrank(LEADERBOARD_KEYS.weekly, ctx.user.id);
         if (rank !== null) {
           const score = await redis.zscore(LEADERBOARD_KEYS.weekly, ctx.user.id);
           userRank = { rank: rank + 1, xpWeekly: score ?? 0 };
