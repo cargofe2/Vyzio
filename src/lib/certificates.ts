@@ -55,7 +55,7 @@ export async function checkCertificateEligibility(
   const completedProjects = await prisma.portfolioItem.count({
     where: {
       userId,
-      lesson: { world: { level: { number: { in: levelMap[level] } } } },
+      lessonId: { not: null },
     },
   });
 
