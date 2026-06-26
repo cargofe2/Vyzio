@@ -1,113 +1,146 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-const ACHIEVEMENTS = [
-  { emoji:"⚡", name:"Primera lección", earned:false },
-  { emoji:"🔥", name:"Racha 3 días",    earned:false },
-  { emoji:"🎯", name:"Quiz perfecto",   earned:false },
-  { emoji:"🚀", name:"Primer proyecto", earned:false },
-  { emoji:"💯", name:"10 lecciones",    earned:false },
-  { emoji:"🏆", name:"Torneo ganado",   earned:false },
-  { emoji:"👑", name:"Racha 30 días",   earned:false },
-  { emoji:"💎", name:"10K XP",          earned:false },
-];
+interface Gamification {
+  xpTotal: number; rank: string; rankLevel: number;
+  streakDays: number; lessonsCompleted: number; gems: number;
+}
+interface Achievement {
+  achievement: { emoji: string; name: string; description: string; rarity: string };
+  earnedAt: string;
+}
 
 export default function ProfilePage() {
   const { user, isLoaded } = useUser();
+  const [gamification, setGamification] = useState<Gamification | null>(null);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!isLoaded) return <div className="min-h-screen flex items-center justify-center" style={{ background:"#111" }}><div style={{ color:"#FFFC00" }}>⚡</div></div>;
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/gamification");
+        if (res.ok) {
+          const data = await res.json();
+          setGamification(data.gamification);
+          setAchievements(data.achievements ?? []);
+        }
+      } catch (err) {
+        console.error("Profile load error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (isLoaded && user) load();
+  }, [isLoaded, user]);
+
+  if (!isLoaded) return (
+    <div style={{ minHeight: "100vh", background: "#111", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <span style={{ fontSize: "32px" }}>⚡</span>
+    </div>
+  );
+
+  const rank = gamification?.rank ?? "NOVICE";
+  const xp = gamification?.xpTotal ?? 0;
 
   return (
-    <div className="min-h-screen pb-24" style={{ background:"#F7F7F5" }}>
+    <div style={{ minHeight: "100vh", paddingBottom: "80px", background: "#F7F7F5" }}>
       {/* Header */}
-      <div className="px-4 py-5" style={{ background:"#111" }}>
-        <div className="flex items-end gap-3 mb-4">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl flex-shrink-0" style={{ background:"rgba(255,252,0,0.1)", border:"3px solid #FFFC00" }}>
+      <div style={{ background: "#111", padding: "16px" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: "12px", marginBottom: "16px" }}>
+          <div style={{ width: "72px", height: "72px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "36px", background: "rgba(255,252,0,0.1)", border: "3px solid #FFFC00", flexShrink: 0 }}>
             🧑‍💻
           </div>
-          <div className="flex-1">
-            <h1 className="font-display font-black text-xl text-white">{user?.fullName ?? "Estudiante"}</h1>
-            <p className="text-xs mb-2" style={{ color:"rgba(255,255,255,0.35)" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold" style={{ background:"rgba(108,99,255,0.2)", color:"#6C63FF" }}>NOVICE · Lv.1</span>
+          <div style={{ flex: 1 }}>
+            <h1 style={{ fontWeight: 900, fontSize: "18px", color: "#fff", marginBottom: "2px" }}>{user?.fullName ?? "Estudiante"}</h1>
+            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", marginBottom: "6px" }}>
+              @{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}
+            </p>
+            <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: "rgba(108,99,255,0.2)", color: "#6C63FF" }}>
+              {rank} · Lv.{gamification?.rankLevel ?? 1}
+            </span>
           </div>
+          <UserButton afterSignOutUrl="/" />
         </div>
-        <div className="grid grid-cols-3 rounded-xl overflow-hidden" style={{ background:"rgba(255,255,255,0.05)" }}>
-          {[["0","Lecciones"],["0","Proyectos"],["0","Racha"]].map(([v,l]) => (
-            <div key={l} className="py-3 text-center" style={{ borderRight:"1px solid rgba(255,255,255,0.06)" }}>
-              <div className="font-display font-black text-lg text-white">{v}</div>
-              <div className="text-[9px]" style={{ color:"rgba(255,255,255,0.3)" }}>{l}</div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderRadius: "12px", overflow: "hidden", background: "rgba(255,255,255,0.05)" }}>
+          {[
+            [String(gamification?.lessonsCompleted ?? 0), "Lecciones"],
+            [String(xp.toLocaleString()), "XP Total"],
+            [`🔥 ${gamification?.streakDays ?? 0}`, "Racha"],
+          ].map(([v, l]) => (
+            <div key={l} style={{ padding: "12px", textAlign: "center", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ fontWeight: 900, fontSize: "16px", color: "#fff" }}>{v}</div>
+              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>{l}</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="px-4 py-4 space-y-4">
+      <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "14px" }}>
+
         {/* Certificado */}
-        <div className="rounded-2xl p-4 flex items-center gap-3" style={{ background:"rgba(255,252,0,0.08)", border:"1px solid rgba(255,252,0,0.2)" }}>
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background:"rgba(255,252,0,0.15)" }}>🎓</div>
-          <div className="flex-1">
-            <p className="font-bold text-sm text-black">Certificado AI Explorer</p>
-            <p className="text-xs" style={{ color:"rgba(0,0,0,0.4)" }}>Completa 150 lecciones + proyecto final</p>
+        <div style={{ borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px", background: "rgba(255,252,0,0.08)", border: "1px solid rgba(255,252,0,0.2)" }}>
+          <div style={{ width: "40px", height: "40px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", background: "rgba(255,252,0,0.15)" }}>🎓</div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontWeight: 700, fontSize: "13px", color: "#111" }}>Certificado AI Explorer</p>
+            <p style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)" }}>Completa el Nivel 1 para obtenerlo</p>
           </div>
-          <span className="text-[10px]" style={{ color:"rgba(0,0,0,0.3)" }}>0/150</span>
+          <Link href="/worlds" style={{ padding: "6px 12px", background: "#111", color: "#FFFC00", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none" }}>
+            Ir →
+          </Link>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-2">
-          {[
-            { v:"0",    l:"XP total",      c:"#FFFC00", bg:"#111" },
-            { v:"0",    l:"Gemas",          c:"#6C63FF", bg:"#EDE7F6" },
-            { v:"0",    l:"Racha máxima",   c:"#FF5EA8", bg:"#FCE4EC" },
-            { v:"0",    l:"Quiz perfectos", c:"#00D4FF", bg:"#E3F2FD" },
-          ].map(({ v, l, c, bg }) => (
-            <div key={l} className="rounded-xl p-3 text-center" style={{ background:bg }}>
-              <div className="font-display font-black text-xl" style={{ color:c }}>{v}</div>
-              <div className="text-[10px] mt-0.5" style={{ color: bg==="#111" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)" }}>{l}</div>
-            </div>
-          ))}
+        {/* Gemas */}
+        <div style={{ borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px", background: "#fff", border: "0.5px solid rgba(0,0,0,0.08)" }}>
+          <div style={{ fontSize: "28px" }}>💎</div>
+          <div>
+            <p style={{ fontWeight: 700, fontSize: "13px", color: "#111" }}>{gamification?.gems ?? 0} Gemas</p>
+            <p style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)" }}>Ganas gemas al completar quizzes perfectos</p>
+          </div>
         </div>
 
         {/* Achievements */}
         <section>
-          <h2 className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color:"rgba(0,0,0,0.35)" }}>Insignias</h2>
-          <div className="grid grid-cols-4 gap-3">
-            {ACHIEVEMENTS.map(({ emoji, name, earned }) => (
-              <div key={name} className="flex flex-col items-center gap-1.5">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl" style={{ background:earned?"#F7F7F5":"rgba(0,0,0,0.04)", border:`1px solid ${earned?"rgba(0,0,0,0.1)":"rgba(0,0,0,0.06)"}`, opacity:earned?1:0.35, filter:earned?"none":"grayscale(1)" }}>
-                  {emoji}
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "rgba(0,0,0,0.35)", marginBottom: "10px" }}>
+            Logros
+          </h2>
+          {loading ? (
+            <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.3)", textAlign: "center" }}>Cargando logros...</p>
+          ) : achievements.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              {achievements.map((a, i) => (
+                <div key={i} style={{ background: "#fff", borderRadius: "14px", padding: "12px", border: "0.5px solid rgba(0,0,0,0.08)" }}>
+                  <div style={{ fontSize: "24px", marginBottom: "6px" }}>{a.achievement.emoji}</div>
+                  <p style={{ fontWeight: 700, fontSize: "12px", color: "#111", marginBottom: "2px" }}>{a.achievement.name}</p>
+                  <p style={{ fontSize: "10px", color: "rgba(0,0,0,0.4)" }}>{a.achievement.description}</p>
                 </div>
-                <p className="text-[9px] text-center leading-tight" style={{ color:"rgba(0,0,0,0.4)", maxWidth:"52px" }}>{name}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ background: "#fff", borderRadius: "16px", padding: "24px", textAlign: "center", border: "0.5px solid rgba(0,0,0,0.08)" }}>
+              <p style={{ fontSize: "32px", marginBottom: "8px" }}>🏆</p>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "#111", marginBottom: "4px" }}>Sin logros aún</p>
+              <p style={{ fontSize: "11px", color: "rgba(0,0,0,0.4)" }}>Completa lecciones para desbloquear logros</p>
+            </div>
+          )}
         </section>
 
-        {/* Settings */}
-        <div className="rounded-2xl overflow-hidden" style={{ background:"#fff", border:"0.5px solid rgba(0,0,0,0.08)" }}>
-          <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom:"0.5px solid rgba(0,0,0,0.05)" }}>
-            <span className="text-sm text-black">Gestionar cuenta</span>
-            <UserButton />
-          </div>
-          <Link href="/pricing" className="px-4 py-3 flex items-center justify-between block">
-            <span className="text-sm text-black">Actualizar a Pro</span>
-            <span className="text-xs font-bold" style={{ color:"#6C63FF" }}>$9.99/mes →</span>
-          </Link>
-        </div>
       </div>
 
-      {/* NavBar */}
-      <nav className="fixed bottom-0 inset-x-0 border-t flex" style={{ background:"#fff", borderColor:"rgba(0,0,0,0.08)" }}>
+      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#fff", borderTop: "0.5px solid rgba(0,0,0,0.08)", display: "flex" }}>
         {[
-          { href:"/dashboard", icon:"🏠", label:"Inicio",    active:false },
-          { href:"/worlds",    icon:"🌍", label:"Mundos",    active:false },
-          { href:"/vy",        icon:"🤖", label:"VY",        active:false },
-          { href:"/community", icon:"👥", label:"Comunidad", active:false },
-          { href:"/profile",   icon:"👤", label:"Perfil",    active:true  },
+          { href: "/dashboard", icon: "🏠", label: "Inicio" },
+          { href: "/worlds", icon: "🌍", label: "Mundos" },
+          { href: "/vy", icon: "🤖", label: "VY" },
+          { href: "/community", icon: "👥", label: "Comunidad" },
+          { href: "/profile", icon: "👤", label: "Perfil", active: true },
         ].map(({ href, icon, label, active }) => (
-          <Link key={href} href={href} className="flex-1 flex flex-col items-center py-2.5 gap-0.5">
-            <span className="text-lg leading-none">{icon}</span>
-            <span className="text-[9px] font-medium" style={{ color:active?"#6C63FF":"rgba(0,0,0,0.3)" }}>{label}</span>
+          <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "10px 0 6px", gap: "2px", textDecoration: "none" }}>
+            <span style={{ fontSize: "18px", lineHeight: 1 }}>{icon}</span>
+            <span style={{ fontSize: "9px", fontWeight: 500, color: active ? "#6C63FF" : "rgba(0,0,0,0.3)" }}>{label}</span>
           </Link>
         ))}
       </nav>

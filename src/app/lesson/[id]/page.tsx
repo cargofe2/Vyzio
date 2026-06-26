@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 interface QuizQuestion {
   id: string; question: string; options: string[];
@@ -18,7 +18,6 @@ interface Lesson {
 
 export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
-  const router = useRouter();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [phase, setPhase] = useState<"reading" | "quiz" | "done">("reading");
@@ -31,8 +30,8 @@ export default function LessonPage() {
   useEffect(() => {
     async function load() {
       try {
-        // Get lesson from the world's lessons
-        const res = await fetch(`/api/lessons?lessonId=${id}`);
+        // Correct: use /api/lessons/[id] route
+        const res = await fetch(`/api/lessons/${id}`);
         if (res.ok) {
           const data = await res.json();
           setLesson(data.lesson);
@@ -43,7 +42,7 @@ export default function LessonPage() {
         setLoading(false);
       }
     }
-    load();
+    if (id) load();
   }, [id]);
 
   async function completeReading() {
@@ -73,17 +72,13 @@ export default function LessonPage() {
     if (answered || !lesson) return;
     setSelected(idx);
     setAnswered(true);
-
     const q = lesson.quizQuestions[currentQ];
     const isCorrect = idx === q.correctIndex;
-
-    // Submit quiz answer
     await fetch("/api/progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ questionId: q.id, selectedIndex: idx }),
     });
-
     if (isCorrect) setScore(s => s + 1);
   }
 
@@ -94,17 +89,28 @@ export default function LessonPage() {
       setSelected(null);
       setAnswered(false);
     } else {
-      // Quiz done
       const finalScore = Math.round((score / lesson.quizQuestions.length) * 100);
       await completeLesson(finalScore);
     }
   }
 
-  if (loading || !lesson) return (
+  if (loading) return (
     <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <div style={{ fontSize: "32px", marginBottom: "8px" }}>⚡</div>
         <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Cargando lección...</p>
+      </div>
+    </div>
+  );
+
+  if (!lesson) return (
+    <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ textAlign: "center" }}>
+        <div style={{ fontSize: "40px", marginBottom: "12px" }}>😕</div>
+        <p style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px", marginBottom: "16px" }}>Lección no encontrada</p>
+        <Link href="/worlds" style={{ padding: "10px 20px", background: "#111", color: "#FFFC00", borderRadius: "12px", textDecoration: "none", fontWeight: 700, fontSize: "13px" }}>
+          Ver mundos →
+        </Link>
       </div>
     </div>
   );
@@ -140,7 +146,6 @@ export default function LessonPage() {
 
     return (
       <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", flexDirection: "column" }}>
-        {/* Header */}
         <div style={{ background: "#111", padding: "16px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px" }}>Pregunta {currentQ + 1} de {total}</p>
@@ -153,30 +158,21 @@ export default function LessonPage() {
 
         <div style={{ flex: 1, padding: "20px 16px" }}>
           <h2 style={{ fontWeight: 700, fontSize: "16px", color: "#111", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
-
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {q.options.map((opt, i) => {
-              let bg = "#fff";
-              let border = "0.5px solid rgba(0,0,0,0.1)";
-              let color = "#111";
-
+              let bg = "#fff", border = "0.5px solid rgba(0,0,0,0.1)", color = "#111";
               if (answered) {
                 if (i === q.correctIndex) { bg = "#E8F5E9"; border = "2px solid #2E7D32"; color = "#1B5E20"; }
-                else if (i === selected && i !== q.correctIndex) { bg = "#FFEBEE"; border = "2px solid #C62828"; color = "#B71C1C"; }
-              } else if (selected === i) {
-                bg = "rgba(108,99,255,0.08)"; border = "2px solid #6C63FF";
-              }
-
+                else if (i === selected) { bg = "#FFEBEE"; border = "2px solid #C62828"; color = "#B71C1C"; }
+              } else if (selected === i) { bg = "rgba(108,99,255,0.08)"; border = "2px solid #6C63FF"; }
               return (
                 <button key={i} onClick={() => handleAnswer(i)} disabled={answered}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: answered ? "default" : "pointer", background: bg, border, color, transition: "all 0.2s" }}>
-                  <span style={{ fontWeight: 700, marginRight: "8px", color: "inherit" }}>{["A","B","C","D"][i]}.</span>
-                  {opt}
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: answered ? "default" : "pointer", background: bg, border, color }}>
+                  <span style={{ fontWeight: 700, marginRight: "8px" }}>{["A","B","C","D"][i]}.</span>{opt}
                 </button>
               );
             })}
           </div>
-
           {answered && (
             <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: selected === q.correctIndex ? "#E8F5E9" : "#FFF3E0", border: `1px solid ${selected === q.correctIndex ? "#A5D6A7" : "#FFCC80"}` }}>
               <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: selected === q.correctIndex ? "#1B5E20" : "#E65100" }}>
@@ -200,11 +196,9 @@ export default function LessonPage() {
 
   // Reading screen
   const blocks = lesson.content?.blocks ?? [];
-  const readingProgress = lesson.progress?.completed ? 100 : 30;
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F7F5", paddingBottom: "100px" }}>
-      {/* Header */}
       <div style={{ background: "#111", padding: "16px" }}>
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
@@ -218,12 +212,17 @@ export default function LessonPage() {
           <span style={{ fontSize: "10px", color: "#FFFC00", fontWeight: 700 }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.08)", borderRadius: "2px" }}>
-          <div style={{ height: "100%", width: `${readingProgress}%`, background: "#FFFC00", borderRadius: "2px" }} />
+          <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "#FFFC00", borderRadius: "2px" }} />
         </div>
       </div>
 
-      {/* Content */}
       <div style={{ padding: "20px 16px" }}>
+        {blocks.length === 0 && (
+          <div style={{ textAlign: "center", padding: "40px 0" }}>
+            <p style={{ fontSize: "40px", marginBottom: "12px" }}>📖</p>
+            <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Contenido próximamente</p>
+          </div>
+        )}
         {blocks.map((block, i) => {
           if (block.type === "text") return (
             <p key={i} style={{ fontSize: "14px", lineHeight: 1.7, color: "rgba(0,0,0,0.75)", marginBottom: "14px" }}
@@ -247,16 +246,8 @@ export default function LessonPage() {
           );
           return null;
         })}
-
-        {blocks.length === 0 && (
-          <div style={{ textAlign: "center", padding: "40px 0" }}>
-            <p style={{ fontSize: "40px", marginBottom: "12px" }}>📖</p>
-            <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Contenido próximamente</p>
-          </div>
-        )}
       </div>
 
-      {/* Complete button */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "#fff", borderTop: "0.5px solid rgba(0,0,0,0.08)" }}>
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
@@ -267,7 +258,7 @@ export default function LessonPage() {
           </div>
         ) : (
           <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "#111", color: "#FFFC00", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer" }}>
-            {lesson.quizQuestions.length > 0 ? `Ir al quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
+            {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
           </button>
         )}
       </div>
