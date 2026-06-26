@@ -18,7 +18,7 @@ const RANKS = [
 ];
 
 function getRank(xp: number) {
-  let rank = "NOVICE";
+let newRank: string = user.gamification?.rank ?? "NOVICE";
   for (const r of RANKS) {
     if (xp >= r.xp) rank = r.rank;
   }
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     });
 
     let xpAwarded = 0;
-    let newRank = user.gamification?.rank ?? "NOVICE";
+    let newRank: string = user.gamification?.rank ?? "NOVICE";
     let rankChanged = false;
 
     // Award XP only if first completion
