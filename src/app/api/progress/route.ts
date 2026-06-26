@@ -17,15 +17,14 @@ const RANKS = [
   { rank: "AI_TITAN", xp: 200000 },
 ];
 
-function getRank(xp: number) {
-let newRank: string = user.gamification?.rank ?? "NOVICE";
+function getRank(xp: number): string {
+  let rank = "NOVICE";
   for (const r of RANKS) {
     if (xp >= r.xp) rank = r.rank;
   }
   return rank;
 }
 
-// POST /api/progress - complete a lesson
 export async function POST(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
@@ -50,14 +49,12 @@ export async function POST(req: NextRequest) {
 
     if (!lesson) return NextResponse.json({ error: "Lesson not found" }, { status: 404 });
 
-    // Check if already completed
     const existing = await prisma.lessonProgress.findUnique({
       where: { userId_lessonId: { userId: user.id, lessonId } },
     });
 
     const alreadyCompleted = existing?.completed ?? false;
 
-    // Upsert lesson progress
     await prisma.lessonProgress.upsert({
       where: { userId_lessonId: { userId: user.id, lessonId } },
       create: {
@@ -75,14 +72,12 @@ export async function POST(req: NextRequest) {
     let newRank: string = user.gamification?.rank ?? "NOVICE";
     let rankChanged = false;
 
-    // Award XP only if first completion
     if (!alreadyCompleted && user.gamification) {
       xpAwarded = lesson.xpReward;
       const newXP = user.gamification.xpTotal + xpAwarded;
       newRank = getRank(newXP);
       rankChanged = newRank !== user.gamification.rank;
 
-      // Update streak
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const lastStudy = user.gamification.lastStudyDate;
@@ -94,11 +89,10 @@ export async function POST(req: NextRequest) {
 
       let newStreak = user.gamification.streakDays;
       if (!lastStudyDay || lastStudyDay.getTime() < yesterday.getTime()) {
-        newStreak = 1; // reset
+        newStreak = 1;
       } else if (lastStudyDay.getTime() === yesterday.getTime()) {
-        newStreak += 1; // continue
+        newStreak += 1;
       }
-      // if today same day, keep streak
 
       await prisma.gamification.update({
         where: { userId: user.id },
@@ -114,7 +108,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Update world progress
     const completedCount = await prisma.lessonProgress.count({
       where: { userId: user.id, lesson: { worldId: lesson.worldId }, completed: true },
     });
@@ -128,11 +121,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({
-      success: true,
-      alreadyCompleted,
-      xpAwarded,
-      newRank,
-      rankChanged,
+      success: true, alreadyCompleted, xpAwarded, newRank, rankChanged,
       worldProgress: { pctComplete: pct, completed: pct >= 1 },
     });
   } catch (error) {
@@ -141,7 +130,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// POST /api/progress/quiz - submit a quiz answer
 export async function PUT(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
@@ -166,9 +154,8 @@ export async function PUT(req: NextRequest) {
       data: { userId: user.id, questionId, selectedIndex, isCorrect, isPerfect, timeSpentSec },
     });
 
-    // Award XP for correct answers
     let xpAwarded = 0;
-    if (isCorrect && user) {
+    if (isCorrect) {
       const gamification = await prisma.gamification.findUnique({ where: { userId: user.id } });
       if (gamification) {
         xpAwarded = isPerfect ? 100 : 60;
@@ -184,8 +171,7 @@ export async function PUT(req: NextRequest) {
     }
 
     return NextResponse.json({
-      isCorrect,
-      isPerfect,
+      isCorrect, isPerfect,
       correctIndex: question.correctIndex,
       explanation: question.explanation,
       xpAwarded,
