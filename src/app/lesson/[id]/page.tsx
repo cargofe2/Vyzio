@@ -16,25 +16,30 @@ interface Lesson {
   progress: { completed: boolean; score: number | null } | null;
 }
 
+const IS_DIAGNOSTIC = (id: string) => id === "lesson-0-1";
+
 export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
-  const [phase, setPhase] = useState<"reading" | "quiz" | "done">("reading");
+  const [phase, setPhase] = useState<"reading" | "quiz" | "done" | "diagnostic-result">("reading");
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [xpEarned, setXpEarned] = useState(0);
+  const [answers, setAnswers] = useState<{question: string; answer: string; index: number}[]>([]);
+  const [vyResponse, setVyResponse] = useState("");
+  const [vyLoading, setVyLoading] = useState(false);
 
   useEffect(() => {
     async function load() {
       try {
-        // Correct: use /api/lessons/[id] route
         const res = await fetch(`/api/lessons/${id}`);
         if (res.ok) {
           const data = await res.json();
           setLesson(data.lesson);
+          if (data.lesson?.type === "QUIZ") setPhase("quiz");
         }
       } catch (err) {
         console.error("Lesson load error:", err);
@@ -68,18 +73,67 @@ export default function LessonPage() {
     setPhase("done");
   }
 
+  async function completeDiagnostic(finalAnswers: {question: string; answer: string; index: number}[]) {
+    if (!lesson) return;
+
+    // Save progress
+    await fetch("/api/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lessonId: lesson.id, score: 100 }),
+    });
+
+    setVyLoading(true);
+    setPhase("diagnostic-result");
+
+    // Build prompt for VY
+    const answersText = finalAnswers.map((a, i) =>
+      `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`
+    ).join("\n\n");
+
+    const prompt = `Acabo de completar el diagnóstico inicial de VYZIO. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (Explorer, Creator, Developer o Entrepreneur)\n2. Por qué mundo específico de VYZIO debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nSé directo y motivador. Máximo 150 palabras.`;
+
+    try {
+      const res = await fetch("/api/vy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: prompt }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setVyResponse(data.message ?? "");
+      }
+    } catch (err) {
+      setVyResponse("Basado en tus respuestas, te recomiendo empezar por el Mundo 1 — Fundamentos de IA. ¡Tienes todo para aprender rápido!");
+    } finally {
+      setVyLoading(false);
+    }
+  }
+
   async function handleAnswer(idx: number) {
     if (answered || !lesson) return;
     setSelected(idx);
     setAnswered(true);
+
     const q = lesson.quizQuestions[currentQ];
     const isCorrect = idx === q.correctIndex;
-    await fetch("/api/progress", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ questionId: q.id, selectedIndex: idx }),
-    });
-    if (isCorrect) setScore(s => s + 1);
+
+    if (!IS_DIAGNOSTIC(id)) {
+      await fetch("/api/progress", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questionId: q.id, selectedIndex: idx }),
+      });
+      if (isCorrect) setScore(s => s + 1);
+    } else {
+      // For diagnostic, record the answer text
+      const newAnswers = [...answers, {
+        question: q.question,
+        answer: q.options[idx],
+        index: idx
+      }];
+      setAnswers(newAnswers);
+    }
   }
 
   async function nextQuestion() {
@@ -89,8 +143,12 @@ export default function LessonPage() {
       setSelected(null);
       setAnswered(false);
     } else {
-      const finalScore = Math.round((score / lesson.quizQuestions.length) * 100);
-      await completeLesson(finalScore);
+      if (IS_DIAGNOSTIC(id)) {
+        await completeDiagnostic(answers);
+      } else {
+        const finalScore = Math.round((score / lesson.quizQuestions.length) * 100);
+        await completeLesson(finalScore);
+      }
     }
   }
 
@@ -98,7 +156,7 @@ export default function LessonPage() {
     <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <div style={{ fontSize: "32px", marginBottom: "8px" }}>⚡</div>
-        <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Cargando lección...</p>
+        <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Cargando...</p>
       </div>
     </div>
   );
@@ -114,6 +172,50 @@ export default function LessonPage() {
       </div>
     </div>
   );
+
+  // Diagnostic result screen
+  if (phase === "diagnostic-result") {
+    return (
+      <div style={{ minHeight: "100vh", background: "#111", display: "flex", flexDirection: "column", padding: "24px" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎯</div>
+          <h2 style={{ fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "8px", textAlign: "center" }}>
+            Tu perfil de aprendizaje
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", marginBottom: "24px" }}>
+            Análisis de VY basado en tu diagnóstico
+          </p>
+
+          <div style={{ width: "100%", maxWidth: "360px", background: "rgba(108,99,255,0.1)", border: "1px solid rgba(108,99,255,0.3)", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
+            {vyLoading ? (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                <div style={{ fontSize: "24px", marginBottom: "8px" }}>🤖</div>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px" }}>VY está analizando tus respuestas...</p>
+              </div>
+            ) : (
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                  <div style={{ width: "28px", height: "28px", background: "rgba(108,99,255,0.3)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>🤖</div>
+                  <span style={{ color: "#6C63FF", fontSize: "11px", fontWeight: 700 }}>VY — Tu tutor personal</span>
+                </div>
+                <p style={{ color: "#fff", fontSize: "13px", lineHeight: 1.7 }}
+                  dangerouslySetInnerHTML={{ __html: vyResponse.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") }} />
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px" }}>
+            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "#FFFC00", color: "#111", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center" }}>
+              Ver mi ruta de aprendizaje →
+            </Link>
+            <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center" }}>
+              Hablar más con VY
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Done screen
   if (phase === "done") {
@@ -143,37 +245,51 @@ export default function LessonPage() {
   if (phase === "quiz" && lesson.quizQuestions.length > 0) {
     const q = lesson.quizQuestions[currentQ];
     const total = lesson.quizQuestions.length;
+    const isDiag = IS_DIAGNOSTIC(id);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: isDiag ? "#111" : "#F7F7F5", display: "flex", flexDirection: "column" }}>
         <div style={{ background: "#111", padding: "16px" }}>
+          {isDiag && (
+            <p style={{ color: "#FFFC00", fontSize: "11px", fontWeight: 700, marginBottom: "8px" }}>🎯 DIAGNÓSTICO INICIAL</p>
+          )}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
             <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px" }}>Pregunta {currentQ + 1} de {total}</p>
-            <p style={{ color: "#FFFC00", fontSize: "11px", fontWeight: 700 }}>🎯 Quiz</p>
+            {!isDiag && <p style={{ color: "#FFFC00", fontSize: "11px", fontWeight: 700 }}>🎯 Quiz</p>}
           </div>
           <div style={{ height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: "#FFFC00", borderRadius: "2px" }} />
+            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "#6C63FF" : "#FFFC00", borderRadius: "2px", transition: "width 0.3s" }} />
           </div>
         </div>
 
-        <div style={{ flex: 1, padding: "20px 16px" }}>
-          <h2 style={{ fontWeight: 700, fontSize: "16px", color: "#111", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
+        <div style={{ flex: 1, padding: "20px 16px", background: isDiag ? "#111" : "#F7F7F5" }}>
+          <h2 style={{ fontWeight: 700, fontSize: "16px", color: isDiag ? "#fff" : "#111", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {q.options.map((opt, i) => {
-              let bg = "#fff", border = "0.5px solid rgba(0,0,0,0.1)", color = "#111";
-              if (answered) {
+              let bg = isDiag ? "rgba(255,255,255,0.05)" : "#fff";
+              let border = isDiag ? "1px solid rgba(255,255,255,0.1)" : "0.5px solid rgba(0,0,0,0.1)";
+              let color = isDiag ? "#fff" : "#111";
+
+              if (isDiag) {
+                if (selected === i) { bg = "rgba(108,99,255,0.2)"; border = "2px solid #6C63FF"; }
+              } else if (answered) {
                 if (i === q.correctIndex) { bg = "#E8F5E9"; border = "2px solid #2E7D32"; color = "#1B5E20"; }
                 else if (i === selected) { bg = "#FFEBEE"; border = "2px solid #C62828"; color = "#B71C1C"; }
-              } else if (selected === i) { bg = "rgba(108,99,255,0.08)"; border = "2px solid #6C63FF"; }
+              } else if (selected === i) {
+                bg = "rgba(108,99,255,0.08)"; border = "2px solid #6C63FF";
+              }
+
               return (
-                <button key={i} onClick={() => handleAnswer(i)} disabled={answered}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: answered ? "default" : "pointer", background: bg, border, color }}>
+                <button key={i} onClick={() => handleAnswer(i)}
+                  disabled={isDiag ? false : answered}
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s" }}>
                   <span style={{ fontWeight: 700, marginRight: "8px" }}>{["A","B","C","D"][i]}.</span>{opt}
                 </button>
               );
             })}
           </div>
-          {answered && (
+
+          {!isDiag && answered && (
             <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: selected === q.correctIndex ? "#E8F5E9" : "#FFF3E0", border: `1px solid ${selected === q.correctIndex ? "#A5D6A7" : "#FFCC80"}` }}>
               <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: selected === q.correctIndex ? "#1B5E20" : "#E65100" }}>
                 {selected === q.correctIndex ? "✅ ¡Correcto!" : "❌ Incorrecto"}
@@ -183,10 +299,10 @@ export default function LessonPage() {
           )}
         </div>
 
-        {answered && (
-          <div style={{ padding: "16px" }}>
-            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: "#111", color: "#FFFC00", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer" }}>
-              {currentQ < total - 1 ? "Siguiente pregunta →" : "Ver resultados →"}
+        {(isDiag ? selected !== null : answered) && (
+          <div style={{ padding: "16px", background: isDiag ? "#111" : "#fff", borderTop: isDiag ? "1px solid rgba(255,255,255,0.08)" : "0.5px solid rgba(0,0,0,0.08)" }}>
+            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "#6C63FF" : "#111", color: isDiag ? "#fff" : "#FFFC00", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer" }}>
+              {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
           </div>
         )}
