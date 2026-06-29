@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -38,7 +38,36 @@ const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   PRACTICE:   { label: "Práctica", color: "#34D399", bg: "rgba(52,211,153,0.1)"  },
 };
 
-export default function WorldsPage() {
+const NAV = [
+  { href: "/dashboard", icon: "🏠", label: "Inicio",  active: false },
+  { href: "/worlds",    icon: "🌍", label: "Mundos",  active: true  },
+  { href: "/vy",        icon: "🤖", label: "VY",      active: false },
+  { href: "/community", icon: "👥", label: "Liga",    active: false },
+  { href: "/profile",   icon: "👤", label: "Perfil",  active: false },
+];
+
+function BottomNav() {
+  return (
+    <nav style={{
+      position: "fixed", bottom: 0, left: 0, right: 0,
+      background: "rgba(8,11,20,0.95)",
+      backdropFilter: "blur(16px)",
+      WebkitBackdropFilter: "blur(16px)",
+      borderTop: `1px solid ${DS.cardBorder}`,
+      display: "flex",
+    }}>
+      {NAV.map(({ href, icon, label, active }) => (
+        <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "10px 0 8px", gap: "3px", textDecoration: "none", position: "relative" }}>
+          {active && <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "16px", height: "2px", background: DS.accent, borderRadius: "0 0 3px 3px" }} />}
+          <span style={{ fontSize: "19px", lineHeight: 1 }}>{icon}</span>
+          <span style={{ fontSize: "9px", fontWeight: active ? 700 : 500, color: active ? DS.accentLight : DS.textMuted, fontFamily: "'DM Sans', sans-serif" }}>{label}</span>
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+function WorldsContent() {
   const searchParams = useSearchParams();
   const worldId = searchParams.get("id");
   const [worlds, setWorlds] = useState<World[]>([]);
@@ -104,7 +133,7 @@ export default function WorldsPage() {
         </div>
         {pct > 0 && (
           <div style={{ marginTop: "8px", height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${DS.accent}, #A78BFA)`, borderRadius: "2px", transition: "width 0.8s ease" }} />
+            <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${DS.accent}, #A78BFA)`, borderRadius: "2px" }} />
           </div>
         )}
       </div>
@@ -116,13 +145,12 @@ export default function WorldsPage() {
             const isActive = w.id === selectedWorld?.id;
             const wPct = Math.round((w.progress?.pctComplete ?? 0) * 100);
             return (
-              <button key={w.id} onClick={() => { setSelectedWorld(w); setLessons(w.lessons ?? []); }}
+              <button key={w.id}
+                onClick={() => { setSelectedWorld(w); setLessons(w.lessons ?? []); }}
                 style={{
-                  flexShrink: 0,
-                  padding: "6px 12px",
-                  borderRadius: "20px",
+                  flexShrink: 0, padding: "6px 12px", borderRadius: "20px",
                   border: isActive ? `1px solid ${DS.accent}` : `1px solid ${DS.cardBorder}`,
-                  background: isActive ? `rgba(99,102,241,0.15)` : DS.card,
+                  background: isActive ? "rgba(99,102,241,0.15)" : DS.card,
                   color: isActive ? DS.accentLight : DS.textSub,
                   fontSize: "11px", fontWeight: 700, cursor: "pointer",
                   fontFamily: "'DM Sans', sans-serif",
@@ -137,9 +165,9 @@ export default function WorldsPage() {
         </div>
       </div>
 
-      {/* Lessons list */}
+      {/* Lessons */}
       <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
-        {lessons.map((lesson, i) => {
+        {lessons.map((lesson) => {
           const done = lesson.progress?.completed ?? false;
           const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
           return (
@@ -147,12 +175,10 @@ export default function WorldsPage() {
               <div style={{
                 background: done ? DS.successBg : DS.card,
                 border: done ? `1px solid ${DS.successBorder}` : `1px solid ${DS.cardBorder}`,
-                borderRadius: "16px",
-                padding: "12px 14px",
+                borderRadius: "16px", padding: "12px 14px",
                 display: "flex", alignItems: "center", gap: "12px",
                 transition: "all 0.2s",
               }}>
-                {/* Number */}
                 <div style={{
                   width: "32px", height: "32px", flexShrink: 0,
                   background: done ? "rgba(52,211,153,0.15)" : "rgba(99,102,241,0.1)",
@@ -160,29 +186,22 @@ export default function WorldsPage() {
                   borderRadius: "10px",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontFamily: "'Syne', sans-serif",
-                  fontSize: done ? "14px" : "12px",
-                  fontWeight: 800,
+                  fontSize: done ? "14px" : "12px", fontWeight: 800,
                   color: done ? DS.success : DS.accentLight,
                 }}>
                   {done ? "✓" : lesson.number}
                 </div>
-
-                {/* Content */}
                 <div style={{ flex: 1 }}>
                   <p style={{ fontWeight: 600, color: done ? DS.success : DS.text, fontSize: "13px", marginBottom: "3px", fontFamily: "'DM Sans', sans-serif" }}>
                     {lesson.title}
                   </p>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{
-                      fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px",
-                      background: typeCfg.bg, color: typeCfg.color,
-                      fontFamily: "'DM Sans', sans-serif",
-                    }}>{typeCfg.label}</span>
+                    <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: typeCfg.bg, color: typeCfg.color, fontFamily: "'DM Sans', sans-serif" }}>
+                      {typeCfg.label}
+                    </span>
                     <span style={{ fontSize: "9px", color: DS.textMuted, fontFamily: "'DM Sans', sans-serif" }}>{lesson.durationMin} min</span>
                   </div>
                 </div>
-
-                {/* XP */}
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
                   <p style={{ fontSize: "11px", fontWeight: 800, color: done ? DS.textMuted : "#FBBF24", fontFamily: "'Syne', sans-serif" }}>
                     {done ? "✓" : `+${lesson.xpReward}`}
@@ -195,7 +214,6 @@ export default function WorldsPage() {
             </Link>
           );
         })}
-
         {lessons.length === 0 && (
           <div style={{ textAlign: "center", padding: "40px 0" }}>
             <p style={{ fontSize: "32px", marginBottom: "8px" }}>🔒</p>
@@ -204,29 +222,22 @@ export default function WorldsPage() {
         )}
       </div>
 
-      {/* Bottom Nav */}
-      <nav style={{
-        position: "fixed", bottom: 0, left: 0, right: 0,
-        background: "rgba(8,11,20,0.95)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderTop: `1px solid ${DS.cardBorder}`,
-        display: "flex",
-      }}>
-        {[
-          { href: "/dashboard", icon: "🏠", label: "Inicio", active: false },
-          { href: "/worlds",    icon: "🌍", label: "Mundos", active: true  },
-          { href: "/vy",        icon: "🤖", label: "VY",     active: false },
-          { href: "/community", icon: "👥", label: "Liga",   active: false },
-          { href: "/profile",   icon: "👤", label: "Perfil", active: false },
-        ].map(({ href, icon, label, active }) => (
-          <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "10px 0 8px", gap: "3px", textDecoration: "none", position: "relative" }}>
-            {active && <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "16px", height: "2px", background: DS.accent, borderRadius: "0 0 3px 3px" }} />}
-            <span style={{ fontSize: "19px", lineHeight: 1 }}>{icon}</span>
-            <span style={{ fontSize: "9px", fontWeight: active ? 700 : 500, color: active ? DS.accentLight : DS.textMuted, fontFamily: "'DM Sans', sans-serif" }}>{label}</span>
-          </Link>
-        ))}
-      </nav>
+      <BottomNav />
     </div>
+  );
+}
+
+export default function WorldsPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100vh", background: DS.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "28px", marginBottom: "8px" }}>🌍</div>
+          <p style={{ color: DS.textMuted, fontSize: "12px", fontFamily: "'DM Sans', sans-serif" }}>Cargando...</p>
+        </div>
+      </div>
+    }>
+      <WorldsContent />
+    </Suspense>
   );
 }
