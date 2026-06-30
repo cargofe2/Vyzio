@@ -7,74 +7,78 @@ export default async function HomePage() {
   if (userId) redirect("/dashboard");
 
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: "#111" }}>
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#080B14" }}>
       {/* Hero */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", textAlign: "center" }}>
+
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-10">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: "#FFFC00" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", boxShadow: "0 0 24px rgba(99,102,241,0.5)" }}>
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
-              <path d="M4 16L10 4L16 16" stroke="#111" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6.5 11H13.5" stroke="#111" strokeWidth="2.2" strokeLinecap="round"/>
+              <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
             </svg>
           </div>
-          <span className="font-display text-white text-3xl font-black tracking-[4px]">VYZIO</span>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", color: "#fff", letterSpacing: "5px" }}>VYZIO</span>
         </div>
 
-        <h1 className="font-display text-4xl font-black text-white leading-tight mb-4 max-w-xs">
+        <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "36px", color: "#fff", lineHeight: 1.1, marginBottom: "16px", maxWidth: "320px" }}>
           Aprende IA.<br/>
-          <span style={{ color: "#FFFC00" }}>Construye el futuro.</span>
+          <span style={{ background: "linear-gradient(135deg,#818CF8,#A78BFA)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Construye el futuro.</span>
         </h1>
 
-        <p className="text-sm max-w-xs leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.45)" }}>
-          625+ lecciones · Tutor IA · Gamificación · Certificados verificables.
-          La plataforma para la nueva generación.
+        <p style={{ fontSize: "13px", maxWidth: "300px", lineHeight: 1.7, marginBottom: "32px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>
+          112+ lecciones · Tutor IA personal · Gamificación real · Certificados verificables.
+          La plataforma donde aprendes IA de verdad.
         </p>
 
         {/* Stats */}
-        <div className="flex gap-6 mb-10">
-          {[["625+","Lecciones"],["4","Niveles"],["100%","Gratis para empezar"]].map(([n,l]) => (
-            <div key={l} className="text-center">
-              <div className="font-display font-black text-xl" style={{ color: "#FFFC00" }}>{n}</div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{l}</div>
+        <div style={{ display: "flex", gap: "28px", marginBottom: "32px" }}>
+          {[["112+","Lecciones"],["10","Mundos"],["100%","Gratis al inicio"]].map(([n,l]) => (
+            <div key={l} style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "22px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{n}</div>
+              <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", marginTop: "2px" }}>{l}</div>
             </div>
           ))}
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col gap-3 w-full max-w-xs">
-          <Link href="/sign-up" className="block w-full py-4 rounded-2xl text-center font-display font-black text-sm" style={{ background: "#FFFC00", color: "#111" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
+          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(99,102,241,0.4)" }}>
             Empezar gratis →
           </Link>
-          <Link href="/sign-in" className="block w-full py-3.5 rounded-2xl text-center font-display font-bold text-sm" style={{ border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.6)" }}>
+          <Link href="/sign-in" style={{ display: "block", width: "100%", padding: "14px", borderRadius: "16px", textAlign: "center", fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(99,102,241,0.2)", color: "rgba(255,255,255,0.5)" }}>
             Ya tengo cuenta
           </Link>
         </div>
 
         {/* Features */}
-        <div className="flex gap-5 mt-10 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
+        <div style={{ display: "flex", gap: "18px", marginTop: "32px", fontSize: "11px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>
           <span>🎮 Gamificación</span>
           <span>🤖 Tutor IA</span>
           <span>🎓 Certificados</span>
         </div>
       </div>
 
-      {/* Niveles */}
-      <div className="px-6 pb-12">
-        <p className="text-xs font-bold uppercase tracking-widest text-center mb-4" style={{ color: "rgba(255,255,255,0.2)" }}>4 Niveles de aprendizaje</p>
-        <div className="grid grid-cols-2 gap-2 max-w-xs mx-auto">
+      {/* Mundos preview */}
+      <div style={{ padding: "0 24px 48px" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", textAlign: "center", marginBottom: "16px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif" }}>
+          10 mundos de aprendizaje
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "320px", margin: "0 auto" }}>
           {[
-            { n:1, name:"AI Explorer", color:"#6C63FF", emoji:"🌍", free:true },
-            { n:2, name:"AI Creator",  color:"#00D4FF", emoji:"⚡", free:false },
-            { n:3, name:"AI Builder",  color:"#FF5EA8", emoji:"🚀", free:false },
-            { n:4, name:"AI Entrepreneur", color:"#00FFB3", emoji:"💎", free:false },
-          ].map(({ n, name, color, emoji, free }) => (
-            <div key={n} className="rounded-2xl p-3" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${color}30` }}>
-              <div className="text-xl mb-1">{emoji}</div>
-              <div className="text-xs font-bold text-white mb-0.5">{name}</div>
-              <div className="text-[10px]" style={{ color: free ? "#00FFB3" : "rgba(255,255,255,0.25)" }}>
-                {free ? "✓ Gratis" : "Pro"}
-              </div>
+            { name: "Fundamentos de IA", color: "#818CF8", bg: "rgba(99,102,241,0.08)", border: "rgba(99,102,241,0.18)",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/></svg> },
+            { name: "Historia de la IA", color: "#FBBF24", bg: "rgba(251,191,36,0.08)", border: "rgba(251,191,36,0.18)",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FBBF24" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FBBF24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+            { name: "IA en tu Vida", color: "#00D4FF", bg: "rgba(0,212,255,0.08)", border: "rgba(0,212,255,0.18)",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.7 2 6 4.7 6 8C6 10.4 7.4 12.5 9.5 13.5V16H14.5V13.5C16.6 12.5 18 10.4 18 8C18 4.7 15.3 2 12 2Z" stroke="#00D4FF" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+            { name: "Ética de la IA", color: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.18)",
+              icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 16.4 7.6 20.5 12 21C16.4 20.5 20 16.4 20 12V7L12 3Z" stroke="#FB923C" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="#FB923C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+          ].map(({ name, color, bg, border, icon }) => (
+            <div key={name} style={{ borderRadius: "16px", padding: "12px", background: bg, border: `1px solid ${border}` }}>
+              <div style={{ width: "32px", height: "32px", background: bg, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "8px" }}>{icon}</div>
+              <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "11px", color, lineHeight: 1.3 }}>{name}</p>
             </div>
           ))}
         </div>
