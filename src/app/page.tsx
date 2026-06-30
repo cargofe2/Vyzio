@@ -19,12 +19,12 @@ export default async function HomePage() {
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", color: "#fff", letterSpacing: "5px" }}>BYZAI</span>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", letterSpacing: "5px" }}><span style={{ background: "linear-gradient(135deg,#F472B6,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BY</span><span style={{ color: "#fff" }}>Z</span><span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI</span></span>
         </div>
 
         <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "36px", color: "#fff", lineHeight: 1.1, marginBottom: "16px", maxWidth: "320px" }}>
           Aprende IA.<br/>
-          <span style={{ background: "linear-gradient(135deg,#818CF8,#A78BFA)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Construye el futuro.</span>
+          <span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Construye el futuro.</span>
         </h1>
 
         <p style={{ fontSize: "13px", maxWidth: "300px", lineHeight: 1.7, marginBottom: "32px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>

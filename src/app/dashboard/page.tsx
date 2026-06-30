@@ -138,7 +138,7 @@ export default function DashboardPage() {
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", letterSpacing: "3px", background: "linear-gradient(135deg,#fff,#C7D2FE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BYZAI</span>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", letterSpacing: "3px" }}><span style={{ background: "linear-gradient(135deg,#F472B6,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BY</span><span style={{ color: "#fff" }}>Z</span><span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI</span></span>
           <div style={{ padding: "2px 8px", borderRadius: "20px", background: `${rankCfg.color}18`, border: `1px solid ${rankCfg.color}33`, fontSize: "9px", fontWeight: 700, color: rankCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
