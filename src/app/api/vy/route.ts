@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const VY_SYSTEM = `Eres VY, el tutor de IA de BYZAI — plataforma gamificada para aprender Inteligencia Artificial.
+const VY_SYSTEM = `Eres ZAI, el tutor de IA de BYZAI — plataforma gamificada para aprender Inteligencia Artificial.
 
 PERSONALIDAD:
 - Directo, entusiasta, sin condescendencia
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error("[api/vy] error:", error);
-    return NextResponse.json({ error: "Error al conectar con VY." }, { status: 500 });
+    return NextResponse.json({ error: "Error al conectar con ZAI." }, { status: 500 });
   }
 }
 

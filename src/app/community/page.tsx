@@ -4,7 +4,7 @@ export default function CommunityPage() {
   const items = [
     { href: "/dashboard", label: "Inicio", color: "#6366F1" },
     { href: "/worlds", label: "Mundos", color: "#00D4FF" },
-    { href: "/vy", label: "VY", color: "#00FFB3" },
+    { href: "/vy", label: "ZAI", color: "#00FFB3" },
     { href: "/community", label: "Liga", color: "#FBBF24" },
     { href: "/profile", label: "Perfil", color: "#F472B6" },
   ];

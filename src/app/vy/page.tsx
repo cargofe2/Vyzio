@@ -14,7 +14,7 @@ function renderMsg(content: string) {
 
 export default function VYPage() {
   const { user } = useUser();
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **VY**, tu tutor de IA en BYZAI. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en VYZIO. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);
@@ -48,7 +48,7 @@ export default function VYPage() {
           </svg>
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px" }}>VY</p>
+          <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px" }}>ZAI</p>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#34D399" }} />
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>en línea</p>
@@ -99,7 +99,7 @@ export default function VYPage() {
       {/* Input */}
       <div style={{ padding: "10px 16px 14px", background: "rgba(8,11,20,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)", display: "flex", gap: "8px" }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
-          placeholder="Pregúntale algo a VY..." disabled={used >= 10}
+          placeholder="Pregúntale algo a ZAI..." disabled={used >= 10}
           style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
           style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(99,102,241,0.2)" : "linear-gradient(135deg,#6366F1,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(99,102,241,0.4)" : "none" }}>↑</button>
