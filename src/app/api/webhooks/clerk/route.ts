@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       const data = event.data;
       const clerkId = data.id as string;
       const emails = data.email_addresses as Array<{ email_address: string }>;
-      const email = emails?.[0]?.email_address ?? `${clerkId}@vyzio.app`;
+      const email = emails?.[0]?.email_address ?? `${clerkId}@byzai.app`;
       const firstName = (data.first_name as string) ?? "Estudiante";
       const lastName = (data.last_name as string) ?? "";
       const avatarUrl = data.image_url as string | undefined;

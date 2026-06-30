@@ -14,7 +14,7 @@ function renderMsg(content: string) {
 
 export default function VYPage() {
   const { user } = useUser();
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **VY**, tu tutor de IA en VYZIO. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **VY**, tu tutor de IA en BYZAI. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);

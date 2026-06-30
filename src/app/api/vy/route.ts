@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const VY_SYSTEM = `Eres VY, el tutor de IA de VYZIO — plataforma gamificada para aprender Inteligencia Artificial.
+const VY_SYSTEM = `Eres VY, el tutor de IA de BYZAI — plataforma gamificada para aprender Inteligencia Artificial.
 
 PERSONALIDAD:
 - Directo, entusiasta, sin condescendencia

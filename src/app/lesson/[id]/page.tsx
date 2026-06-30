@@ -74,7 +74,7 @@ export default function LessonPage() {
     await fetch("/api/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lessonId: lesson.id, score: 100 }) });
     setVyLoading(true); setPhase("diagnostic-result");
     const answersText = finalAnswers.map((a, i) => `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`).join("\n\n");
-    const prompt = `Acabo de completar el diagnóstico inicial de VYZIO. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (Explorer, Creator, Developer o Entrepreneur)\n2. Por qué mundo específico de VYZIO debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nSé directo y motivador. Máximo 150 palabras.`;
+    const prompt = `Acabo de completar el diagnóstico inicial de BYZAI. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (Explorer, Creator, Developer o Entrepreneur)\n2. Por qué mundo específico de BYZAI debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nSé directo y motivador. Máximo 150 palabras.`;
     try {
       const res = await fetch("/api/vy", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: prompt }) });
       if (res.ok) { const data = await res.json(); setVyResponse(data.message ?? ""); }

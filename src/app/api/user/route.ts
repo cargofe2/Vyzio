@@ -19,7 +19,7 @@ export async function GET() {
       user = await prisma.user.create({
         data: {
           clerkId,
-          email: `${clerkId}@vyzio.app`,
+          email: `${clerkId}@byzai.app`,
           username,
           displayName: "Estudiante",
           gamification: {
