@@ -9,7 +9,7 @@ interface QuizQuestion {
 }
 interface Lesson {
   id: string; number: number; title: string; type: string;
-  content: { blocks: Array<{ type: string; text?: string; heading?: string }> } | null;
+  content: { blocks: Array<{ type: string; text?: string }> } | null;
   durationMin: number; xpReward: number;
   world: { id: string; name: string; emoji: string };
   quizQuestions: QuizQuestion[];
@@ -17,6 +17,12 @@ interface Lesson {
 }
 
 const IS_DIAGNOSTIC = (id: string) => id === "lesson-0-1";
+
+const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
+  VIDEO: { label: "Video", color: "#F87171" }, READING: { label: "Lectura", color: "#7DD3FC" },
+  QUIZ: { label: "Quiz", color: "#FBBF24" }, PROJECT: { label: "Proyecto", color: "#A78BFA" },
+  EVALUATION: { label: "Evaluación", color: "#F472B6" }, PRACTICE: { label: "Práctica", color: "#34D399" },
+};
 
 export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,7 +34,7 @@ export default function LessonPage() {
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [xpEarned, setXpEarned] = useState(0);
-  const [answers, setAnswers] = useState<{question: string; answer: string; index: number}[]>([]);
+  const [answers, setAnswers] = useState<{question: string; answer: string}[]>([]);
   const [vyResponse, setVyResponse] = useState("");
   const [vyLoading, setVyLoading] = useState(false);
 
@@ -41,174 +47,117 @@ export default function LessonPage() {
           setLesson(data.lesson);
           if (data.lesson?.type === "QUIZ") setPhase("quiz");
         }
-      } catch (err) {
-        console.error("Lesson load error:", err);
-      } finally {
-        setLoading(false);
-      }
+      } catch (err) { console.error(err); }
+      finally { setLoading(false); }
     }
     if (id) load();
   }, [id]);
 
   async function completeReading() {
     if (!lesson) return;
-    if (lesson.quizQuestions.length > 0) {
-      setPhase("quiz");
-    } else {
-      await completeLesson();
-    }
+    if (lesson.quizQuestions.length > 0) setPhase("quiz");
+    else await completeLesson();
   }
 
   async function completeLesson(finalScore?: number) {
     if (!lesson) return;
     const res = await fetch("/api/progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lessonId: lesson.id, score: finalScore }),
     });
-    if (res.ok) {
-      const data = await res.json();
-      setXpEarned(data.xpAwarded ?? lesson.xpReward);
-    }
+    if (res.ok) { const data = await res.json(); setXpEarned(data.xpAwarded ?? lesson.xpReward); }
     setPhase("done");
   }
 
-  async function completeDiagnostic(finalAnswers: {question: string; answer: string; index: number}[]) {
+  async function completeDiagnostic(finalAnswers: {question: string; answer: string}[]) {
     if (!lesson) return;
-
-    // Save progress
-    await fetch("/api/progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lessonId: lesson.id, score: 100 }),
-    });
-
-    setVyLoading(true);
-    setPhase("diagnostic-result");
-
-    // Build prompt for VY
-    const answersText = finalAnswers.map((a, i) =>
-      `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`
-    ).join("\n\n");
-
+    await fetch("/api/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lessonId: lesson.id, score: 100 }) });
+    setVyLoading(true); setPhase("diagnostic-result");
+    const answersText = finalAnswers.map((a, i) => `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`).join("\n\n");
     const prompt = `Acabo de completar el diagnóstico inicial de VYZIO. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (Explorer, Creator, Developer o Entrepreneur)\n2. Por qué mundo específico de VYZIO debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nSé directo y motivador. Máximo 150 palabras.`;
-
     try {
-      const res = await fetch("/api/vy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: prompt }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setVyResponse(data.message ?? "");
-      }
-    } catch (err) {
-      setVyResponse("Basado en tus respuestas, te recomiendo empezar por el Mundo 1 — Fundamentos de IA. ¡Tienes todo para aprender rápido!");
-    } finally {
-      setVyLoading(false);
-    }
+      const res = await fetch("/api/vy", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: prompt }) });
+      if (res.ok) { const data = await res.json(); setVyResponse(data.message ?? ""); }
+    } catch { setVyResponse("Basado en tus respuestas, te recomiendo empezar por el Mundo 1 — Fundamentos de IA."); }
+    finally { setVyLoading(false); }
   }
 
   async function handleAnswer(idx: number) {
     if (answered || !lesson) return;
-    setSelected(idx);
-    setAnswered(true);
-
+    setSelected(idx); setAnswered(true);
     const q = lesson.quizQuestions[currentQ];
-    const isCorrect = idx === q.correctIndex;
-
     if (!IS_DIAGNOSTIC(id)) {
-      await fetch("/api/progress", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId: q.id, selectedIndex: idx }),
-      });
-      if (isCorrect) setScore(s => s + 1);
+      await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, selectedIndex: idx }) });
+      if (idx === q.correctIndex) setScore(s => s + 1);
     } else {
-      // For diagnostic, record the answer text
-      const newAnswers = [...answers, {
-        question: q.question,
-        answer: q.options[idx],
-        index: idx
-      }];
-      setAnswers(newAnswers);
+      setAnswers(p => [...p, { question: q.question, answer: q.options[idx] }]);
     }
   }
 
   async function nextQuestion() {
     if (!lesson) return;
     if (currentQ < lesson.quizQuestions.length - 1) {
-      setCurrentQ(c => c + 1);
-      setSelected(null);
-      setAnswered(false);
+      setCurrentQ(c => c + 1); setSelected(null); setAnswered(false);
     } else {
-      if (IS_DIAGNOSTIC(id)) {
-        await completeDiagnostic(answers);
-      } else {
-        const finalScore = Math.round((score / lesson.quizQuestions.length) * 100);
-        await completeLesson(finalScore);
-      }
+      if (IS_DIAGNOSTIC(id)) await completeDiagnostic(answers);
+      else await completeLesson(Math.round((score / lesson.quizQuestions.length) * 100));
     }
   }
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: "32px", marginBottom: "8px" }}>⚡</div>
-        <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Cargando...</p>
+        <div style={{ width: "36px", height: "36px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", borderRadius: "11px", margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando lección...</p>
       </div>
     </div>
   );
 
   if (!lesson) return (
-    <div style={{ minHeight: "100vh", background: "#F7F7F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: "40px", marginBottom: "12px" }}>😕</div>
-        <p style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px", marginBottom: "16px" }}>Lección no encontrada</p>
-        <Link href="/worlds" style={{ padding: "10px 20px", background: "#111", color: "#FFFC00", borderRadius: "12px", textDecoration: "none", fontWeight: 700, fontSize: "13px" }}>
-          Ver mundos →
-        </Link>
+        <p style={{ fontSize: "36px", marginBottom: "10px" }}>😕</p>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}>Lección no encontrada</p>
+        <Link href="/worlds" style={{ padding: "10px 20px", background: "#6366F1", color: "#fff", borderRadius: "12px", textDecoration: "none", fontWeight: 700, fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Ver mundos →</Link>
       </div>
     </div>
   );
 
-  // Diagnostic result screen
+  // Diagnostic result
   if (phase === "diagnostic-result") {
     return (
-      <div style={{ minHeight: "100vh", background: "#111", display: "flex", flexDirection: "column", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column", padding: "24px" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎯</div>
-          <h2 style={{ fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "8px", textAlign: "center" }}>
-            Tu perfil de aprendizaje
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", marginBottom: "24px" }}>
-            Análisis de VY basado en tu diagnóstico
-          </p>
+          <div style={{ width: "64px", height: "64px", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", marginBottom: "16px" }}>🎯</div>
+          <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>Tu perfil de aprendizaje</h2>
+          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>Análisis de VY basado en tu diagnóstico</p>
 
-          <div style={{ width: "100%", maxWidth: "360px", background: "rgba(108,99,255,0.1)", border: "1px solid rgba(108,99,255,0.3)", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
+          <div style={{ width: "100%", maxWidth: "360px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
             {vyLoading ? (
               <div style={{ textAlign: "center", padding: "20px 0" }}>
-                <div style={{ fontSize: "24px", marginBottom: "8px" }}>🤖</div>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px" }}>VY está analizando tus respuestas...</p>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>VY está analizando tus respuestas...</p>
               </div>
             ) : (
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                  <div style={{ width: "28px", height: "28px", background: "rgba(108,99,255,0.3)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>🤖</div>
-                  <span style={{ color: "#6C63FF", fontSize: "11px", fontWeight: 700 }}>VY — Tu tutor personal</span>
+                  <div style={{ width: "26px", height: "26px", background: "rgba(0,255,179,0.12)", border: "1px solid rgba(0,255,179,0.2)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <span style={{ color: "#00FFB3", fontSize: "12px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>VY — Tu tutor personal</span>
                 </div>
-                <p style={{ color: "#fff", fontSize: "13px", lineHeight: 1.7 }}
+                <p style={{ color: "#fff", fontSize: "13px", lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif" }}
                   dangerouslySetInnerHTML={{ __html: vyResponse.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") }} />
               </div>
             )}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px" }}>
-            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "#FFFC00", color: "#111", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center" }}>
+            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
               Ver mi ruta de aprendizaje →
             </Link>
-            <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center" }}>
+            <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
               Hablar más con VY
             </Link>
           </div>
@@ -217,23 +166,23 @@ export default function LessonPage() {
     );
   }
 
-  // Done screen
+  // Done
   if (phase === "done") {
     return (
-      <div style={{ minHeight: "100vh", background: "#111", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
-        <div style={{ fontSize: "64px", marginBottom: "16px" }}>🎉</div>
-        <h2 style={{ fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "8px", textAlign: "center" }}>¡Lección completada!</h2>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginBottom: "24px" }}>{lesson.title}</p>
+      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+        <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎉</div>
+        <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>¡Lección completada!</h2>
+        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
         {xpEarned > 0 && (
-          <div style={{ background: "rgba(255,252,0,0.1)", border: "1px solid rgba(255,252,0,0.2)", borderRadius: "14px", padding: "12px 24px", marginBottom: "24px" }}>
-            <p style={{ color: "#FFFC00", fontWeight: 900, fontSize: "24px", textAlign: "center" }}>+{xpEarned} XP</p>
+          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: "14px", padding: "12px 28px", marginBottom: "24px" }}>
+            <p style={{ color: "#FBBF24", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", textAlign: "center" }}>+{xpEarned} XP</p>
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "#FFFC00", color: "#111", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center" }}>
+          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
             Siguiente lección →
           </Link>
-          <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center" }}>
+          <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
             Ir al Dashboard
           </Link>
         </div>
@@ -241,67 +190,57 @@ export default function LessonPage() {
     );
   }
 
-  // Quiz screen
+  // Quiz
   if (phase === "quiz" && lesson.quizQuestions.length > 0) {
     const q = lesson.quizQuestions[currentQ];
     const total = lesson.quizQuestions.length;
     const isDiag = IS_DIAGNOSTIC(id);
 
     return (
-      <div style={{ minHeight: "100vh", background: isDiag ? "#111" : "#F7F7F5", display: "flex", flexDirection: "column" }}>
-        <div style={{ background: "#111", padding: "16px" }}>
-          {isDiag && (
-            <p style={{ color: "#FFFC00", fontSize: "11px", fontWeight: 700, marginBottom: "8px" }}>🎯 DIAGNÓSTICO INICIAL</p>
-          )}
+      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
+          {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "11px" }}>Pregunta {currentQ + 1} de {total}</p>
-            {!isDiag && <p style={{ color: "#FFFC00", fontSize: "11px", fontWeight: 700 }}>🎯 Quiz</p>}
+            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", fontFamily: "'DM Sans',sans-serif" }}>Pregunta {currentQ + 1} de {total}</p>
+            {!isDiag && <p style={{ color: "#FBBF24", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
           </div>
-          <div style={{ height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "#6C63FF" : "#FFFC00", borderRadius: "2px", transition: "width 0.3s" }} />
+          <div style={{ height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
+            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#6366F1,#A78BFA)" : "linear-gradient(90deg,#FBBF24,#F59E0B)", borderRadius: "2px", transition: "width 0.3s" }} />
           </div>
         </div>
 
-        <div style={{ flex: 1, padding: "20px 16px", background: isDiag ? "#111" : "#F7F7F5" }}>
-          <h2 style={{ fontWeight: 700, fontSize: "16px", color: isDiag ? "#fff" : "#111", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
+        <div style={{ flex: 1, padding: "20px 16px" }}>
+          <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "17px", color: "#fff", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {q.options.map((opt, i) => {
-              let bg = isDiag ? "rgba(255,255,255,0.05)" : "#fff";
-              let border = isDiag ? "1px solid rgba(255,255,255,0.1)" : "0.5px solid rgba(0,0,0,0.1)";
-              let color = isDiag ? "#fff" : "#111";
-
+              let bg = "rgba(99,102,241,0.04)", border = "1px solid rgba(99,102,241,0.1)", color = "#fff";
               if (isDiag) {
-                if (selected === i) { bg = "rgba(108,99,255,0.2)"; border = "2px solid #6C63FF"; }
+                if (selected === i) { bg = "rgba(99,102,241,0.18)"; border = "2px solid #6366F1"; }
               } else if (answered) {
-                if (i === q.correctIndex) { bg = "#E8F5E9"; border = "2px solid #2E7D32"; color = "#1B5E20"; }
-                else if (i === selected) { bg = "#FFEBEE"; border = "2px solid #C62828"; color = "#B71C1C"; }
-              } else if (selected === i) {
-                bg = "rgba(108,99,255,0.08)"; border = "2px solid #6C63FF";
-              }
-
+                if (i === q.correctIndex) { bg = "rgba(52,211,153,0.12)"; border = "2px solid #34D399"; color = "#34D399"; }
+                else if (i === selected) { bg = "rgba(248,113,113,0.12)"; border = "2px solid #F87171"; color = "#F87171"; }
+              } else if (selected === i) { bg = "rgba(99,102,241,0.1)"; border = "2px solid #6366F1"; }
               return (
-                <button key={i} onClick={() => handleAnswer(i)}
-                  disabled={isDiag ? false : answered}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s" }}>
-                  <span style={{ fontWeight: 700, marginRight: "8px" }}>{["A","B","C","D"][i]}.</span>{opt}
+                <button key={i} onClick={() => handleAnswer(i)} disabled={isDiag ? false : answered}
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}>
+                  <span style={{ fontWeight: 700, marginRight: "8px", color: "#818CF8" }}>{["A","B","C","D"][i]}.</span>{opt}
                 </button>
               );
             })}
           </div>
-
           {!isDiag && answered && (
-            <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: selected === q.correctIndex ? "#E8F5E9" : "#FFF3E0", border: `1px solid ${selected === q.correctIndex ? "#A5D6A7" : "#FFCC80"}` }}>
-              <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: selected === q.correctIndex ? "#1B5E20" : "#E65100" }}>
+            <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: selected === q.correctIndex ? "rgba(52,211,153,0.08)" : "rgba(251,146,60,0.08)", border: `1px solid ${selected === q.correctIndex ? "rgba(52,211,153,0.2)" : "rgba(251,146,60,0.2)"}` }}>
+              <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: selected === q.correctIndex ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>
                 {selected === q.correctIndex ? "✅ ¡Correcto!" : "❌ Incorrecto"}
               </p>
-              <p style={{ fontSize: "12px", color: "rgba(0,0,0,0.6)", lineHeight: 1.5 }}>{q.explanation}</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.5, fontFamily: "'DM Sans',sans-serif" }}>{q.explanation}</p>
             </div>
           )}
         </div>
 
         {(isDiag ? selected !== null : answered) && (
-          <div style={{ padding: "16px", background: isDiag ? "#111" : "#fff", borderTop: isDiag ? "1px solid rgba(255,255,255,0.08)" : "0.5px solid rgba(0,0,0,0.08)" }}>
-            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "#6C63FF" : "#111", color: isDiag ? "#fff" : "#FFFC00", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer" }}>
+          <div style={{ padding: "16px", borderTop: "1px solid rgba(99,102,241,0.1)" }}>
+            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#6366F1,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#080B14", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
               {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
           </div>
@@ -310,70 +249,71 @@ export default function LessonPage() {
     );
   }
 
-  // Reading screen
+  // Reading
   const blocks = lesson.content?.blocks ?? [];
+  const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F7F5", paddingBottom: "100px" }}>
-      <div style={{ background: "#111", padding: "16px" }}>
+    <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "100px" }}>
+      <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
-          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", marginBottom: "4px" }}>
+          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
             {lesson.world.emoji} {lesson.world.name} · Lección {lesson.number}
           </p>
-          <h1 style={{ fontWeight: 900, color: "#fff", fontSize: "18px", lineHeight: 1.3 }}>{lesson.title}</h1>
+          <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "19px", lineHeight: 1.3 }}>{lesson.title}</h1>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-          <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)" }}>{lesson.durationMin} min</span>
-          <span style={{ fontSize: "10px", color: "#FFFC00", fontWeight: 700 }}>+{lesson.xpReward} XP</span>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
+          <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label} · {lesson.durationMin} min</span>
+          <span style={{ fontSize: "10px", color: "#FBBF24", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
-        <div style={{ height: "3px", background: "rgba(255,255,255,0.08)", borderRadius: "2px" }}>
-          <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "#FFFC00", borderRadius: "2px" }} />
+        <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
+          <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "linear-gradient(90deg,#6366F1,#A78BFA)", borderRadius: "2px" }} />
         </div>
       </div>
 
       <div style={{ padding: "20px 16px" }}>
         {blocks.length === 0 && (
           <div style={{ textAlign: "center", padding: "40px 0" }}>
-            <p style={{ fontSize: "40px", marginBottom: "12px" }}>📖</p>
-            <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "13px" }}>Contenido próximamente</p>
+            <p style={{ fontSize: "36px", marginBottom: "12px" }}>📖</p>
+            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Contenido próximamente</p>
           </div>
         )}
         {blocks.map((block, i) => {
           if (block.type === "text") return (
-            <p key={i} style={{ fontSize: "14px", lineHeight: 1.7, color: "rgba(0,0,0,0.75)", marginBottom: "14px" }}
-              dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") }} />
+            <p key={i} style={{ fontSize: "14px", lineHeight: 1.75, color: "rgba(255,255,255,0.8)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
+              dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
           );
           if (block.type === "heading") return (
-            <h3 key={i} style={{ fontWeight: 800, fontSize: "16px", color: "#111", margin: "20px 0 10px" }}>{block.text}</h3>
+            <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "17px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
           );
           if (block.type === "callout") return (
-            <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(108,99,255,0.06)", border: "1px solid rgba(108,99,255,0.15)", marginBottom: "14px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#6C63FF", marginBottom: "4px" }}>💡 IMPORTANTE</p>
-              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(0,0,0,0.7)" }}
-                dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") }} />
+            <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", marginBottom: "16px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
+              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}
+                dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
             </div>
           );
           if (block.type === "tip") return (
-            <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(255,252,0,0.08)", border: "1px solid rgba(255,252,0,0.2)", marginBottom: "14px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#6B5900", marginBottom: "4px" }}>⚡ TIP</p>
-              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(0,0,0,0.65)" }}>{block.text}</p>
+            <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.18)", marginBottom: "16px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 700, color: "#FBBF24", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
+              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
             </div>
           );
           return null;
         })}
       </div>
 
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "#fff", borderTop: "0.5px solid rgba(0,0,0,0.08)" }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(8,11,20,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)" }}>
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
-            <p style={{ fontSize: "12px", color: "#2E7D32", fontWeight: 700, marginBottom: "8px" }}>✅ Lección completada</p>
-            <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "12px", background: "#111", color: "#FFFC00", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center" }}>
+            <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>✅ Lección completada</p>
+            <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "12px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
               Siguiente lección →
             </Link>
           </div>
         ) : (
-          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "#111", color: "#FFFC00", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer" }}>
+          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.3)" }}>
             {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
           </button>
         )}
