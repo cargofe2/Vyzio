@@ -217,6 +217,23 @@ export default function DashboardPage() {
           </Link>
         )}
 
+        {/* SELECTOR DE NIVEL */}
+        <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px", marginBottom: "4px" }}>
+          {[
+            { id: "level-1", label: "Nivel 0 · Origins" },
+            { id: "level-new-1", label: "Nivel 1 · Explorer" },
+            { id: "level-new-2", label: "Nivel 2 · Thinker" },
+            { id: "level-new-3", label: "Nivel 3 · Creator" },
+          ].map(lvl => (
+            <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{
+              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
+              background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.25)",
+              color: "#fff", fontSize: "11px", fontWeight: 600, textDecoration: "none",
+              fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+            }}>{lvl.label}</Link>
+          ))}
+        </div>
+
         {/* MUNDOS con iconos Gizmo */}
         <section>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>

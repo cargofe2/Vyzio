@@ -183,6 +183,23 @@ function WorldsContent() {
         </div>
       </div>
 
+      <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
+        {[
+          { id: "level-1", label: "Nivel 0 · Origins" },
+          { id: "level-new-1", label: "Nivel 1 · Explorer" },
+          { id: "level-new-2", label: "Nivel 2 · Thinker" },
+          { id: "level-new-3", label: "Nivel 3 · Creator" },
+        ].map(lvl => (
+          <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{
+            flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
+            background: lvl.id === levelId ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
+            border: "1px solid rgba(123,97,255,0.25)",
+            color: "#fff", fontSize: "11px", fontWeight: 600, textDecoration: "none",
+            fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+          }}>{lvl.label}</Link>
+        ))}
+      </div>
+
       <div style={{ padding: "14px 16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
         {(worlds.length > 0 ? worlds : [{ id: "w0", name: "Tu aventura comienza", emoji: "🚀", description: "", lessonCount: 1, pctComplete: 0, order: 0, slug: "" }]).map(w => {
           const pctW = Math.round((w.pctComplete ?? 0) * 100);
