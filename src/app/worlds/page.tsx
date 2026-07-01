@@ -67,6 +67,13 @@ function WorldsContent() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
   const [loading, setLoading] = useState(true);
+  const [xp, setXp] = useState(0);
+
+  useEffect(() => {
+    fetch("/api/gamification").then(r => r.ok ? r.json() : null).then(d => {
+      if (d?.gamification?.xpTotal !== undefined) setXp(d.gamification.xpTotal);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     async function load() {
@@ -185,19 +192,26 @@ function WorldsContent() {
 
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
         {[
-          { id: "level-1", label: "Nivel 0 · Origins" },
-          { id: "level-new-1", label: "Nivel 1 · Explorer" },
-          { id: "level-new-2", label: "Nivel 2 · Thinker" },
-          { id: "level-new-3", label: "Nivel 3 · Creator" },
-        ].map(lvl => (
-          <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{
-            flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
-            background: lvl.id === levelId ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
-            border: "1px solid rgba(123,97,255,0.25)",
-            color: "#fff", fontSize: "11px", fontWeight: 600, textDecoration: "none",
-            fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-          }}>{lvl.label}</Link>
-        ))}
+          { id: "level-1", label: "Nivel 0 · Origins", xpRequired: 0 },
+          { id: "level-new-1", label: "Nivel 1 · Explorer", xpRequired: 2000 },
+          { id: "level-new-2", label: "Nivel 2 · Thinker", xpRequired: 8000 },
+          { id: "level-new-3", label: "Nivel 3 · Creator", xpRequired: 16000 },
+        ].map(lvl => {
+          const locked = xp < lvl.xpRequired;
+          const active = lvl.id === levelId;
+          const content = (
+            <div style={{
+              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
+              background: locked ? "rgba(255,255,255,0.04)" : active ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
+              border: locked ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(123,97,255,0.25)",
+              color: locked ? "rgba(255,255,255,0.35)" : "#fff", fontSize: "11px", fontWeight: 600,
+              fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+            }}>{locked && "🔒 "}{lvl.label}{locked && ` · ${lvl.xpRequired} XP`}</div>
+          );
+          return locked
+            ? <div key={lvl.id} title={`Necesitas ${lvl.xpRequired} XP`}>{content}</div>
+            : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
+        })}
       </div>
 
       <div style={{ padding: "14px 16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>

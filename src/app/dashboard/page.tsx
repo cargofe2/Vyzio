@@ -220,18 +220,26 @@ export default function DashboardPage() {
         {/* SELECTOR DE NIVEL */}
         <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px", marginBottom: "4px" }}>
           {[
-            { id: "level-1", label: "Nivel 0 · Origins" },
-            { id: "level-new-1", label: "Nivel 1 · Explorer" },
-            { id: "level-new-2", label: "Nivel 2 · Thinker" },
-            { id: "level-new-3", label: "Nivel 3 · Creator" },
-          ].map(lvl => (
-            <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{
-              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
-              background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.25)",
-              color: "#fff", fontSize: "11px", fontWeight: 600, textDecoration: "none",
-              fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-            }}>{lvl.label}</Link>
-          ))}
+            { id: "level-1", label: "Nivel 0 · Origins", xpRequired: 0 },
+            { id: "level-new-1", label: "Nivel 1 · Explorer", xpRequired: 2000 },
+            { id: "level-new-2", label: "Nivel 2 · Thinker", xpRequired: 8000 },
+            { id: "level-new-3", label: "Nivel 3 · Creator", xpRequired: 16000 },
+          ].map(lvl => {
+            const locked = xp < lvl.xpRequired;
+            const content = (
+              <div style={{
+                flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
+                background: locked ? "rgba(255,255,255,0.04)" : "rgba(123,97,255,0.1)",
+                border: locked ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(123,97,255,0.25)",
+                color: locked ? "rgba(255,255,255,0.35)" : "#fff", fontSize: "11px", fontWeight: 600,
+                fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+                display: "flex", alignItems: "center", gap: "4px",
+              }}>{locked && "🔒"} {lvl.label}{locked && ` · ${lvl.xpRequired} XP`}</div>
+            );
+            return locked
+              ? <div key={lvl.id} title={`Necesitas ${lvl.xpRequired} XP`}>{content}</div>
+              : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
+          })}
         </div>
 
         {/* MUNDOS con iconos Gizmo */}
