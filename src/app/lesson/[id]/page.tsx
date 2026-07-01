@@ -105,9 +105,9 @@ export default function LessonPage() {
   }
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ width: "36px", height: "36px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", borderRadius: "11px", margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: "36px", height: "36px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "11px", margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
         </div>
         <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando lección...</p>
@@ -116,11 +116,11 @@ export default function LessonPage() {
   );
 
   if (!lesson) return (
-    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <p style={{ fontSize: "36px", marginBottom: "10px" }}>😕</p>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}>Lección no encontrada</p>
-        <Link href="/worlds" style={{ padding: "10px 20px", background: "#6366F1", color: "#fff", borderRadius: "12px", textDecoration: "none", fontWeight: 700, fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Ver mundos →</Link>
+        <Link href="/worlds" style={{ padding: "10px 20px", background: "#7B61FF", color: "#fff", borderRadius: "12px", textDecoration: "none", fontWeight: 700, fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Ver mundos →</Link>
       </div>
     </div>
   );
@@ -128,7 +128,7 @@ export default function LessonPage() {
   // Diagnostic result
   if (phase === "diagnostic-result") {
     return (
-      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column", padding: "24px" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <div style={{ width: "64px", height: "64px", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", marginBottom: "16px" }}>🎯</div>
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>Tu perfil de aprendizaje</h2>
@@ -154,7 +154,7 @@ export default function LessonPage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px" }}>
-            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
+            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
               Ver mi ruta de aprendizaje →
             </Link>
             <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -169,7 +169,7 @@ export default function LessonPage() {
   // Done
   if (phase === "done") {
     return (
-      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
         <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎉</div>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>¡Lección completada!</h2>
         <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
@@ -179,7 +179,7 @@ export default function LessonPage() {
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
+          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
             Siguiente lección →
           </Link>
           <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -197,7 +197,7 @@ export default function LessonPage() {
     const isDiag = IS_DIAGNOSTIC(id);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
           {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
@@ -205,7 +205,7 @@ export default function LessonPage() {
             {!isDiag && <p style={{ color: "#FBBF24", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
           </div>
           <div style={{ height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#6366F1,#A78BFA)" : "linear-gradient(90deg,#FBBF24,#F59E0B)", borderRadius: "2px", transition: "width 0.3s" }} />
+            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#7B61FF,#A78BFA)" : "linear-gradient(90deg,#FBBF24,#F59E0B)", borderRadius: "2px", transition: "width 0.3s" }} />
           </div>
         </div>
 
@@ -215,11 +215,11 @@ export default function LessonPage() {
             {q.options.map((opt, i) => {
               let bg = "rgba(99,102,241,0.04)", border = "1px solid rgba(99,102,241,0.1)", color = "#fff";
               if (isDiag) {
-                if (selected === i) { bg = "rgba(99,102,241,0.18)"; border = "2px solid #6366F1"; }
+                if (selected === i) { bg = "rgba(99,102,241,0.18)"; border = "2px solid #7B61FF"; }
               } else if (answered) {
                 if (i === q.correctIndex) { bg = "rgba(52,211,153,0.12)"; border = "2px solid #34D399"; color = "#34D399"; }
                 else if (i === selected) { bg = "rgba(248,113,113,0.12)"; border = "2px solid #F87171"; color = "#F87171"; }
-              } else if (selected === i) { bg = "rgba(99,102,241,0.1)"; border = "2px solid #6366F1"; }
+              } else if (selected === i) { bg = "rgba(99,102,241,0.1)"; border = "2px solid #7B61FF"; }
               return (
                 <button key={i} onClick={() => handleAnswer(i)} disabled={isDiag ? false : answered}
                   style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}>
@@ -240,7 +240,7 @@ export default function LessonPage() {
 
         {(isDiag ? selected !== null : answered) && (
           <div style={{ padding: "16px", borderTop: "1px solid rgba(99,102,241,0.1)" }}>
-            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#6366F1,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#080B14", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#0D111A", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
               {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
           </div>
@@ -254,7 +254,7 @@ export default function LessonPage() {
   const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "100px" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "100px" }}>
       <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
@@ -268,7 +268,7 @@ export default function LessonPage() {
           <span style={{ fontSize: "10px", color: "#FBBF24", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-          <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "linear-gradient(90deg,#6366F1,#A78BFA)", borderRadius: "2px" }} />
+          <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
         </div>
       </div>
 
@@ -308,12 +308,12 @@ export default function LessonPage() {
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
             <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>✅ Lección completada</p>
-            <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "12px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
+            <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "12px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
               Siguiente lección →
             </Link>
           </div>
         ) : (
-          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.3)" }}>
+          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.3)" }}>
             {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
           </button>
         )}

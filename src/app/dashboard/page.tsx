@@ -45,7 +45,7 @@ const RANK_KEYS = Object.keys(RANK_NEXT_XP);
 const WORLD_VISUALS: Record<number, { color: string; bg: string; border: string; grad: string; Icon: () => ReactElement }> = {
   0: { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)",
     Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" fill="#F5FF4D" fillOpacity="0.3" stroke="#F5FF4D" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="12" cy="12" r="2" fill="#F5FF4D"/></svg> },
-  1: { color: "#818CF8", bg: "rgba(99,102,241,0.1)", border: "rgba(99,102,241,0.18)", grad: "linear-gradient(90deg,#6366F1,#8B5CF6)",
+  1: { color: "#818CF8", bg: "rgba(99,102,241,0.1)", border: "rgba(99,102,241,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)",
     Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/><path d="M9 11V13M12 10V14M15 11V13" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round"/></svg> },
   2: { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)",
     Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FBBF24" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FBBF24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 3.5L5 5.5M17 3.5L19 5.5" stroke="#FBBF24" strokeWidth="1.5" strokeLinecap="round"/></svg> },
@@ -109,9 +109,9 @@ export default function DashboardPage() {
   const nextRankLabel = RANK_CONFIG[RANK_KEYS[RANK_KEYS.indexOf(rank) + 1]]?.label ?? "AI Titan";
 
   if (!isLoaded || loading) return (
-    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ width: "40px", height: "40px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", borderRadius: "12px", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: "40px", height: "40px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "12px", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
             <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
@@ -126,13 +126,13 @@ export default function DashboardPage() {
   const heroVisual = heroWorld ? getWorldVisual(heroWorld.order) : getWorldVisual(0);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
       <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.wcard:active{transform:scale(0.97)}`}</style>
 
       {/* HEADER */}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(99,102,241,0.4)" }}>
+          <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(99,102,241,0.4)" }}>
             <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                   </div>
                 )}
               </div>
-              <div style={{ width: "34px", height: "34px", background: heroVisual.grad, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", color: "#080B14", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}>→</div>
+              <div style={{ width: "34px", height: "34px", background: heroVisual.grad, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", color: "#0D111A", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}>→</div>
             </div>
           </Link>
         )}
@@ -272,7 +272,7 @@ export default function DashboardPage() {
                         <span style={{ fontSize: "10px", fontWeight: 700, color: isD ? "#FBBF24" : "#818CF8", fontFamily: "'DM Sans',sans-serif" }}>+{m.xpReward} XP</span>
                       </div>
                       <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "2px" }}>
-                        <div style={{ height: "100%", width: `${prog}%`, background: isD ? "linear-gradient(90deg,#FBBF24,#34D399)" : "linear-gradient(90deg,#6366F1,#A78BFA)", borderRadius: "2px" }} />
+                        <div style={{ height: "100%", width: `${prog}%`, background: isD ? "linear-gradient(90deg,#FBBF24,#34D399)" : "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
                       </div>
                       <p style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", marginTop: "3px", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue}</p>
                     </div>
@@ -304,7 +304,7 @@ export default function DashboardPage() {
       {/* NAVBAR */}
       <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(8,11,20,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)", display: "flex", padding: "6px 0" }}>
         <Link href="/dashboard" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(99,102,241,0.5)" }}>
+          <div style={{ width: "42px", height: "42px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(99,102,241,0.5)" }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M13 9L11 12H13L10.5 15.5" stroke="#F5FF4D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
           <span style={{ fontSize: "8px", fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#818CF8", letterSpacing: "0.5px" }}>INICIO</span>

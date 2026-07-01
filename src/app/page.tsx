@@ -7,13 +7,13 @@ export default async function HomePage() {
   if (userId) redirect("/dashboard");
 
   return (
-    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#080B14" }}>
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0D111A" }}>
       {/* Hero */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", textAlign: "center" }}>
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", boxShadow: "0 0 24px rgba(99,102,241,0.5)" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "0 0 24px rgba(99,102,241,0.5)" }}>
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
@@ -44,7 +44,7 @@ export default async function HomePage() {
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(99,102,241,0.4)" }}>
+          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(99,102,241,0.4)" }}>
             Empezar gratis →
           </Link>
           <Link href="/sign-in" style={{ display: "block", width: "100%", padding: "14px", borderRadius: "16px", textAlign: "center", fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(99,102,241,0.2)", color: "rgba(255,255,255,0.5)" }}>

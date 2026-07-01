@@ -17,7 +17,7 @@ const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string; ic
 
 const WV: Record<number, { color: string; bg: string; border: string; grad: string; path: string }> = {
   0: { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)", path: "M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" },
-  1: { color: "#818CF8", bg: "rgba(99,102,241,0.1)", border: "rgba(99,102,241,0.18)", grad: "linear-gradient(90deg,#6366F1,#8B5CF6)", path: "" },
+  1: { color: "#818CF8", bg: "rgba(99,102,241,0.1)", border: "rgba(99,102,241,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)", path: "" },
   2: { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)", path: "" },
   3: { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)", path: "" },
   4: { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)", path: "" },
@@ -32,7 +32,7 @@ function getV(order: number) { return WV[order] ?? WV[1]; }
 
 function NavBar({ active }: { active: string }) {
   const items = [
-    { href: "/dashboard", label: "Inicio", color: "#6366F1", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" stroke="#6366F1" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><path d="M13 9L11 12H13L10.5 15.5" stroke="#F5FF4D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/></svg> },
+    { href: "/dashboard", label: "Inicio", color: "#7B61FF", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" stroke="#7B61FF" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><path d="M13 9L11 12H13L10.5 15.5" stroke="#F5FF4D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/></svg> },
     { href: "/worlds", label: "Mundos", color: "#00D4FF", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#00D4FF" strokeWidth="1.8" strokeOpacity="0.5"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" stroke="#00D4FF" strokeWidth="1.5" strokeOpacity="0.4"/><path d="M4 9.5H20M4 14.5H20" stroke="#00D4FF" strokeWidth="1.3" strokeLinecap="round" strokeOpacity="0.3"/></svg> },
     { href: "/vy", label: "VY", color: "#00FFB3", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="1.8" strokeOpacity="0.5"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.5"/></svg> },
     { href: "/community", label: "Liga", color: "#FBBF24", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="9" y="10" width="6" height="12" rx="1" stroke="#FBBF24" strokeWidth="1.8" strokeOpacity="0.5"/><rect x="2" y="14" width="6" height="8" rx="1" stroke="#FBBF24" strokeWidth="1.5" strokeOpacity="0.3"/><rect x="16" y="16" width="6" height="6" rx="1" stroke="#FBBF24" strokeWidth="1.5" strokeOpacity="0.3"/><path d="M12 2L13.1 5.3H16.6L13.7 7.4L14.8 10.7L12 8.5L9.2 10.7L10.3 7.4L7.4 5.3H10.9L12 2Z" stroke="#FBBF24" strokeWidth="1.3" strokeLinejoin="round" strokeOpacity="0.5"/></svg> },
@@ -87,7 +87,7 @@ function WorldsContent() {
   }, [worldId]);
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando...</p>
     </div>
   );
@@ -99,7 +99,7 @@ function WorldsContent() {
     const v = selectedWorld ? getV(selectedWorld.order) : getV(1);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "88px" }}>
+      <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
             <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
@@ -165,7 +165,7 @@ function WorldsContent() {
 
   // Vista de mundos con iconos coloridos
   return (
-    <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
@@ -204,7 +204,7 @@ function WorldsContent() {
 
 export default function WorldsPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#080B14", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", fontSize: "12px" }}>Cargando...</p></div>}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", fontSize: "12px" }}>Cargando...</p></div>}>
       <WorldsContent />
     </Suspense>
   );

@@ -35,7 +35,7 @@ export default function VYPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080B14", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column" }}>
       <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}`}</style>
 
       {/* Header */}
@@ -66,7 +66,7 @@ export default function VYPage() {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
             )}
-            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#6366F1,#8B5CF6)" : "rgba(99,102,241,0.08)", border: m.role === "assistant" ? "1px solid rgba(99,102,241,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
+            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(99,102,241,0.08)", border: m.role === "assistant" ? "1px solid rgba(99,102,241,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
               dangerouslySetInnerHTML={{ __html: renderMsg(m.content) }} />
           </div>
         ))}
@@ -102,7 +102,7 @@ export default function VYPage() {
           placeholder="Pregúntale algo a ZAI..." disabled={used >= 10}
           style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
-          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(99,102,241,0.2)" : "linear-gradient(135deg,#6366F1,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(99,102,241,0.4)" : "none" }}>↑</button>
+          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(99,102,241,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(99,102,241,0.4)" : "none" }}>↑</button>
       </div>
     </div>
   );

@@ -5,10 +5,32 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --byzai-purple: #7B61FF;
+  --byzai-blue: #468BFF;
+  --byzai-cyan: #26C6DA;
+  --byzai-bg: #0D111A;
+  --byzai-surface: #161C27;
+  --byzai-card: #1E2533;
+  --byzai-border: #A880C2;
+  --byzai-text-secondary: #A880C2;
+  --byzai-text-primary: #FFFFFF;
+  --byzai-success: #36D399;
+  --byzai-warning: #F2C04D;
+  --byzai-info: #468BFF;
+  --byzai-danger: #FF6B6B;
+  --byzai-world-fundamentos: #468BFF;
+  --byzai-world-historia: #F2C04D;
+  --byzai-world-creatividad: #FF7DAE;
+  --byzai-world-programacion: #36D399;
+  --byzai-world-negocios: #FF9E5B;
+  --byzai-world-robotica: #26C6DA;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
-  background: #080B14;
-  color: #ffffff;
+  background: var(--byzai-bg);
+  color: var(--byzai-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 

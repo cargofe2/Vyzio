@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CommunityPage() {
   const items = [
-    { href: "/dashboard", label: "Inicio", color: "#6366F1" },
+    { href: "/dashboard", label: "Inicio", color: "#7B61FF" },
     { href: "/worlds", label: "Mundos", color: "#00D4FF" },
     { href: "/vy", label: "ZAI", color: "#00FFB3" },
     { href: "/community", label: "Liga", color: "#FBBF24" },
@@ -10,7 +10,7 @@ export default function CommunityPage() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080B14", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
 
       {/* Header */}
       <div style={{ background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "14px 16px" }}>
@@ -25,7 +25,7 @@ export default function CommunityPage() {
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.6, maxWidth: "280px", margin: "0 auto 24px" }}>
           La comunidad se activa cuando publiques tu primer proyecto. Completa lecciones para desbloquearla.
         </p>
-        <Link href="/worlds" style={{ display: "inline-block", padding: "12px 24px", background: "linear-gradient(135deg,#6366F1,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 700, fontSize: "13px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
+        <Link href="/worlds" style={{ display: "inline-block", padding: "12px 24px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 700, fontSize: "13px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
           Ir a aprender →
         </Link>
       </div>
