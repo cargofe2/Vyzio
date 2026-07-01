@@ -56,6 +56,7 @@ function NavBar({ active }: { active: string }) {
 function WorldsContent() {
   const searchParams = useSearchParams();
   const worldId = searchParams.get("id");
+  const levelId = searchParams.get("levelId") || "level-1";
   const [worlds, setWorlds] = useState<World[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
@@ -67,7 +68,7 @@ function WorldsContent() {
       try {
         if (worldId) {
           const [worldsRes, lessonsRes] = await Promise.all([
-            fetch("/api/lessons?levelId=level-1"),
+            fetch(`/api/lessons?levelId=${levelId}`),
             fetch(`/api/lessons?worldId=${worldId}`),
           ]);
           if (worldsRes.ok) {
@@ -77,14 +78,14 @@ function WorldsContent() {
           }
           if (lessonsRes.ok) { const d = await lessonsRes.json(); setLessons(d.lessons ?? []); }
         } else {
-          const res = await fetch("/api/lessons?levelId=level-1");
+          const res = await fetch(`/api/lessons?levelId=${levelId}`);
           if (res.ok) { const d = await res.json(); setWorlds(d.worlds ?? []); }
         }
       } catch (err) { console.error(err); }
       finally { setLoading(false); }
     }
     load();
-  }, [worldId]);
+  }, [worldId, levelId]);
 
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
