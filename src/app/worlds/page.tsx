@@ -57,6 +57,12 @@ function WorldsContent() {
   const searchParams = useSearchParams();
   const worldId = searchParams.get("id");
   const levelId = searchParams.get("levelId") || "level-1";
+  const levelNames: Record<string, string> = {
+    "level-1": "Nivel 0 — AI Foundations",
+    "level-new-1": "Nivel 1 — AI Explorer",
+    "level-new-2": "Nivel 2 — AI Thinker",
+    "level-new-3": "Nivel 3 — AI Creator",
+  };
   const [worlds, setWorlds] = useState<World[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
@@ -171,7 +177,7 @@ function WorldsContent() {
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
           <div>
-            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>Nivel 0 — AI Foundations</h1>
+            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>{levelNames[levelId] || "Nivel 0 — AI Foundations"}</h1>
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{worlds.length} mundos · Gratis</p>
           </div>
         </div>
