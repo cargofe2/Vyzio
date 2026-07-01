@@ -28,7 +28,12 @@ const WV: Record<number, { color: string; bg: string; border: string; grad: stri
   9: { color: "#4ADE80", bg: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.18)", grad: "linear-gradient(90deg,#4ADE80,#16A34A)", path: "" },
   10: { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)", path: "" },
 };
-function getV(order: number) { return WV[order] ?? WV[1]; }
+const PALETTE_KEYS = [1,2,3,4,5,6,7,8,9,10];
+function getV(order: number) {
+  if (order === 0) return WV[0];
+  const key = PALETTE_KEYS[(order - 1) % PALETTE_KEYS.length];
+  return WV[key];
+}
 
 function NavBar({ active }: { active: string }) {
   const items = [
