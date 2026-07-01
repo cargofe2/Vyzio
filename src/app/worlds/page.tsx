@@ -17,7 +17,7 @@ const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string; ic
 
 const WV: Record<number, { color: string; bg: string; border: string; grad: string; path: string }> = {
   0: { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)", path: "M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" },
-  1: { color: "#818CF8", bg: "rgba(99,102,241,0.1)", border: "rgba(99,102,241,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)", path: "" },
+  1: { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)", path: "" },
   2: { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)", path: "" },
   3: { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)", path: "" },
   4: { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)", path: "" },
@@ -39,7 +39,7 @@ function NavBar({ active }: { active: string }) {
     { href: "/profile", label: "Perfil", color: "#F472B6", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><circle cx="12" cy="9.5" r="2.5" stroke="#F472B6" strokeWidth="1.5" strokeOpacity="0.5"/><path d="M7.5 17C7.5 14.5 9.5 12.5 12 12.5C14.5 12.5 16.5 14.5 16.5 17" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(8,11,20,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, color, icon }) => {
         const isActive = href === active;
         return (
@@ -100,7 +100,7 @@ function WorldsContent() {
 
     return (
       <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
-        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "11px 16px" }}>
+        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
             <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
             <span style={{ fontSize: "24px" }}>{selectedWorld?.emoji ?? "🌍"}</span>
@@ -115,13 +115,13 @@ function WorldsContent() {
         </div>
 
         {worlds.length > 0 && (
-          <div style={{ padding: "10px 16px", borderBottom: "1px solid rgba(99,102,241,0.08)", overflowX: "auto", display: "flex", gap: "6px" }}>
+          <div style={{ padding: "10px 16px", borderBottom: "1px solid rgba(123,97,255,0.08)", overflowX: "auto", display: "flex", gap: "6px" }}>
             {worlds.map(w => {
               const isActive = w.id === worldId;
               const wv = getV(w.order);
               return (
                 <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-                  <div style={{ padding: "5px 12px", borderRadius: "20px", border: isActive ? `1px solid ${wv.color}50` : "1px solid rgba(99,102,241,0.1)", background: isActive ? wv.bg : "rgba(99,102,241,0.04)", color: isActive ? wv.color : "rgba(255,255,255,0.25)", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "4px" }}>
+                  <div style={{ padding: "5px 12px", borderRadius: "20px", border: isActive ? `1px solid ${wv.color}50` : "1px solid rgba(123,97,255,0.1)", background: isActive ? wv.bg : "rgba(123,97,255,0.04)", color: isActive ? wv.color : "rgba(255,255,255,0.25)", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "4px" }}>
                     <span>{w.emoji}</span><span>{w.name}</span>
                     {Math.round((w.pctComplete ?? 0) * 100) >= 100 && <span style={{ color: "#34D399" }}>✓</span>}
                   </div>
@@ -138,7 +138,7 @@ function WorldsContent() {
             const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
             return (
               <Link key={lesson.id} href={`/lesson/${lesson.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 14px", borderRadius: "16px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(99,102,241,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(99,102,241,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 14px", borderRadius: "16px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)" }}>
                   <div style={{ width: "36px", height: "36px", borderRadius: "11px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "rgba(52,211,153,0.12)" : typeCfg.bg, border: `1px solid ${done ? "rgba(52,211,153,0.2)" : typeCfg.color + "30"}`, fontFamily: "'Syne',sans-serif", fontSize: done ? "14px" : "16px", fontWeight: 800, color: done ? "#34D399" : typeCfg.color }}>
                     {done ? "✓" : typeCfg.icon}
                   </div>
@@ -166,7 +166,7 @@ function WorldsContent() {
   // Vista de mundos con iconos coloridos
   return (
     <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "14px 16px" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
           <div>

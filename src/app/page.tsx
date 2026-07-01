@@ -13,7 +13,7 @@ export default async function HomePage() {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "0 0 24px rgba(99,102,241,0.5)" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "0 0 24px rgba(123,97,255,0.5)" }}>
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
@@ -44,10 +44,10 @@ export default async function HomePage() {
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(99,102,241,0.4)" }}>
+          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(123,97,255,0.4)" }}>
             Empezar gratis →
           </Link>
-          <Link href="/sign-in" style={{ display: "block", width: "100%", padding: "14px", borderRadius: "16px", textAlign: "center", fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(99,102,241,0.2)", color: "rgba(255,255,255,0.5)" }}>
+          <Link href="/sign-in" style={{ display: "block", width: "100%", padding: "14px", borderRadius: "16px", textAlign: "center", fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(123,97,255,0.2)", color: "rgba(255,255,255,0.5)" }}>
             Ya tengo cuenta
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default async function HomePage() {
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "320px", margin: "0 auto" }}>
           {[
-            { name: "Fundamentos de IA", color: "#818CF8", bg: "rgba(99,102,241,0.08)", border: "rgba(99,102,241,0.18)",
+            { name: "Fundamentos de IA", color: "#818CF8", bg: "rgba(123,97,255,0.08)", border: "rgba(123,97,255,0.18)",
               icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/></svg> },
             { name: "Historia de la IA", color: "#FBBF24", bg: "rgba(251,191,36,0.08)", border: "rgba(251,191,36,0.18)",
               icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FBBF24" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FBBF24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },

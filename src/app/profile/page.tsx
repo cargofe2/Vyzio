@@ -23,7 +23,7 @@ function NavBar() {
     { href: "/profile", label: "Perfil", color: "#F472B6", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><circle cx="12" cy="9.5" r="2.5" stroke="#F472B6" strokeWidth="1.5" strokeOpacity="0.5"/><path d="M7.5 17C7.5 14.5 9.5 12.5 12 12.5C14.5 12.5 16.5 14.5 16.5 17" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(8,11,20,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, color, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -63,9 +63,9 @@ export default function ProfilePage() {
     <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
 
       {/* Header */}
-      <div style={{ background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "16px" }}>
+      <div style={{ background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-          <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", background: "rgba(99,102,241,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0 }}>🧑‍💻</div>
+          <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0 }}>🧑‍💻</div>
           <div style={{ flex: 1 }}>
             <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{user?.fullName ?? "Estudiante"}</h1>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
@@ -74,9 +74,9 @@ export default function ProfilePage() {
           <UserButton afterSignOutUrl="/" />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.1)", borderRadius: "14px", overflow: "hidden" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", overflow: "hidden" }}>
           {[[String(gamification?.lessonsCompleted ?? 0), "Lecciones"], [xp.toLocaleString(), "XP Total"], [`🔥 ${gamification?.streakDays ?? 0}`, "Racha"]].map(([v, l], i) => (
-            <div key={l} style={{ padding: "12px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(99,102,241,0.1)" : "none" }}>
+            <div key={l} style={{ padding: "12px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", color: "#fff" }}>{v}</div>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.25)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
             </div>
@@ -87,8 +87,8 @@ export default function ProfilePage() {
       <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
 
         {/* Certificado */}
-        <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "40px", height: "40px", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🎓</div>
+        <div style={{ background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🎓</div>
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Certificado AI Explorer</p>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Completa el Nivel 1 para obtenerlo</p>
@@ -113,7 +113,7 @@ export default function ProfilePage() {
           ) : achievements.length > 0 ? (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {achievements.map((a, i) => (
-                <div key={i} style={{ background: "rgba(99,102,241,0.05)", border: "1px solid rgba(99,102,241,0.1)", borderRadius: "14px", padding: "12px" }}>
+                <div key={i} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px" }}>
                   <div style={{ fontSize: "24px", marginBottom: "6px" }}>{a.achievement.emoji}</div>
                   <p style={{ fontWeight: 700, fontSize: "11px", color: "#fff", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.name}</p>
                   <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.description}</p>
@@ -121,7 +121,7 @@ export default function ProfilePage() {
               ))}
             </div>
           ) : (
-            <div style={{ background: "rgba(99,102,241,0.05)", border: "1px solid rgba(99,102,241,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
+            <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
               <p style={{ fontSize: "28px", marginBottom: "8px" }}>🏆</p>
               <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>Sin logros aún</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>Completa lecciones para desbloquear logros</p>

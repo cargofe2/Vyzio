@@ -130,11 +130,11 @@ export default function LessonPage() {
     return (
       <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column", padding: "24px" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ width: "64px", height: "64px", background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", marginBottom: "16px" }}>🎯</div>
+          <div style={{ width: "64px", height: "64px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", marginBottom: "16px" }}>🎯</div>
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>Tu perfil de aprendizaje</h2>
           <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>Análisis de VY basado en tu diagnóstico</p>
 
-          <div style={{ width: "100%", maxWidth: "360px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.25)", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
+          <div style={{ width: "100%", maxWidth: "360px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.25)", borderRadius: "20px", padding: "20px", marginBottom: "24px" }}>
             {vyLoading ? (
               <div style={{ textAlign: "center", padding: "20px 0" }}>
                 <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>VY está analizando tus respuestas...</p>
@@ -154,7 +154,7 @@ export default function LessonPage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px" }}>
-            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
+            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.4)" }}>
               Ver mi ruta de aprendizaje →
             </Link>
             <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -179,7 +179,7 @@ export default function LessonPage() {
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
+          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.4)" }}>
             Siguiente lección →
           </Link>
           <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -198,7 +198,7 @@ export default function LessonPage() {
 
     return (
       <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column" }}>
-        <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
+        <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
           {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", fontFamily: "'DM Sans',sans-serif" }}>Pregunta {currentQ + 1} de {total}</p>
@@ -213,13 +213,13 @@ export default function LessonPage() {
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "17px", color: "#fff", marginBottom: "20px", lineHeight: 1.4 }}>{q.question}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {q.options.map((opt, i) => {
-              let bg = "rgba(99,102,241,0.04)", border = "1px solid rgba(99,102,241,0.1)", color = "#fff";
+              let bg = "rgba(123,97,255,0.04)", border = "1px solid rgba(123,97,255,0.1)", color = "#fff";
               if (isDiag) {
-                if (selected === i) { bg = "rgba(99,102,241,0.18)"; border = "2px solid #7B61FF"; }
+                if (selected === i) { bg = "rgba(123,97,255,0.18)"; border = "2px solid #7B61FF"; }
               } else if (answered) {
                 if (i === q.correctIndex) { bg = "rgba(52,211,153,0.12)"; border = "2px solid #34D399"; color = "#34D399"; }
                 else if (i === selected) { bg = "rgba(248,113,113,0.12)"; border = "2px solid #F87171"; color = "#F87171"; }
-              } else if (selected === i) { bg = "rgba(99,102,241,0.1)"; border = "2px solid #7B61FF"; }
+              } else if (selected === i) { bg = "rgba(123,97,255,0.1)"; border = "2px solid #7B61FF"; }
               return (
                 <button key={i} onClick={() => handleAnswer(i)} disabled={isDiag ? false : answered}
                   style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "13px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}>
@@ -239,7 +239,7 @@ export default function LessonPage() {
         </div>
 
         {(isDiag ? selected !== null : answered) && (
-          <div style={{ padding: "16px", borderTop: "1px solid rgba(99,102,241,0.1)" }}>
+          <div style={{ padding: "16px", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
             <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#0D111A", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
               {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
@@ -255,7 +255,7 @@ export default function LessonPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "100px" }}>
-      <div style={{ padding: "16px", borderBottom: "1px solid rgba(99,102,241,0.1)" }}>
+      <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
           <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
@@ -288,7 +288,7 @@ export default function LessonPage() {
             <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "17px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
           );
           if (block.type === "callout") return (
-            <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", marginBottom: "16px" }}>
+            <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
               <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
               <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}
                 dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
@@ -304,7 +304,7 @@ export default function LessonPage() {
         })}
       </div>
 
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(8,11,20,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)" }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
             <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>✅ Lección completada</p>
@@ -313,7 +313,7 @@ export default function LessonPage() {
             </Link>
           </div>
         ) : (
-          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(99,102,241,0.3)" }}>
+          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.3)" }}>
             {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
           </button>
         )}

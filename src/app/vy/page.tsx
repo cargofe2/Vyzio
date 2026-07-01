@@ -9,7 +9,7 @@ interface Msg { role: "user" | "assistant"; content: string }
 function renderMsg(content: string) {
   return content
     .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-    .replace(/`(.*?)`/g, "<code style='background:rgba(99,102,241,0.15);padding:1px 5px;border-radius:4px;font-size:11px;color:#A78BFA'>$1</code>");
+    .replace(/`(.*?)`/g, "<code style='background:rgba(123,97,255,0.15);padding:1px 5px;border-radius:4px;font-size:11px;color:#A78BFA'>$1</code>");
 }
 
 export default function VYPage() {
@@ -39,7 +39,7 @@ export default function VYPage() {
       <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}`}</style>
 
       {/* Header */}
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,11,20,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(99,102,241,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
         <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
         <div style={{ width: "36px", height: "36px", background: "rgba(0,255,179,0.1)", border: "1px solid rgba(0,255,179,0.25)", borderRadius: "11px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -66,7 +66,7 @@ export default function VYPage() {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
             )}
-            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(99,102,241,0.08)", border: m.role === "assistant" ? "1px solid rgba(99,102,241,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
+            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(123,97,255,0.08)", border: m.role === "assistant" ? "1px solid rgba(123,97,255,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
               dangerouslySetInnerHTML={{ __html: renderMsg(m.content) }} />
           </div>
         ))}
@@ -75,7 +75,7 @@ export default function VYPage() {
             <div style={{ width: "26px", height: "26px", borderRadius: "8px", background: "rgba(0,255,179,0.1)", border: "1px solid rgba(0,255,179,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </div>
-            <div style={{ padding: "10px 16px", borderRadius: "18px 18px 18px 4px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.12)", display: "flex", gap: "4px" }}>
+            <div style={{ padding: "10px 16px", borderRadius: "18px 18px 18px 4px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.12)", display: "flex", gap: "4px" }}>
               {[0,1,2].map(i => <div key={i} style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#818CF8", animation: `bounce 1s ${i*0.2}s infinite` }} />)}
             </div>
           </div>
@@ -92,17 +92,17 @@ export default function VYPage() {
       {/* Chips */}
       <div style={{ padding: "0 16px 8px", display: "flex", gap: "6px", overflowX: "auto" }}>
         {CHIPS.map(c => (
-          <button key={c} onClick={() => send(c)} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: "20px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", color: "rgba(255,255,255,0.5)", fontSize: "11px", fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'DM Sans',sans-serif" }}>{c}</button>
+          <button key={c} onClick={() => send(c)} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: "20px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.15)", color: "rgba(255,255,255,0.5)", fontSize: "11px", fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap", fontFamily: "'DM Sans',sans-serif" }}>{c}</button>
         ))}
       </div>
 
       {/* Input */}
-      <div style={{ padding: "10px 16px 14px", background: "rgba(8,11,20,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(99,102,241,0.1)", display: "flex", gap: "8px" }}>
+      <div style={{ padding: "10px 16px 14px", background: "rgba(13,17,26,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", gap: "8px" }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
           placeholder="Pregúntale algo a ZAI..." disabled={used >= 10}
-          style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
+          style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
-          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(99,102,241,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(99,102,241,0.4)" : "none" }}>↑</button>
+          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(123,97,255,0.4)" : "none" }}>↑</button>
       </div>
     </div>
   );
