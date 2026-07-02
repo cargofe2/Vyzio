@@ -138,7 +138,7 @@ export default function DashboardPage() {
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", letterSpacing: "3px" }}><span style={{ background: "linear-gradient(135deg,#F472B6,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>BY</span><span style={{ color: "#fff" }}>Z</span><span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI</span></span>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", letterSpacing: "3px", color: "#F8FAFF" }}>BYZAI</span>
           <div style={{ padding: "2px 8px", borderRadius: "20px", background: `${rankCfg.color}18`, border: `1px solid ${rankCfg.color}33`, fontSize: "9px", fontWeight: 700, color: rankCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -176,19 +176,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "8px", marginBottom: "18px" }}>
-          {[
-            { v: gamification?.gems ?? 0, l: "Gemas", c: "#C4B5FD", bg: "rgba(196,181,253,0.08)", border: "rgba(196,181,253,0.15)", e: "💎" },
-            { v: gamification?.lessonsCompleted ?? 0, l: "Clases", c: "#7DD3FC", bg: "rgba(125,211,252,0.08)", border: "rgba(125,211,252,0.15)", e: "📚" },
-            { v: `${gamification?.streakDays ?? 0}d`, l: "Racha", c: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.15)", e: "🔥" },
-          ].map(({ v, l, c, bg, border, e }) => (
-            <div key={l} style={{ background: bg, border: `1px solid ${border}`, borderRadius: "14px", padding: "10px 6px", textAlign: "center" }}>
-              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{e}</div>
-              <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "16px", color: c, lineHeight: 1 }}>{v}</div>
-              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
-            </div>
-          ))}
-        </div>
+
       </div>
 
       {/* CONTENT */}
@@ -280,6 +268,21 @@ export default function DashboardPage() {
           </div>
         </section>
 
+        {/* GAMIFICACIÓN */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "8px", marginBottom: "0" }}>
+          {[
+            { v: gamification?.gems ?? 0, l: "Gemas", c: "#C4B5FD", bg: "rgba(196,181,253,0.08)", border: "rgba(196,181,253,0.15)", e: "💎" },
+            { v: gamification?.lessonsCompleted ?? 0, l: "Clases", c: "#7DD3FC", bg: "rgba(125,211,252,0.08)", border: "rgba(125,211,252,0.15)", e: "📚" },
+            { v: `${gamification?.streakDays ?? 0}d`, l: "Racha", c: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.15)", e: "🔥" },
+          ].map(({ v, l, c, bg, border, e }) => (
+            <div key={l} style={{ background: bg, border: `1px solid ${border}`, borderRadius: "14px", padding: "10px 6px", textAlign: "center" }}>
+              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{e}</div>
+              <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "16px", color: c, lineHeight: 1 }}>{v}</div>
+              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
+            </div>
+          ))}
+        </div>
+
         {/* MISIONES */}
         {missions.length > 0 && (
           <section>
@@ -327,37 +330,19 @@ export default function DashboardPage() {
       </div>
 
       {/* NAVBAR */}
-      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
-        <Link href="/dashboard" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(123,97,255,0.5)" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M13 9L11 12H13L10.5 15.5" stroke="#F5FF4D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
-          <span style={{ fontSize: "8px", fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#818CF8", letterSpacing: "0.5px" }}>INICIO</span>
-        </Link>
-        <Link href="/worlds" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#00D4FF" strokeWidth="1.8" strokeOpacity="0.5"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" stroke="#00D4FF" strokeWidth="1.5" strokeOpacity="0.4"/><path d="M4 9.5H20M4 14.5H20" stroke="#00D4FF" strokeWidth="1.3" strokeLinecap="round" strokeOpacity="0.3"/></svg>
-          </div>
-          <span style={{ fontSize: "8px", fontFamily: "'DM Sans',sans-serif", fontWeight: 500, color: "rgba(255,255,255,0.25)" }}>Mundos</span>
-        </Link>
-        <Link href="/vy" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "rgba(0,255,179,0.1)", border: "1px solid rgba(0,255,179,0.2)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#00FFB3" strokeWidth="1.8" strokeOpacity="0.5"/><path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.5"/></svg>
-          </div>
-          <span style={{ fontSize: "8px", fontFamily: "'DM Sans',sans-serif", fontWeight: 500, color: "rgba(255,255,255,0.25)" }}>VY</span>
-        </Link>
-        <Link href="/community" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="9" y="10" width="6" height="12" rx="1" stroke="#FBBF24" strokeWidth="1.8" strokeOpacity="0.5"/><rect x="2" y="14" width="6" height="8" rx="1" stroke="#FBBF24" strokeWidth="1.5" strokeOpacity="0.3"/><rect x="16" y="16" width="6" height="6" rx="1" stroke="#FBBF24" strokeWidth="1.5" strokeOpacity="0.3"/><path d="M12 2L13.1 5.3H16.6L13.7 7.4L14.8 10.7L12 8.5L9.2 10.7L10.3 7.4L7.4 5.3H10.9L12 2Z" stroke="#FBBF24" strokeWidth="1.3" strokeLinejoin="round" strokeOpacity="0.5"/></svg>
-          </div>
-          <span style={{ fontSize: "8px", fontFamily: "'DM Sans',sans-serif", fontWeight: 500, color: "rgba(255,255,255,0.25)" }}>Liga</span>
-        </Link>
-        <Link href="/profile" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-          <div style={{ width: "42px", height: "42px", background: "rgba(244,114,182,0.1)", border: "1px solid rgba(244,114,182,0.2)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><circle cx="12" cy="9.5" r="2.5" stroke="#F472B6" strokeWidth="1.5" strokeOpacity="0.5"/><path d="M7.5 17C7.5 14.5 9.5 12.5 12 12.5C14.5 12.5 16.5 14.5 16.5 17" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5"/></svg>
-          </div>
-          <span style={{ fontSize: "8px", fontFamily: "'DM Sans',sans-serif", fontWeight: 500, color: "rgba(255,255,255,0.25)" }}>Perfil</span>
-        </Link>
+      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+        {[
+          { href: "/dashboard", label: "Inicio", active: true, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+          { href: "/worlds", label: "Mundos", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
+          { href: "/vy", label: "VY", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4" strokeWidth="1.8"/><path d="M8 8L12 16L16 8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+          { href: "/community", label: "Liga", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
+          { href: "/profile", label: "Perfil", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
+        ].map(({ href, label, active, icon }) => (
+          <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
+            <div style={{ width: "40px", height: "40px", background: active ? "rgba(123,97,255,0.2)" : "transparent", border: active ? "1px solid rgba(123,97,255,0.4)" : "1px solid transparent", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center", color: active ? "#7B61FF" : "#7E8798" }}>{icon}</div>
+            <span style={{ fontSize: "8px", fontFamily: active ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: active ? 800 : 500, color: active ? "#7B61FF" : "#7E8798", letterSpacing: active ? "0.5px" : "0" }}>{active ? label.toUpperCase() : label}</span>
+          </Link>
+        ))}
       </nav>
     </div>
   );
