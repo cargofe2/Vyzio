@@ -97,7 +97,7 @@ function NavBar({ active }: { active: string }) {
     { href: "/profile", label: "Perfil", color: "#F472B6", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><circle cx="12" cy="9.5" r="2.5" stroke="#F472B6" strokeWidth="1.5" strokeOpacity="0.5"/><path d="M7.5 17C7.5 14.5 9.5 12.5 12 12.5C14.5 12.5 16.5 14.5 16.5 17" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, color, icon }) => {
         const isActive = href === active;
         return (
@@ -159,7 +159,7 @@ function WorldsContent() {
   }, [worldId, levelId]);
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando...</p>
     </div>
   );
@@ -171,8 +171,8 @@ function WorldsContent() {
     const v = selectedWorld ? getV(selectedWorld.order, levelId) : getV(1, levelId);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
-        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
+      <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
+        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
             <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
             <span style={{ fontSize: "24px" }}>{selectedWorld?.emoji ?? "🌍"}</span>
@@ -237,8 +237,8 @@ function WorldsContent() {
 
   // Vista de mundos con iconos coloridos
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
           <div>
@@ -279,13 +279,13 @@ function WorldsContent() {
           const v = getV(w.order, levelId);
           return (
             <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
-              <div style={{ background: v.bg, border: `1px solid ${v.border}`, borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
+              <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
                 {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
-                <div style={{ fontSize: "30px", marginBottom: "8px" }}>{w.emoji}</div>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: done ? "#34D399" : v.color, marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
+                <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", marginBottom: "10px" }}>{w.emoji}</div>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
+                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
                   {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
                 </div>
               </div>
@@ -300,7 +300,7 @@ function WorldsContent() {
 
 export default function WorldsPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", fontSize: "12px" }}>Cargando...</p></div>}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", fontSize: "12px" }}>Cargando...</p></div>}>
       <WorldsContent />
     </Suspense>
   );

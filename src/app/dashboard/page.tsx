@@ -109,7 +109,7 @@ export default function DashboardPage() {
   const nextRankLabel = RANK_CONFIG[RANK_KEYS[RANK_KEYS.indexOf(rank) + 1]]?.label ?? "AI Titan";
 
   if (!isLoaded || loading) return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <div style={{ width: "40px", height: "40px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "12px", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -126,11 +126,11 @@ export default function DashboardPage() {
   const heroVisual = heroWorld ? getWorldVisual(heroWorld.order) : getWorldVisual(0);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
       <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.wcard:active{transform:scale(0.97)}`}</style>
 
       {/* HEADER */}
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(123,97,255,0.4)" }}>
             <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                   </div>
                 )}
               </div>
-              <div style={{ width: "34px", height: "34px", background: heroVisual.grad, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", color: "#0D111A", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}>→</div>
+              <div style={{ width: "34px", height: "34px", background: heroVisual.grad, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", color: "#0F1420", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}>→</div>
             </div>
           </Link>
         )}
@@ -327,7 +327,7 @@ export default function DashboardPage() {
       </div>
 
       {/* NAVBAR */}
-      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
+      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
         <Link href="/dashboard" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
           <div style={{ width: "42px", height: "42px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(123,97,255,0.5)" }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" fill="rgba(255,255,255,0.2)" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M13 9L11 12H13L10.5 15.5" stroke="#F5FF4D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>

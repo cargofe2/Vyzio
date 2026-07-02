@@ -105,7 +105,7 @@ export default function LessonPage() {
   }
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <div style={{ width: "36px", height: "36px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "11px", margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
@@ -116,7 +116,7 @@ export default function LessonPage() {
   );
 
   if (!lesson) return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <p style={{ fontSize: "36px", marginBottom: "10px" }}>😕</p>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}>Lección no encontrada</p>
@@ -128,7 +128,7 @@ export default function LessonPage() {
   // Diagnostic result
   if (phase === "diagnostic-result") {
     return (
-      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column", padding: "24px" }}>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <div style={{ width: "64px", height: "64px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", marginBottom: "16px" }}>🎯</div>
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>Tu perfil de aprendizaje</h2>
@@ -169,7 +169,7 @@ export default function LessonPage() {
   // Done
   if (phase === "done") {
     return (
-      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
         <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎉</div>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>¡Lección completada!</h2>
         <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
@@ -197,7 +197,7 @@ export default function LessonPage() {
     const isDiag = IS_DIAGNOSTIC(id);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
           {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
@@ -240,7 +240,7 @@ export default function LessonPage() {
 
         {(isDiag ? selected !== null : answered) && (
           <div style={{ padding: "16px", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
-            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#0D111A", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#0F1420", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
               {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
           </div>
@@ -254,7 +254,7 @@ export default function LessonPage() {
   const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "100px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "100px" }}>
       <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
@@ -304,7 +304,7 @@ export default function LessonPage() {
         })}
       </div>
 
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
             <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>✅ Lección completada</p>

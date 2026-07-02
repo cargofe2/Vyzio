@@ -35,11 +35,11 @@ export default function VYPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column" }}>
       <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}`}</style>
 
       {/* Header */}
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
         <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
         <div style={{ width: "36px", height: "36px", background: "rgba(0,255,179,0.1)", border: "1px solid rgba(0,255,179,0.25)", borderRadius: "11px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -97,7 +97,7 @@ export default function VYPage() {
       </div>
 
       {/* Input */}
-      <div style={{ padding: "10px 16px 14px", background: "rgba(13,17,26,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", gap: "8px" }}>
+      <div style={{ padding: "10px 16px 14px", background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", gap: "8px" }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
           placeholder="Pregúntale algo a ZAI..." disabled={used >= 10}
           style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />

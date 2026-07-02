@@ -7,7 +7,7 @@ export default async function HomePage() {
   if (userId) redirect("/dashboard");
 
   return (
-    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0D111A" }}>
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0F1420" }}>
       {/* Hero */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "48px 24px", textAlign: "center" }}>
 

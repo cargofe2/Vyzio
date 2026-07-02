@@ -23,7 +23,7 @@ function NavBar() {
     { href: "/profile", label: "Perfil", color: "#F472B6", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round" strokeOpacity="0.5"/><circle cx="12" cy="9.5" r="2.5" stroke="#F472B6" strokeWidth="1.5" strokeOpacity="0.5"/><path d="M7.5 17C7.5 14.5 9.5 12.5 12 12.5C14.5 12.5 16.5 14.5 16.5 17" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, color, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -53,17 +53,17 @@ export default function ProfilePage() {
     if (isLoaded && user) load();
   }, [isLoaded, user]);
 
-  if (!isLoaded) return <div style={{ minHeight: "100vh", background: "#0D111A", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: "28px" }}>⚡</span></div>;
+  if (!isLoaded) return <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: "28px" }}>⚡</span></div>;
 
   const rank = gamification?.rank ?? "NOVICE";
   const rankCfg = RANK_CONFIG[rank] ?? RANK_CONFIG.NOVICE;
   const xp = gamification?.xpTotal ?? 0;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* Header */}
-      <div style={{ background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "16px" }}>
+      <div style={{ background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
           <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0 }}>🧑‍💻</div>
           <div style={{ flex: 1 }}>

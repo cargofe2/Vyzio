@@ -10,10 +10,10 @@ export default function CommunityPage() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0D111A", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* Header */}
-      <div style={{ background: "rgba(13,17,26,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
+      <div style={{ background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px", marginBottom: "2px" }}>Liga VYZIO 🏆</h1>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>Ranking · Proyectos · Equipos</p>
       </div>
@@ -31,7 +31,7 @@ export default function CommunityPage() {
       </div>
 
       {/* Navbar */}
-      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(13,17,26,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
+      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", padding: "6px 0" }}>
         {items.map(({ href, label, color }) => {
           const isActive = href === "/community";
           return (
