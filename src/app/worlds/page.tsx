@@ -219,7 +219,7 @@ function WorldsContent() {
             <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
             <div>
               <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px" }}>{selectedWorld?.name ?? "Mundo"}</p>
-              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
             </div>
           </div>
           <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
@@ -256,15 +256,15 @@ function WorldsContent() {
                     {done ? "✓" : typeCfg.icon}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: "13px", fontWeight: 600, color: done ? "#34D399" : "#fff", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
+                    <p style={{ fontSize: "15px", fontWeight: 600, color: done ? "#34D399" : "#fff", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: typeCfg.bg, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label}</span>
-                      <span style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif" }}>{lesson.durationMin} min</span>
+                      <span style={{ fontSize: "11px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: typeCfg.bg, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label}</span>
+                      <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{lesson.durationMin} min</span>
                     </div>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <p style={{ fontSize: "11px", fontWeight: 800, color: done ? "rgba(255,255,255,0.2)" : "#FB923C", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
-                    <p style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif" }}>{done ? "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
+                    <p style={{ fontSize: "13px", fontWeight: 800, color: done ? "rgba(255,255,255,0.3)" : "#FB923C", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
+                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{done ? "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
                   </div>
                 </div>
               </Link>
