@@ -12,6 +12,18 @@ function renderMsg(content: string) {
     .replace(/`(.*?)`/g, "<code style='background:rgba(123,97,255,0.15);padding:1px 5px;border-radius:4px;font-size:11px;color:#A78BFA'>$1</code>");
 }
 
+function ZaiOrb({ size = 36 }: { size?: number }) {
+  return (
+    <div style={{ position: "relative", width: `${size}px`, height: `${size}px`, flexShrink: 0 }}>
+      <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
+      <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <svg width={size * 0.45} height={size * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+      </div>
+    </div>
+  );
+}
+
 export default function VYPage() {
   const { user } = useUser();
   const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en BYZAI. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
@@ -36,17 +48,12 @@ export default function VYPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column" }}>
-      <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}}`}</style>
+      <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}} @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
 
       {/* Header */}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
         <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-        <div style={{ width: "36px", height: "36px", background: "rgba(38,198,218,0.1)", border: "1px solid rgba(38,198,218,0.25)", borderRadius: "11px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="18" height="18" rx="4" fill="rgba(38,198,218,0.1)" stroke="#26C6DA" strokeWidth="1.8"/>
-            <path d="M8 8L12 16L16 8" stroke="#26C6DA" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <ZaiOrb size={36} />
         <div style={{ flex: 1 }}>
           <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px" }}>ZAI</p>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
@@ -62,9 +69,7 @@ export default function VYPage() {
         {msgs.map((m, i) => (
           <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start", alignItems: "flex-end", gap: "8px" }}>
             {m.role === "assistant" && (
-              <div style={{ width: "26px", height: "26px", borderRadius: "8px", background: "rgba(38,198,218,0.1)", border: "1px solid rgba(38,198,218,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#26C6DA" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#26C6DA" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
+              <ZaiOrb size={26} />
             )}
             <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(123,97,255,0.08)", border: m.role === "assistant" ? "1px solid rgba(123,97,255,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
               dangerouslySetInnerHTML={{ __html: renderMsg(m.content) }} />
@@ -72,9 +77,7 @@ export default function VYPage() {
         ))}
         {loading && (
           <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
-            <div style={{ width: "26px", height: "26px", borderRadius: "8px", background: "rgba(38,198,218,0.1)", border: "1px solid rgba(38,198,218,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#26C6DA" strokeWidth="2"/><path d="M8 8L12 16L16 8" stroke="#26C6DA" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </div>
+            <ZaiOrb size={26} />
             <div style={{ padding: "10px 16px", borderRadius: "18px 18px 18px 4px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.12)", display: "flex", gap: "4px" }}>
               {[0,1,2].map(i => <div key={i} style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#818CF8", animation: `bounce 1s ${i*0.2}s infinite` }} />)}
             </div>
