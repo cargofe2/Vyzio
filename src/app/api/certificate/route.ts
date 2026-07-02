@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       }, { status: 403 });
     }
 
-    const certificate = await prisma.certificate.upsert({
+    const certificate = await prisma.levelCertificate.upsert({
       where: { userId_levelId: { userId: user.id, levelId } },
       create: { userId: user.id, levelId, levelName: LEVEL_NAMES[levelId], studentName: user.displayName },
       update: {},
