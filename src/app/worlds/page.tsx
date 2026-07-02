@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, ReactElement } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -82,7 +82,7 @@ const LEVEL_PALETTES: Record<string, { color: string; bg: string; border: string
     { color: "#EA580C", bg: "rgba(234,88,12,0.1)", border: "rgba(234,88,12,0.2)", grad: "linear-gradient(90deg,#EA580C,#C2410C)" },
   ],
 };
-const WORLD_ICONS: Record<string, JSX.Element> = {
+const WORLD_ICONS: Record<string, ReactElement> = {
   "🎯": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8" strokeWidth="1.6"/><circle cx="12" cy="12" r="4.5" strokeWidth="1.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>,
   "🧠": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 4.5C7 4.5 5.5 6 5.5 8c-1.2.4-2 1.6-2 3s.8 2.6 2 3c0 2 1.5 3.5 3.5 3.5M9 4.5c1.2 0 2.2.6 2.8 1.5M9 4.5v13M15 4.5C17 4.5 18.5 6 18.5 8c1.2.4 2 1.6 2 3s-.8 2.6-2 3c0 2-1.5 3.5-3.5 3.5M15 4.5c-1.2 0-2.2.6-2.8 1.5M15 4.5v13" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>,
   "📚": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5c-.8 0-1.5-.7-1.5-1.5v-13Z" strokeWidth="1.6" strokeLinejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5v-13Z" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
