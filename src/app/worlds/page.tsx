@@ -166,11 +166,11 @@ function WorldsContent() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
   const [loading, setLoading] = useState(true);
-  const [xp, setXp] = useState(0);
+  const [plan, setPlan] = useState("STARTER");
 
   useEffect(() => {
-    fetch("/api/gamification").then(r => r.ok ? r.json() : null).then(d => {
-      if (d?.gamification?.xpTotal !== undefined) setXp(d.gamification.xpTotal);
+    fetch("/api/user").then(r => r.ok ? r.json() : null).then(d => {
+      if (d?.user?.subscription?.plan) setPlan(d.user.subscription.plan);
     }).catch(() => {});
   }, []);
 
@@ -291,12 +291,12 @@ function WorldsContent() {
 
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
         {[
-          { id: "level-1", label: "Nivel 0 · Origins", xpRequired: 0 },
-          { id: "level-new-1", label: "Nivel 1 · Explorer", xpRequired: 2000 },
-          { id: "level-new-2", label: "Nivel 2 · Thinker", xpRequired: 8000 },
-          { id: "level-new-3", label: "Nivel 3 · Creator", xpRequired: 16000 },
+          { id: "level-1", label: "Nivel 0 · Origins", free: true },
+          { id: "level-new-1", label: "Nivel 1 · Explorer", free: false },
+          { id: "level-new-2", label: "Nivel 2 · Thinker", free: false },
+          { id: "level-new-3", label: "Nivel 3 · Creator", free: false },
         ].map(lvl => {
-          const locked = xp < lvl.xpRequired;
+          const locked = !lvl.free && plan === "STARTER";
           const active = lvl.id === levelId;
           const content = (
             <div style={{
@@ -305,10 +305,10 @@ function WorldsContent() {
               border: locked ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(123,97,255,0.25)",
               color: locked ? "rgba(255,255,255,0.35)" : "#fff", fontSize: "11px", fontWeight: 600,
               fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-            }}>{locked && "🔒 "}{lvl.label}{locked && ` · ${lvl.xpRequired} XP`}</div>
+            }}>{locked && "🔒 "}{lvl.label}{locked && " · Pro"}</div>
           );
           return locked
-            ? <div key={lvl.id} title={`Necesitas ${lvl.xpRequired} XP`}>{content}</div>
+            ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
             : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
         })}
       </div>
