@@ -122,8 +122,7 @@ export default function DashboardPage() {
     </div>
   );
 
-  const heroWorld = worlds[0];
-  const heroVisual = heroWorld ? getWorldVisual(heroWorld.order) : getWorldVisual(0);
+
 
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
@@ -181,29 +180,6 @@ export default function DashboardPage() {
 
       {/* CONTENT */}
       <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
-
-        {/* CTA con icono SVG del mundo */}
-        {heroWorld && (
-          <Link href={`/worlds?id=${heroWorld.id}`} style={{ textDecoration: "none" }}>
-            <div className="wcard" style={{ background: heroVisual.bg, border: `1px solid ${heroVisual.border}`, borderRadius: "18px", padding: "14px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: heroVisual.grad }} />
-              <div style={{ width: "48px", height: "48px", background: heroVisual.bg, border: `1px solid ${heroVisual.border}`, borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <heroVisual.Icon />
-              </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif", margin: "0 0 2px" }}>Continuar donde lo dejaste</p>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: heroVisual.color, fontSize: "15px", marginBottom: "2px" }}>{heroWorld.name}</p>
-                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{heroWorld.lessonCount} lecciones · Nivel 0</p>
-                {(heroWorld.pctComplete ?? 0) > 0 && (
-                  <div style={{ marginTop: "6px", height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-                    <div style={{ height: "100%", width: `${heroWorld.pctComplete * 100}%`, background: heroVisual.color, borderRadius: "2px" }} />
-                  </div>
-                )}
-              </div>
-              <div style={{ width: "34px", height: "34px", background: heroVisual.grad, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", color: "#0F1420", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}>→</div>
-            </div>
-          </Link>
-        )}
 
         {/* SELECTOR DE NIVEL */}
         <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px", marginBottom: "4px" }}>
