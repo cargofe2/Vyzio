@@ -43,6 +43,29 @@ export default function ProfilePage() {
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [certMsg, setCertMsg] = useState<Record<string, string>>({});
+  const [certLoading, setCertLoading] = useState<string | null>(null);
+
+  const LEVELS = [
+    { id: "level-1", label: "AI Foundations" },
+    { id: "level-new-1", label: "AI Explorer" },
+    { id: "level-new-2", label: "AI Thinker" },
+    { id: "level-new-3", label: "AI Creator" },
+  ];
+
+  async function claimCertificate(levelId: string) {
+    setCertLoading(levelId);
+    try {
+      const res = await fetch("/api/certificate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ levelId }) });
+      const data = await res.json();
+      if (res.ok) {
+        setCertMsg(m => ({ ...m, [levelId]: `✓ Ver: /verify/${data.certificate.verificationCode}` }));
+      } else {
+        setCertMsg(m => ({ ...m, [levelId]: `Faltan ${data.total - data.completed} lecciones` }));
+      }
+    } catch { setCertMsg(m => ({ ...m, [levelId]: "Error, intenta de nuevo" })); }
+    finally { setCertLoading(null); }
+  }
 
   useEffect(() => {
     async function load() {
@@ -105,6 +128,25 @@ export default function ProfilePage() {
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Ganas gemas con quizzes perfectos</p>
           </div>
         </div>
+
+        {/* Certificados */}
+        <section style={{ marginBottom: "20px" }}>
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Certificados</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {LEVELS.map(lvl => (
+              <div key={lvl.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label}</p>
+                {certMsg[lvl.id] ? (
+                  <p style={{ fontSize: "10px", color: certMsg[lvl.id].startsWith("✓") ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>{certMsg[lvl.id]}</p>
+                ) : (
+                  <button onClick={() => claimCertificate(lvl.id)} disabled={certLoading === lvl.id} style={{ padding: "6px 12px", borderRadius: "10px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", color: "#C7D2FE", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                    {certLoading === lvl.id ? "..." : "Reclamar"}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Logros */}
         <section>

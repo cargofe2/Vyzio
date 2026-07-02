@@ -183,6 +183,7 @@ model User {
   achievements    UserAchievement[]
   missionProgress MissionProgress[]
   certificates    Certificate[]
+  certificates    Certificate[]
   portfolioItems  PortfolioItem[]
   vyMessages      VyMessage[]
   teamMemberships TeamMember[]
@@ -491,4 +492,19 @@ model Subscription {
   updatedAt DateTime @updatedAt
 
   @@map("subscriptions")
+}
+
+model Certificate {
+  id               String   @id @default(cuid())
+  verificationCode String   @unique @default(cuid())
+  levelId          String
+  levelName        String
+  studentName      String
+  issuedAt         DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, levelId])
+  @@map("certificates")
 }
