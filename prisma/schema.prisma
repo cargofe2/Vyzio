@@ -249,6 +249,9 @@ model LessonProgress {
   attempts     Int       @default(0)
   timeSpentSec Int       @default(0)
   videoWatchPct Float    @default(0)
+  submission   String?
+  battlePassed Boolean?
+  battleFeedback String?
 
   userId   String
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
