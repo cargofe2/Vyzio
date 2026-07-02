@@ -82,6 +82,40 @@ const LEVEL_PALETTES: Record<string, { color: string; bg: string; border: string
     { color: "#EA580C", bg: "rgba(234,88,12,0.1)", border: "rgba(234,88,12,0.2)", grad: "linear-gradient(90deg,#EA580C,#C2410C)" },
   ],
 };
+const WORLD_ICONS: Record<string, JSX.Element> = {
+  "🎯": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8" strokeWidth="1.6"/><circle cx="12" cy="12" r="4.5" strokeWidth="1.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>,
+  "🧠": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 4.5C7 4.5 5.5 6 5.5 8c-1.2.4-2 1.6-2 3s.8 2.6 2 3c0 2 1.5 3.5 3.5 3.5M9 4.5c1.2 0 2.2.6 2.8 1.5M9 4.5v13M15 4.5C17 4.5 18.5 6 18.5 8c1.2.4 2 1.6 2 3s-.8 2.6-2 3c0 2-1.5 3.5-3.5 3.5M15 4.5c-1.2 0-2.2.6-2.8 1.5M15 4.5v13" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "📚": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5c-.8 0-1.5-.7-1.5-1.5v-13Z" strokeWidth="1.6" strokeLinejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5c.8 0 1.5-.7 1.5-1.5v-13Z" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
+  "✍️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20l1-4.2L15.5 5.3a1.5 1.5 0 0 1 2.1 0l1.1 1.1a1.5 1.5 0 0 1 0 2.1L8.2 19 4 20Z" strokeWidth="1.6" strokeLinejoin="round"/><path d="M13.5 7L17 10.5" strokeWidth="1.4"/></svg>,
+  "🔍": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="10.5" cy="10.5" r="6.5" strokeWidth="1.6"/><path d="M19.5 19.5L15 15" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  "🎨": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3C7 3 3 7 3 12s4 9 8.5 9c1 0 1.5-.6 1.5-1.3 0-.4-.15-.7-.4-1-.25-.3-.4-.6-.4-1 0-.7.6-1.3 1.3-1.3H15c3.3 0 6-2.7 6-6C21 6.6 17 3 12 3Z" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg>,
+  "🎵": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" strokeWidth="1.6"/><path d="M17 16a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" strokeWidth="1.6"/><path d="M11.5 13V5.5L19.5 4v8.5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "⚡": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 3L5 13h5l-1 8 8-10h-5l1-8Z" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
+  "🚀": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.5c3 1.5 5 5 5 8.5 0 2-.7 3.8-1.8 5.2L12 19l-3.2-2.8C7.7 14.8 7 13 7 11c0-3.5 2-7 5-8.5Z" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="12" cy="10.5" r="1.6" strokeWidth="1.4"/><path d="M8.5 16.5L6 21l3.5-1.5M15.5 16.5L18 21l-3.5-1.5" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "🏆": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" strokeWidth="1.6" strokeLinejoin="round"/><path d="M7 5.5H4.5A1.5 1.5 0 0 0 3 7v.5A3.5 3.5 0 0 0 6.5 11H7M17 5.5h2.5A1.5 1.5 0 0 1 21 7v.5A3.5 3.5 0 0 1 17.5 11H17" strokeWidth="1.4" strokeLinecap="round"/><path d="M12 14v3M9 20h6M9.5 20c0-1.7.5-2.6 1-3h3c.5.4 1 1.3 1 3" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "🔬": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 3v6.5L6 17a2.5 2.5 0 0 0 2.2 3.7h7.6A2.5 2.5 0 0 0 18 17l-4-7.5V3" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8.5 3h5M7.5 15h9" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+  "🧭": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.6"/><path d="M15 9l-2 6-4 2 2-6 4-2Z" strokeWidth="1.4" strokeLinejoin="round"/></svg>,
+  "🧩": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 4h4a1.5 1.5 0 0 1 1.5 2.6 1.5 1.5 0 0 0 1.5 2.6H20v4h-2.2a1.5 1.5 0 0 0-1.3 2.4 1.5 1.5 0 0 1-1.2 2.4H12v-2.2a1.5 1.5 0 0 0-2.4-1.3A1.5 1.5 0 0 1 7.2 13H4V9h2.2A1.5 1.5 0 0 0 7.5 6.6 1.5 1.5 0 0 1 9 4Z" strokeWidth="1.4" strokeLinejoin="round"/></svg>,
+  "🕸️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="6" cy="6" r="2" strokeWidth="1.4"/><circle cx="18" cy="6" r="2" strokeWidth="1.4"/><circle cx="6" cy="18" r="2" strokeWidth="1.4"/><circle cx="18" cy="18" r="2" strokeWidth="1.4"/><circle cx="12" cy="12" r="2" strokeWidth="1.4"/><path d="M7.5 7.5L10.5 10.5M16.5 7.5L13.5 10.5M7.5 16.5L10.5 13.5M16.5 16.5L13.5 13.5" strokeWidth="1.2"/></svg>,
+  "🎲": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="3" strokeWidth="1.6"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor" stroke="none"/></svg>,
+  "🪞": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="10" rx="6.5" ry="7.5" strokeWidth="1.6"/><path d="M9 20.5h6M12 17.5v3" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+  "📊": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 20V10M12 20V4M19 20v-7" strokeWidth="1.8" strokeLinecap="round"/><path d="M3 20h18" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+  "⚖️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v17M8 20h8" strokeWidth="1.6" strokeLinecap="round"/><path d="M12 6L5 8.5l3.5 6L12 6ZM12 6l7 2.5-3.5 6L12 6Z" strokeWidth="1.3" strokeLinejoin="round"/></svg>,
+  "💡": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18h6M10 21h4M8 14a5 5 0 1 1 8 0c-.8 1-1.3 1.6-1.3 3H9.3c0-1.4-.5-2-1.3-3Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "🗣️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v6a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 12.5v-6Z" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8 8.5h8M8 11.5h5" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+  "🛠️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a3.5 3.5 0 0 0-4.6 4.2L4 16.6V20h3.4l6.1-6.1a3.5 3.5 0 0 0 4.2-4.6l-2.3 2.3-2-2 2.3-2.3Z" strokeWidth="1.4" strokeLinejoin="round"/></svg>,
+  "✅": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.6"/><path d="M8.5 12.5l2.3 2.3 4.7-5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "💻": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3.5" y="5" width="17" height="11" rx="1.5" strokeWidth="1.5"/><path d="M2 19.5h20M9.5 16v3.5M14.5 16v3.5" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+  "📣": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10v3.5a1 1 0 0 0 1 1h1l1.5 5H9l-1-5h1.5L18 17V6.5L10.5 9H6a1 1 0 0 0-1 1H4Z" strokeWidth="1.4" strokeLinejoin="round"/><path d="M18 8.5c1.2.6 2 1.9 2 3.5s-.8 2.9-2 3.5" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+  "🔄": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8.5" strokeWidth="1.6" strokeLinecap="round"/><path d="M20 4v4.5h-4.5" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 12a8 8 0 0 1-13.7 5.7L4 15.5" strokeWidth="1.6" strokeLinecap="round"/><path d="M4 20v-4.5h4.5" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  "🌍": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.6"/><path d="M3.5 12h17M12 3.5c2.5 2.3 4 5.3 4 8.5s-1.5 6.2-4 8.5c-2.5-2.3-4-5.3-4-8.5s1.5-6.2 4-8.5Z" strokeWidth="1.3"/></svg>,
+};
+function renderWorldIcon(emoji: string, size = 20) {
+  const icon = WORLD_ICONS[emoji];
+  if (icon) return icon;
+  return <span style={{ fontSize: `${size}px` }}>{emoji}</span>;
+}
+
 function getV(order: number, levelIdForColor?: string) {
   const palette = LEVEL_PALETTES[levelIdForColor || "level-1"] ?? LEVEL_PALETTES["level-1"];
   if (order === 0) return palette[0];
@@ -176,7 +210,7 @@ function WorldsContent() {
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
             <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-            <span style={{ fontSize: "24px" }}>{selectedWorld?.emoji ?? "🌍"}</span>
+            <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
             <div>
               <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px" }}>{selectedWorld?.name ?? "Mundo"}</p>
               <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
@@ -195,7 +229,7 @@ function WorldsContent() {
               return (
                 <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none", flexShrink: 0 }}>
                   <div style={{ padding: "5px 12px", borderRadius: "20px", border: isActive ? `1px solid ${wv.color}50` : "1px solid rgba(123,97,255,0.1)", background: isActive ? wv.bg : "rgba(123,97,255,0.04)", color: isActive ? wv.color : "rgba(255,255,255,0.25)", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "4px" }}>
-                    <span>{w.emoji}</span><span>{w.name}</span>
+                    <span style={{ display: "flex" }}>{renderWorldIcon(w.emoji, 16)}</span><span>{w.name}</span>
                     {Math.round((w.pctComplete ?? 0) * 100) >= 100 && <span style={{ color: "#34D399" }}>✓</span>}
                   </div>
                 </Link>
@@ -283,7 +317,7 @@ function WorldsContent() {
               <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
                 {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
-                <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", marginBottom: "10px" }}>{w.emoji}</div>
+                <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "10px" }}>{renderWorldIcon(w.emoji, 20)}</div>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
