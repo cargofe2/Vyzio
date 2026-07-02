@@ -20,7 +20,7 @@ const IS_DIAGNOSTIC = (id: string) => id === "lesson-0-1";
 
 const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   VIDEO: { label: "Video", color: "#F87171" }, READING: { label: "Lectura", color: "#7DD3FC" },
-  QUIZ: { label: "Quiz", color: "#FBBF24" }, PROJECT: { label: "Proyecto", color: "#A78BFA" },
+  QUIZ: { label: "Quiz", color: "#FB923C" }, PROJECT: { label: "Proyecto", color: "#A78BFA" },
   EVALUATION: { label: "Evaluación", color: "#F472B6" }, PRACTICE: { label: "Práctica", color: "#34D399" },
 };
 
@@ -174,8 +174,8 @@ export default function LessonPage() {
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>¡Lección completada!</h2>
         <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
         {xpEarned > 0 && (
-          <div style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: "14px", padding: "12px 28px", marginBottom: "24px" }}>
-            <p style={{ color: "#FBBF24", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", textAlign: "center" }}>+{xpEarned} XP</p>
+          <div style={{ background: "rgba(251,146,60,0.1)", border: "1px solid rgba(251,146,60,0.25)", borderRadius: "14px", padding: "12px 28px", marginBottom: "24px" }}>
+            <p style={{ color: "#FB923C", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", textAlign: "center" }}>+{xpEarned} XP</p>
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
@@ -202,10 +202,10 @@ export default function LessonPage() {
           {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", fontFamily: "'DM Sans',sans-serif" }}>Pregunta {currentQ + 1} de {total}</p>
-            {!isDiag && <p style={{ color: "#FBBF24", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
+            {!isDiag && <p style={{ color: "#FB923C", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
           </div>
           <div style={{ height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#7B61FF,#A78BFA)" : "linear-gradient(90deg,#FBBF24,#F59E0B)", borderRadius: "2px", transition: "width 0.3s" }} />
+            <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#7B61FF,#A78BFA)" : "linear-gradient(90deg,#FB923C,#EA580C)", borderRadius: "2px", transition: "width 0.3s" }} />
           </div>
         </div>
 
@@ -240,7 +240,7 @@ export default function LessonPage() {
 
         {(isDiag ? selected !== null : answered) && (
           <div style={{ padding: "16px", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
-            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FBBF24,#F59E0B)", color: isDiag ? "#fff" : "#0F1420", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+            <button onClick={nextQuestion} style={{ width: "100%", padding: "14px", background: isDiag ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "linear-gradient(135deg,#FB923C,#EA580C)", color: isDiag ? "#fff" : "#0F1420", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
               {currentQ < total - 1 ? "Siguiente →" : isDiag ? "Ver mi perfil →" : "Ver resultados →"}
             </button>
           </div>
@@ -265,7 +265,7 @@ export default function LessonPage() {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
           <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label} · {lesson.durationMin} min</span>
-          <span style={{ fontSize: "10px", color: "#FBBF24", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
+          <span style={{ fontSize: "10px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
           <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
@@ -295,8 +295,8 @@ export default function LessonPage() {
             </div>
           );
           if (block.type === "tip") return (
-            <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.18)", marginBottom: "16px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#FBBF24", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
+            <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
               <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
             </div>
           );

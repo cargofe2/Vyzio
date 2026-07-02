@@ -9,16 +9,16 @@ interface Lesson { id: string; number: number; title: string; type: string; dura
 const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
   VIDEO: { label: "Video", color: "#F87171", bg: "rgba(248,113,113,0.1)", icon: "▶" },
   READING: { label: "Lectura", color: "#7DD3FC", bg: "rgba(125,211,252,0.1)", icon: "📖" },
-  QUIZ: { label: "Quiz", color: "#FBBF24", bg: "rgba(251,191,36,0.1)", icon: "🎯" },
+  QUIZ: { label: "Quiz", color: "#FB923C", bg: "rgba(251,146,60,0.1)", icon: "🎯" },
   PROJECT: { label: "Proyecto", color: "#A78BFA", bg: "rgba(167,139,250,0.1)", icon: "🚀" },
   EVALUATION: { label: "Eval", color: "#F472B6", bg: "rgba(244,114,182,0.1)", icon: "📊" },
   PRACTICE: { label: "Práctica", color: "#34D399", bg: "rgba(52,211,153,0.1)", icon: "💪" },
 };
 
 const WV: Record<number, { color: string; bg: string; border: string; grad: string; path: string }> = {
-  0: { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)", path: "M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" },
+  0: { color: "#26C6DA", bg: "rgba(38,198,218,0.1)", border: "rgba(38,198,218,0.2)", grad: "linear-gradient(90deg,#26C6DA,#FB923C)", path: "M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" },
   1: { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)", path: "" },
-  2: { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)", path: "" },
+  2: { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)", path: "" },
   3: { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)", path: "" },
   4: { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)", path: "" },
   5: { color: "#F472B6", bg: "rgba(244,114,182,0.1)", border: "rgba(244,114,182,0.18)", grad: "linear-gradient(90deg,#F472B6,#EC4899)", path: "" },
@@ -30,9 +30,9 @@ const WV: Record<number, { color: string; bg: string; border: string; grad: stri
 };
 const LEVEL_PALETTES: Record<string, { color: string; bg: string; border: string; grad: string }[]> = {
   "level-1": [
-    { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)" },
+    { color: "#26C6DA", bg: "rgba(38,198,218,0.1)", border: "rgba(38,198,218,0.2)", grad: "linear-gradient(90deg,#26C6DA,#FB923C)" },
     { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)" },
-    { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)" },
+    { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)" },
     { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)" },
     { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)" },
     { color: "#F472B6", bg: "rgba(244,114,182,0.1)", border: "rgba(244,114,182,0.18)", grad: "linear-gradient(90deg,#F472B6,#EC4899)" },
@@ -74,11 +74,11 @@ const LEVEL_PALETTES: Record<string, { color: string; bg: string; border: string
     { color: "#34D399", bg: "rgba(52,211,153,0.1)", border: "rgba(52,211,153,0.2)", grad: "linear-gradient(90deg,#34D399,#10B981)" },
     { color: "#FDBA74", bg: "rgba(253,186,116,0.1)", border: "rgba(253,186,116,0.2)", grad: "linear-gradient(90deg,#FDBA74,#FB923C)" },
     { color: "#22C55E", bg: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.2)", grad: "linear-gradient(90deg,#22C55E,#16A34A)" },
-    { color: "#FACC15", bg: "rgba(250,204,21,0.1)", border: "rgba(250,204,21,0.2)", grad: "linear-gradient(90deg,#FACC15,#EAB308)" },
+    { color: "#22D3EE", bg: "rgba(34,211,238,0.1)", border: "rgba(34,211,238,0.2)", grad: "linear-gradient(90deg,#22D3EE,#0E7490)" },
     { color: "#86EFAC", bg: "rgba(134,239,172,0.1)", border: "rgba(134,239,172,0.2)", grad: "linear-gradient(90deg,#86EFAC,#4ADE80)" },
     { color: "#F97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.2)", grad: "linear-gradient(90deg,#F97316,#EA580C)" },
     { color: "#16A34A", bg: "rgba(22,163,74,0.1)", border: "rgba(22,163,74,0.2)", grad: "linear-gradient(90deg,#16A34A,#15803D)" },
-    { color: "#FDE047", bg: "rgba(253,224,71,0.1)", border: "rgba(253,224,71,0.2)", grad: "linear-gradient(90deg,#FDE047,#FACC15)" },
+    { color: "#67E8F9", bg: "rgba(103,232,249,0.1)", border: "rgba(103,232,249,0.2)", grad: "linear-gradient(90deg,#67E8F9,#22D3EE)" },
     { color: "#EA580C", bg: "rgba(234,88,12,0.1)", border: "rgba(234,88,12,0.2)", grad: "linear-gradient(90deg,#EA580C,#C2410C)" },
   ],
 };
@@ -263,7 +263,7 @@ function WorldsContent() {
                     </div>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <p style={{ fontSize: "11px", fontWeight: 800, color: done ? "rgba(255,255,255,0.2)" : "#FBBF24", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
+                    <p style={{ fontSize: "11px", fontWeight: 800, color: done ? "rgba(255,255,255,0.2)" : "#FB923C", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
                     <p style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif" }}>{done ? "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
                   </div>
                 </div>

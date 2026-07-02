@@ -9,9 +9,9 @@ interface Achievement { achievement: { emoji: string; name: string; description:
 const RANK_CONFIG: Record<string, { color: string; label: string }> = {
   NOVICE: { color: "#94A3B8", label: "Novato" }, EXPLORER: { color: "#818CF8", label: "Explorer" },
   CREATOR: { color: "#34D399", label: "Creator" }, BUILDER: { color: "#38BDF8", label: "Builder" },
-  INNOVATOR: { color: "#FBBF24", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
+  INNOVATOR: { color: "#FB923C", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
   PIONEER: { color: "#FB923C", label: "Pioneer" }, MASTER: { color: "#C084FC", label: "Master" },
-  LEGEND: { color: "#F87171", label: "Legend" }, AI_TITAN: { color: "#FBBF24", label: "AI Titan" },
+  LEGEND: { color: "#F87171", label: "Legend" }, AI_TITAN: { color: "#FB923C", label: "AI Titan" },
 };
 
 function NavBar() {

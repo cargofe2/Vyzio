@@ -22,12 +22,12 @@ const RANK_CONFIG: Record<string, { color: string; label: string }> = {
   EXPLORER:  { color: "#818CF8", label: "Explorer"  },
   CREATOR:   { color: "#34D399", label: "Creator"   },
   BUILDER:   { color: "#38BDF8", label: "Builder"   },
-  INNOVATOR: { color: "#FBBF24", label: "Innovator" },
+  INNOVATOR: { color: "#FB923C", label: "Innovator" },
   VISIONARY: { color: "#F472B6", label: "Visionary" },
   PIONEER:   { color: "#FB923C", label: "Pioneer"   },
   MASTER:    { color: "#C084FC", label: "Master"    },
   LEGEND:    { color: "#F87171", label: "Legend"    },
-  AI_TITAN:  { color: "#FBBF24", label: "AI Titan"  },
+  AI_TITAN:  { color: "#FB923C", label: "AI Titan"  },
 };
 const RANK_NEXT_XP: Record<string, number> = {
   NOVICE: 500, EXPLORER: 2000, CREATOR: 6000, BUILDER: 15000,
@@ -43,12 +43,12 @@ const RANK_KEYS = Object.keys(RANK_NEXT_XP);
 
 // Iconos SVG únicos por mundo (estilo Gizmo) - mapeados por order
 const WORLD_VISUALS: Record<number, { color: string; bg: string; border: string; grad: string; Icon: () => ReactElement }> = {
-  0: { color: "#F5FF4D", bg: "rgba(245,255,77,0.1)", border: "rgba(245,255,77,0.2)", grad: "linear-gradient(90deg,#F5FF4D,#FBBF24)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" fill="#F5FF4D" fillOpacity="0.3" stroke="#F5FF4D" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="12" cy="12" r="2" fill="#F5FF4D"/></svg> },
+  0: { color: "#26C6DA", bg: "rgba(38,198,218,0.1)", border: "rgba(38,198,218,0.2)", grad: "linear-gradient(90deg,#26C6DA,#FB923C)",
+    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" fill="#26C6DA" fillOpacity="0.3" stroke="#26C6DA" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="12" cy="12" r="2" fill="#26C6DA"/></svg> },
   1: { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)",
     Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/><path d="M9 11V13M12 10V14M15 11V13" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-  2: { color: "#FBBF24", bg: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.18)", grad: "linear-gradient(90deg,#FBBF24,#F59E0B)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FBBF24" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FBBF24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 3.5L5 5.5M17 3.5L19 5.5" stroke="#FBBF24" strokeWidth="1.5" strokeLinecap="round"/></svg> },
+  2: { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)",
+    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FB923C" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FB923C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 3.5L5 5.5M17 3.5L19 5.5" stroke="#FB923C" strokeWidth="1.5" strokeLinecap="round"/></svg> },
   3: { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)",
     Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.7 2 6 4.7 6 8C6 10.4 7.4 12.5 9.5 13.5V16H14.5V13.5C16.6 12.5 18 10.4 18 8C18 4.7 15.3 2 12 2Z" stroke="#00D4FF" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9.5 19H14.5M10.5 22H13.5" stroke="#00D4FF" strokeWidth="1.8" strokeLinecap="round"/><path d="M10 8H14M12 6V10" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round"/></svg> },
   4: { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)",
@@ -293,14 +293,14 @@ export default function DashboardPage() {
                 const isD = m.type === "DAILY";
                 return (
                   <div key={m.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "10px 12px", display: "flex", alignItems: "center", gap: "10px" }}>
-                    <div style={{ width: "34px", height: "34px", flexShrink: 0, background: isD ? "rgba(251,191,36,0.1)" : "rgba(123,97,255,0.1)", border: `1px solid ${isD ? "rgba(251,191,36,0.2)" : "rgba(123,97,255,0.2)"}`, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>{isD ? "⚡" : "🎯"}</div>
+                    <div style={{ width: "34px", height: "34px", flexShrink: 0, background: isD ? "rgba(251,146,60,0.1)" : "rgba(123,97,255,0.1)", border: `1px solid ${isD ? "rgba(251,146,60,0.2)" : "rgba(123,97,255,0.2)"}`, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>{isD ? "⚡" : "🎯"}</div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
                         <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{m.name}</p>
-                        <span style={{ fontSize: "10px", fontWeight: 700, color: isD ? "#FBBF24" : "#818CF8", fontFamily: "'DM Sans',sans-serif" }}>+{m.xpReward} XP</span>
+                        <span style={{ fontSize: "10px", fontWeight: 700, color: isD ? "#FB923C" : "#818CF8", fontFamily: "'DM Sans',sans-serif" }}>+{m.xpReward} XP</span>
                       </div>
                       <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "2px" }}>
-                        <div style={{ height: "100%", width: `${prog}%`, background: isD ? "linear-gradient(90deg,#FBBF24,#34D399)" : "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
+                        <div style={{ height: "100%", width: `${prog}%`, background: isD ? "linear-gradient(90deg,#FB923C,#34D399)" : "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
                       </div>
                       <p style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", marginTop: "3px", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue}</p>
                     </div>
