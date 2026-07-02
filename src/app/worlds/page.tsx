@@ -314,7 +314,7 @@ function WorldsContent() {
       </div>
 
       <div style={{ padding: "14px 16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-        {(worlds.length > 0 ? worlds : [{ id: "w0", name: "Tu aventura comienza", emoji: "🚀", description: "", lessonCount: 1, pctComplete: 0, order: 0, slug: "" }]).map(w => {
+        {(worlds.length > 0 ? worlds : [{ id: "w0", name: "Comienza", emoji: "🚀", description: "", lessonCount: 1, pctComplete: 0, order: 0, slug: "" }]).map(w => {
           const pctW = Math.round((w.pctComplete ?? 0) * 100);
           const done = pctW >= 100;
           const v = getV(w.order, levelId);

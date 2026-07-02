@@ -214,7 +214,7 @@ export default function DashboardPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             {(worlds.length > 0 ? worlds : [
-              { id: "w0", name: "Tu aventura comienza", emoji: "🚀", lessonCount: 1, pctComplete: 0, order: 0 },
+              { id: "w0", name: "Comienza", emoji: "🚀", lessonCount: 1, pctComplete: 0, order: 0 },
               { id: "w1", name: "Fundamentos de IA", emoji: "🌍", lessonCount: 15, pctComplete: 0, order: 1 },
               { id: "w2", name: "Historia de la IA", emoji: "📜", lessonCount: 15, pctComplete: 0, order: 2 },
               { id: "w3", name: "IA en tu Vida", emoji: "🤖", lessonCount: 15, pctComplete: 0, order: 3 },
