@@ -99,6 +99,7 @@ export async function POST(req: NextRequest) {
         data: {
           xpTotal: newXP,
           xpWeekly: { increment: xpAwarded },
+          vyCoins: { increment: Math.round(xpAwarded / 10) },
           rank: newRank as any,
           lessonsCompleted: { increment: 1 },
           streakDays: newStreak,
@@ -121,7 +122,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({
-      success: true, alreadyCompleted, xpAwarded, newRank, rankChanged,
+      success: true, alreadyCompleted, xpAwarded, coinsAwarded: Math.round(xpAwarded / 10), newRank, rankChanged,
       worldProgress: { pctComplete: pct, completed: pct >= 1 },
     });
   } catch (error) {

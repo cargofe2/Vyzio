@@ -165,6 +165,7 @@ model User {
   age             Int?
   goal            String?
   identity        String?
+  unlockedAvatars String[] @default([])
 
   parentId String?
   parent   User?   @relation("ParentChild", fields: [parentId], references: [id])
