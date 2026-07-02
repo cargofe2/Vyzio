@@ -13,11 +13,12 @@ export default async function HomePage() {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "none" }}>
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
-              <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
-            </svg>
+          <div style={{ width: "48px", height: "48px", borderRadius: "50%", position: "relative", flexShrink: 0 }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9 }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="22" height="22" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+            </div>
           </div>
           <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", letterSpacing: "5px", color: "#F8FAFF" }}>BYZAI</span>
         </div>

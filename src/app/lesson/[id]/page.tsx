@@ -17,6 +17,7 @@ interface Lesson {
 }
 
 const IS_DIAGNOSTIC = (id: string) => id === "lesson-0-1";
+const IS_PROFILE_SETUP = (id: string) => id === "lesson-0-4";
 
 const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   VIDEO: { label: "Video", color: "#F87171" }, READING: { label: "Lectura", color: "#7DD3FC" },
@@ -37,11 +38,13 @@ export default function LessonPage() {
   const [answers, setAnswers] = useState<{question: string; answer: string}[]>([]);
   const [vyResponse, setVyResponse] = useState("");
   const [vyLoading, setVyLoading] = useState(false);
+  const [paywalled, setPaywalled] = useState(false);
 
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch(`/api/lessons/${id}`);
+        if (res.status === 402) { setPaywalled(true); setLoading(false); return; }
         if (res.ok) {
           const data = await res.json();
           setLesson(data.lesson);
@@ -59,6 +62,31 @@ export default function LessonPage() {
     else await completeLesson();
   }
 
+  const [profileName, setProfileName] = useState("");
+  const [profileEmoji, setProfileEmoji] = useState("🧑‍💻");
+  const [profileLang, setProfileLang] = useState("es");
+  const [profileAge, setProfileAge] = useState("");
+  const [profileGoal, setProfileGoal] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const AVATAR_OPTIONS = ["🧑‍💻", "🧑‍🎨", "🧑‍🚀", "🧑‍🔬", "🧑‍🎓", "🦾"];
+
+  async function saveProfileAndComplete() {
+    if (!profileName.trim() || !profileAge.trim()) return;
+    setProfileSaving(true);
+    try {
+      await fetch("/api/user", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          displayName: profileName.trim(), avatarEmoji: profileEmoji,
+          language: profileLang, age: parseInt(profileAge, 10) || null,
+          goal: profileGoal.trim() || null,
+        }),
+      });
+    } catch (err) { console.error(err); }
+    finally { setProfileSaving(false); }
+    await completeLesson();
+  }
+
   async function completeLesson(finalScore?: number) {
     if (!lesson) return;
     const res = await fetch("/api/progress", {
@@ -74,10 +102,17 @@ export default function LessonPage() {
     await fetch("/api/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lessonId: lesson.id, score: 100 }) });
     setVyLoading(true); setPhase("diagnostic-result");
     const answersText = finalAnswers.map((a, i) => `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`).join("\n\n");
-    const prompt = `Acabo de completar el diagnóstico inicial de BYZAI. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (Explorer, Creator, Developer o Entrepreneur)\n2. Por qué mundo específico de BYZAI debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nSé directo y motivador. Máximo 150 palabras.`;
+    const prompt = `Acabo de completar el diagnóstico inicial de BYZAI. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (responde con exactamente una palabra: Explorer, Thinker, Creator o Developer)\n2. Por qué mundo específico de BYZAI debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nEmpieza tu respuesta con la palabra exacta del perfil entre corchetes, ej: [Explorer]. Luego continúa el resto de tu respuesta normal. Sé directo y motivador. Máximo 150 palabras.`;
     try {
       const res = await fetch("/api/vy", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: prompt }) });
-      if (res.ok) { const data = await res.json(); setVyResponse(data.message ?? ""); }
+      if (res.ok) {
+        const data = await res.json();
+        const raw = data.message ?? "";
+        const match = raw.match(/\[(Explorer|Thinker|Creator|Developer)\]/i);
+        const identity = match ? match[1] : "Explorer";
+        setVyResponse(raw.replace(/^\[(Explorer|Thinker|Creator|Developer)\]\s*/i, ""));
+        await fetch("/api/user", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identity }) });
+      }
     } catch { setVyResponse("Basado en tus respuestas, te recomiendo empezar por el Mundo 1 — Fundamentos de IA."); }
     finally { setVyLoading(false); }
   }
@@ -107,10 +142,26 @@ export default function LessonPage() {
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ width: "36px", height: "36px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "11px", margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+        <div style={{ width: "36px", height: "36px", borderRadius: "50%", margin: "0 auto 10px", position: "relative" }}>
+          <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9 }} />
+          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="16" height="16" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+          </div>
         </div>
         <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando lección...</p>
+      </div>
+    </div>
+  );
+
+  if (paywalled) return (
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ textAlign: "center", maxWidth: "300px" }}>
+        <div style={{ width: "64px", height: "64px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.25)", borderRadius: "20px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", margin: "0 auto 16px" }}>🔒</div>
+        <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "18px", marginBottom: "8px" }}>Contenido Pro</h2>
+        <p style={{ fontSize: "13px", color: "#B3BDD1", marginBottom: "20px", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}>Esta lección es parte de los niveles Thinker y Creator, disponibles en el plan Pro.</p>
+        <Link href="/pricing" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ver planes Pro →</Link>
+        <Link href="/worlds" style={{ display: "block", padding: "12px", color: "#7E8798", fontSize: "13px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Volver a mundos</Link>
       </div>
     </div>
   );
@@ -273,35 +324,72 @@ export default function LessonPage() {
       </div>
 
       <div style={{ padding: "20px 16px" }}>
-        {blocks.length === 0 && (
-          <div style={{ textAlign: "center", padding: "40px 0" }}>
-            <p style={{ fontSize: "36px", marginBottom: "12px" }}>📖</p>
-            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Contenido próximamente</p>
+        {IS_PROFILE_SETUP(id) ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>ELIGE TU AVATAR</p>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {AVATAR_OPTIONS.map(e => (
+                  <button key={e} onClick={() => setProfileEmoji(e)} style={{ width: "44px", height: "44px", borderRadius: "12px", fontSize: "20px", background: profileEmoji === e ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === e ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer" }}>{e}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>NOMBRE VISIBLE</p>
+              <input value={profileName} onChange={e => setProfileName(e.target.value)} placeholder="¿Cómo te llamas?" style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }} />
+            </div>
+            <div style={{ display: "flex", gap: "12px" }}>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>EDAD</p>
+                <input type="number" min={8} max={99} value={profileAge} onChange={e => setProfileAge(e.target.value)} placeholder="16" style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>IDIOMA</p>
+                <select value={profileLang} onChange={e => setProfileLang(e.target.value)} style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }}>
+                  <option value="es">Español</option>
+                  <option value="en">English</option>
+                  <option value="pt">Português</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>¿QUÉ QUIERES LOGRAR?</p>
+              <textarea value={profileGoal} onChange={e => setProfileGoal(e.target.value)} placeholder="Ej: quiero construir mi primera app con IA" rows={3} style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif", resize: "none" }} />
+            </div>
           </div>
+        ) : (
+          <>
+            {blocks.length === 0 && (
+              <div style={{ textAlign: "center", padding: "40px 0" }}>
+                <p style={{ fontSize: "36px", marginBottom: "12px" }}>📖</p>
+                <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>Contenido próximamente</p>
+              </div>
+            )}
+            {blocks.map((block, i) => {
+              if (block.type === "text") return (
+                <p key={i} style={{ fontSize: "14px", lineHeight: 1.75, color: "rgba(255,255,255,0.8)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
+                  dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
+              );
+              if (block.type === "heading") return (
+                <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "17px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
+              );
+              if (block.type === "callout") return (
+                <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
+                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
+                  <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}
+                    dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
+                </div>
+              );
+              if (block.type === "tip") return (
+                <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
+                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
+                  <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
+                </div>
+              );
+              return null;
+            })}
+          </>
         )}
-        {blocks.map((block, i) => {
-          if (block.type === "text") return (
-            <p key={i} style={{ fontSize: "14px", lineHeight: 1.75, color: "rgba(255,255,255,0.8)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
-              dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
-          );
-          if (block.type === "heading") return (
-            <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "17px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
-          );
-          if (block.type === "callout") return (
-            <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
-              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}
-                dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
-            </div>
-          );
-          if (block.type === "tip") return (
-            <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
-              <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
-            </div>
-          );
-          return null;
-        })}
       </div>
 
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
@@ -313,8 +401,11 @@ export default function LessonPage() {
             </Link>
           </div>
         ) : (
-          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)" }}>
-            {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
+          <button
+            onClick={IS_PROFILE_SETUP(id) ? saveProfileAndComplete : completeReading}
+            disabled={IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim() || profileSaving)}
+            style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)", opacity: IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim()) ? 0.5 : 1 }}>
+            {IS_PROFILE_SETUP(id) ? (profileSaving ? "Guardando..." : "Guardar y continuar →") : (lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →")}
           </button>
         )}
       </div>
