@@ -48,11 +48,11 @@ export async function PATCH(req: Request) {
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { displayName, bio, avatarEmoji } = body;
+    const { displayName, bio, avatarEmoji, language, age, goal } = body;
 
     const user = await prisma.user.update({
       where: { clerkId },
-      data: { displayName, bio, avatarEmoji },
+      data: { displayName, bio, avatarEmoji, language, age, goal },
     });
 
     return NextResponse.json({ user });
