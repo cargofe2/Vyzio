@@ -154,7 +154,7 @@ export default function LessonPage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "360px" }}>
-            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.4)" }}>
+            <Link href="/worlds" style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.25)" }}>
               Ver mi ruta de aprendizaje →
             </Link>
             <Link href="/vy" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -179,7 +179,7 @@ export default function LessonPage() {
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.4)" }}>
+          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.25)" }}>
             Siguiente lección →
           </Link>
           <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
@@ -313,7 +313,7 @@ export default function LessonPage() {
             </Link>
           </div>
         ) : (
-          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.3)" }}>
+          <button onClick={completeReading} style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)" }}>
             {lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →"}
           </button>
         )}

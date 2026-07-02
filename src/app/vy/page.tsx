@@ -102,7 +102,7 @@ export default function VYPage() {
           placeholder="Pregúntale algo a ZAI..." disabled={used >= 10}
           style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
-          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: input.trim() ? "0 0 12px rgba(123,97,255,0.4)" : "none" }}>↑</button>
+          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "none" }}>↑</button>
       </div>
     </div>
   );

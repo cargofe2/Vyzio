@@ -42,7 +42,7 @@ export default function CommunityPage() {
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.6, maxWidth: "280px", margin: "0 auto 24px" }}>
           La comunidad se activa cuando publiques tu primer proyecto. Completa lecciones para desbloquearla.
         </p>
-        <Link href="/worlds" style={{ display: "inline-block", padding: "12px 24px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 700, fontSize: "13px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 16px rgba(123,97,255,0.4)" }}>
+        <Link href="/worlds" style={{ display: "inline-block", padding: "12px 24px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 700, fontSize: "13px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", boxShadow: "none" }}>
           Ir a aprender →
         </Link>
       </div>

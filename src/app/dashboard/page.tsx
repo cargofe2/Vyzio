@@ -132,7 +132,7 @@ export default function DashboardPage() {
       {/* HEADER */}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(123,97,255,0.4)" }}>
+          <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "none" }}>
             <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
@@ -324,7 +324,7 @@ export default function DashboardPage() {
             <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#fff", fontSize: "14px", marginBottom: "2px" }}>VY — Tu tutor de IA</p>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Pregúntame cualquier cosa sobre IA</p>
           </div>
-          <Link href="/vy" style={{ padding: "8px 14px", background: "linear-gradient(135deg,#00C896,#00A878)", color: "#fff", borderRadius: "11px", fontSize: "12px", fontWeight: 700, textDecoration: "none", flexShrink: 0, fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(0,255,179,0.3)" }}>Hablar</Link>
+          <Link href="/vy" style={{ padding: "8px 14px", background: "linear-gradient(135deg,#00C896,#00A878)", color: "#fff", borderRadius: "11px", fontSize: "12px", fontWeight: 700, textDecoration: "none", flexShrink: 0, fontFamily: "'DM Sans',sans-serif", boxShadow: "none" }}>Hablar</Link>
         </div>
 
       </div>

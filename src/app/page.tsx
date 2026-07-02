@@ -13,7 +13,7 @@ export default async function HomePage() {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "36px" }}>
-          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "0 0 24px rgba(123,97,255,0.5)" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", boxShadow: "none" }}>
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
               <path d="M4 16L10 4L16 16" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M6.5 11H13.5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round"/>
@@ -44,7 +44,7 @@ export default async function HomePage() {
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", boxShadow: "0 0 24px rgba(123,97,255,0.4)" }}>
+          <Link href="/sign-up" style={{ display: "block", width: "100%", padding: "16px", borderRadius: "16px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", boxShadow: "0 0 14px rgba(123,97,255,0.25)" }}>
             Empezar gratis →
           </Link>
           <Link href="/sign-in" style={{ display: "block", width: "100%", padding: "14px", borderRadius: "16px", textAlign: "center", fontFamily: "'DM Sans',sans-serif", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(123,97,255,0.2)", color: "rgba(255,255,255,0.5)" }}>
