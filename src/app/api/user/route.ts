@@ -50,6 +50,10 @@ export async function PATCH(req: Request) {
     const body = await req.json();
     const { displayName, bio, avatarEmoji, language, age, goal } = body;
 
+    if (age !== undefined && age !== null && age < 16) {
+      return NextResponse.json({ error: "BYZAI está disponible para mayores de 16 años por ahora." }, { status: 403 });
+    }
+
     const user = await prisma.user.update({
       where: { clerkId },
       data: { displayName, bio, avatarEmoji, language, age, goal },

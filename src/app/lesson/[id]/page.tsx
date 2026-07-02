@@ -69,9 +69,41 @@ export default function LessonPage() {
   const [profileGoal, setProfileGoal] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
   const AVATAR_OPTIONS = ["🧑‍💻", "🧑‍🎨", "🧑‍🚀", "🧑‍🔬", "🧑‍🎓", "🦾"];
+  const PREMIUM_AVATARS: [string, number][] = [["🐉", 80], ["🦄", 80], ["🔮", 100], ["👾", 100], ["🌟", 120], ["🧠", 150]];
+  const [vyCoins, setVyCoins] = useState(0);
+  const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
+  const [shopMsg, setShopMsg] = useState("");
+
+  useEffect(() => {
+    if (!IS_PROFILE_SETUP(id)) return;
+    fetch("/api/gamification").then(r => r.ok ? r.json() : null).then(d => {
+      if (d?.gamification?.vyCoins !== undefined) setVyCoins(d.gamification.vyCoins);
+    }).catch(() => {});
+    fetch("/api/user").then(r => r.ok ? r.json() : null).then(d => {
+      if (d?.user?.unlockedAvatars) setUnlockedAvatars(d.user.unlockedAvatars);
+    }).catch(() => {});
+  }, [id]);
+
+  async function unlockAvatar(avatar: string, price: number) {
+    if (unlockedAvatars.includes(avatar)) { setProfileEmoji(avatar); return; }
+    if (vyCoins < price) { setShopMsg(`Necesitas ${price - vyCoins} monedas más`); setTimeout(() => setShopMsg(""), 2000); return; }
+    const res = await fetch("/api/shop/avatar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ avatar }) });
+    if (res.ok) {
+      const data = await res.json();
+      setVyCoins(v => v - (data.spent ?? 0));
+      setUnlockedAvatars(u => [...u, avatar]);
+      setProfileEmoji(avatar);
+    }
+  }
 
   async function saveProfileAndComplete() {
     if (!profileName.trim() || !profileAge.trim()) return;
+    const ageNum = parseInt(profileAge, 10);
+    if (isNaN(ageNum) || ageNum < 16) {
+      setShopMsg("BYZAI está disponible para mayores de 16 años por ahora.");
+      setTimeout(() => setShopMsg(""), 4000);
+      return;
+    }
     setProfileSaving(true);
     try {
       await fetch("/api/user", {
@@ -85,6 +117,27 @@ export default function LessonPage() {
     } catch (err) { console.error(err); }
     finally { setProfileSaving(false); }
     await completeLesson();
+  }
+
+  const [battleSubmission, setBattleSubmission] = useState("");
+  const [battleLoading, setBattleLoading] = useState(false);
+  const [battleResult, setBattleResult] = useState<{ passed: boolean; feedback: string; attempts: number } | null>(null);
+
+  async function submitBossBattle() {
+    if (!lesson || !battleSubmission.trim()) return;
+    setBattleLoading(true);
+    try {
+      const res = await fetch("/api/boss-battle", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lessonId: lesson.id, submission: battleSubmission.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setBattleResult(data);
+        if (data.passed) await completeLesson();
+      }
+    } catch (err) { console.error(err); }
+    finally { setBattleLoading(false); }
   }
 
   async function completeLesson(finalScore?: number) {
@@ -324,7 +377,26 @@ export default function LessonPage() {
       </div>
 
       <div style={{ padding: "20px 16px" }}>
-        {IS_PROFILE_SETUP(id) ? (
+        {lesson.type === "PROJECT" && !battleResult?.passed ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ padding: "14px", borderRadius: "14px", background: "rgba(167,139,250,0.08)", border: "1px solid rgba(167,139,250,0.25)" }}>
+              <p style={{ fontSize: "11px", fontWeight: 800, color: "#A78BFA", marginBottom: "6px", letterSpacing: "1px" }}>⚔️ BOSS BATTLE</p>
+              {blocks.map((block, i) => block.text && (
+                <p key={i} style={{ fontSize: "13px", lineHeight: 1.7, color: "rgba(255,255,255,0.8)", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
+              ))}
+            </div>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px" }}>TU ENTREGA</p>
+              <textarea value={battleSubmission} onChange={e => setBattleSubmission(e.target.value)} placeholder="Pega o describe tu trabajo completo aquí..." rows={6} style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "13px", fontFamily: "'DM Sans',sans-serif", resize: "none" }} />
+            </div>
+            {battleResult && (
+              <div style={{ padding: "14px", borderRadius: "14px", background: battleResult.passed ? "rgba(52,211,153,0.1)" : "rgba(255,107,107,0.1)", border: `1px solid ${battleResult.passed ? "rgba(52,211,153,0.3)" : "rgba(255,107,107,0.3)"}` }}>
+                <p style={{ fontSize: "12px", fontWeight: 800, color: battleResult.passed ? "#34D399" : "#FF6B6B", marginBottom: "6px" }}>{battleResult.passed ? "✓ APROBADO" : "✗ REINTENTA — Intento " + battleResult.attempts}</p>
+                <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)" }}>{battleResult.feedback}</p>
+              </div>
+            )}
+          </div>
+        ) : IS_PROFILE_SETUP(id) ? (
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             <div>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>ELIGE TU AVATAR</p>
@@ -335,13 +407,31 @@ export default function LessonPage() {
               </div>
             </div>
             <div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
+                <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", fontFamily: "'DM Sans',sans-serif" }}>AVATARES PREMIUM</p>
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "#FCD34D", fontFamily: "'DM Sans',sans-serif" }}>🪙 {vyCoins}</span>
+              </div>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {PREMIUM_AVATARS.map(([e, price]) => {
+                  const owned = unlockedAvatars.includes(e);
+                  return (
+                    <button key={e} onClick={() => unlockAvatar(e, price)} style={{ position: "relative", width: "44px", height: "44px", borderRadius: "12px", fontSize: "20px", background: profileEmoji === e ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === e ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer", opacity: owned ? 1 : 0.6 }}>
+                      {e}
+                      {!owned && <span style={{ position: "absolute", bottom: "-6px", right: "-6px", fontSize: "8px", background: "#FCD34D", color: "#000", borderRadius: "6px", padding: "1px 4px", fontWeight: 700 }}>{price}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              {shopMsg && <p style={{ fontSize: "11px", color: "#FF6B6B", marginTop: "6px", fontFamily: "'DM Sans',sans-serif" }}>{shopMsg}</p>}
+            </div>
+            <div>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>NOMBRE VISIBLE</p>
               <input value={profileName} onChange={e => setProfileName(e.target.value)} placeholder="¿Cómo te llamas?" style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }} />
             </div>
             <div style={{ display: "flex", gap: "12px" }}>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>EDAD</p>
-                <input type="number" min={8} max={99} value={profileAge} onChange={e => setProfileAge(e.target.value)} placeholder="16" style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }} />
+                <input type="number" min={16} max={99} value={profileAge} onChange={e => setProfileAge(e.target.value)} placeholder="16" style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }} />
               </div>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>IDIOMA</p>
@@ -402,10 +492,10 @@ export default function LessonPage() {
           </div>
         ) : (
           <button
-            onClick={IS_PROFILE_SETUP(id) ? saveProfileAndComplete : completeReading}
-            disabled={IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim() || profileSaving)}
-            style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)", opacity: IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim()) ? 0.5 : 1 }}>
-            {IS_PROFILE_SETUP(id) ? (profileSaving ? "Guardando..." : "Guardar y continuar →") : (lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →")}
+            onClick={lesson.type === "PROJECT" ? submitBossBattle : IS_PROFILE_SETUP(id) ? saveProfileAndComplete : completeReading}
+            disabled={(lesson.type === "PROJECT" && (!battleSubmission.trim() || battleLoading)) || (IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim() || profileSaving))}
+            style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)", opacity: (lesson.type === "PROJECT" && !battleSubmission.trim()) || (IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim())) ? 0.5 : 1 }}>
+            {lesson.type === "PROJECT" ? (battleLoading ? "ZAI está evaluando..." : "⚔️ Enviar al Boss") : IS_PROFILE_SETUP(id) ? (profileSaving ? "Guardando..." : "Guardar y continuar →") : (lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →")}
           </button>
         )}
       </div>
