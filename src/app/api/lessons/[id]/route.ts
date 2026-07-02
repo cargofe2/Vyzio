@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { isEvalMode } from "@/lib/evalMode";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,14 @@ export async function GET(
 
     if (!lesson) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const user = await prisma.user.findUnique({ where: { clerkId } });
+    const user = await prisma.user.findUnique({ where: { clerkId }, include: { subscription: true } });
+    const plan = user?.subscription?.plan ?? "STARTER";
+    const levelIsFree = (lesson as any).world?.level?.isFree ?? true;
+
+    if (!levelIsFree && plan === "STARTER" && !isEvalMode(clerkId)) {
+      return NextResponse.json({ error: "PAYWALL", requiredPlan: "PRO" }, { status: 402 });
+    }
+
     let progress = null;
     if (user) {
       progress = await prisma.lessonProgress.findUnique({

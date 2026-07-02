@@ -167,10 +167,12 @@ function WorldsContent() {
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
   const [loading, setLoading] = useState(true);
   const [plan, setPlan] = useState("STARTER");
+  const [evalMode, setEvalMode] = useState(false);
 
   useEffect(() => {
     fetch("/api/user").then(r => r.ok ? r.json() : null).then(d => {
       if (d?.user?.subscription?.plan) setPlan(d.user.subscription.plan);
+      if (d?.evalMode) setEvalMode(true);
     }).catch(() => {});
   }, []);
 
@@ -279,6 +281,7 @@ function WorldsContent() {
   // Vista de mundos con iconos coloridos
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
+      {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
@@ -296,7 +299,7 @@ function WorldsContent() {
           { id: "level-new-2", label: "Nivel 2 · Thinker", free: false },
           { id: "level-new-3", label: "Nivel 3 · Creator", free: false },
         ].map(lvl => {
-          const locked = !lvl.free && plan === "STARTER";
+          const locked = !lvl.free && plan === "STARTER" && !evalMode;
           const active = lvl.id === levelId;
           const content = (
             <div style={{

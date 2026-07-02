@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { isEvalMode } from "@/lib/evalMode";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json({ user });
+    return NextResponse.json({ user, evalMode: isEvalMode(clerkId) });
   } catch (error) {
     console.error("[api/user] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
