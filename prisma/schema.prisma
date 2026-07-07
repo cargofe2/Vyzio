@@ -165,7 +165,7 @@ model User {
   age             Int?
   goal            String?
   identity        String?
-
+  unlockedAvatars String[] @default([])
   parentId String?
   parent   User?   @relation("ParentChild", fields: [parentId], references: [id])
   children User[]  @relation("ParentChild")
@@ -185,6 +185,7 @@ model User {
   portfolioItems  PortfolioItem[]
   vyMessages      VyMessage[]
   teamMemberships TeamMember[]
+  levelCertificates LevelCertificate[]
   createdTeams    Team[]
 
   @@map("users")
@@ -253,7 +254,9 @@ model LessonProgress {
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   lessonId String
   lesson   Lesson @relation(fields: [lessonId], references: [id])
-
+submission     String?
+    battlePassed   Boolean?
+    battleFeedback String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -487,4 +490,16 @@ model Subscription {
   updatedAt DateTime @updatedAt
 
   @@map("subscriptions")
+}
+model LevelCertificate {
+  id                String   @id @default(cuid())
+  verificationCode  String   @unique @default(cuid())
+  levelId           String
+  levelName         String
+  studentName       String
+  issuedAt          DateTime @default(now())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, levelId])
+  @@map("level_certificates")
 }
