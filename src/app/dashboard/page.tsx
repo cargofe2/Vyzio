@@ -1,74 +1,34 @@
 "use client";
-import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 interface Gamification {
-  xpTotal: number; gems: number; rank: string; rankLevel: number;
-  streakDays: number; lessonsCompleted: number;
+  xpTotal: number; xpWeekly: number; gems: number;
+  rank: string; rankLevel: number; streakDays: number;
+  lessonsCompleted: number;
 }
 interface Mission {
   id: string; name: string; type: string; xpReward: number;
-  targetValue: number; progress: { current: number; completed: boolean };
+  targetValue: number;
+  progress: { current: number; completed: boolean };
 }
 interface World {
   id: string; name: string; emoji: string; lessonCount: number;
   pctComplete: number; order: number;
 }
 
-const RANK_CONFIG: Record<string, { color: string; label: string }> = {
-  NOVICE:    { color: "#94A3B8", label: "Novato"    },
-  EXPLORER:  { color: "#818CF8", label: "Explorer"  },
-  CREATOR:   { color: "#34D399", label: "Creator"   },
-  BUILDER:   { color: "#38BDF8", label: "Builder"   },
-  INNOVATOR: { color: "#FB923C", label: "Innovator" },
-  VISIONARY: { color: "#F472B6", label: "Visionary" },
-  PIONEER:   { color: "#FB923C", label: "Pioneer"   },
-  MASTER:    { color: "#C084FC", label: "Master"    },
-  LEGEND:    { color: "#F87171", label: "Legend"    },
-  AI_TITAN:  { color: "#FB923C", label: "AI Titan"  },
+const RANK_COLORS: Record<string, string> = {
+  NOVICE: "#999", EXPLORER: "#6C63FF", CREATOR: "#00D4FF",
+  BUILDER: "#00FFB3", INNOVATOR: "#FFFC00", VISIONARY: "#FF5EA8",
+  PIONEER: "#FF8C00", MASTER: "#9B59B6", LEGEND: "#E74C3C", AI_TITAN: "#FFFC00",
 };
+
 const RANK_NEXT_XP: Record<string, number> = {
   NOVICE: 500, EXPLORER: 2000, CREATOR: 6000, BUILDER: 15000,
-  INNOVATOR: 30000, VISIONARY: 55000, PIONEER: 90000,
-  MASTER: 140000, LEGEND: 200000, AI_TITAN: 999999,
+  INNOVATOR: 30000, VISIONARY: 55000, PIONEER: 90000, MASTER: 140000,
+  LEGEND: 200000, AI_TITAN: 999999,
 };
-const RANK_PREV_XP: Record<string, number> = {
-  NOVICE: 0, EXPLORER: 500, CREATOR: 2000, BUILDER: 6000,
-  INNOVATOR: 15000, VISIONARY: 30000, PIONEER: 55000,
-  MASTER: 90000, LEGEND: 140000, AI_TITAN: 200000,
-};
-const RANK_KEYS = Object.keys(RANK_NEXT_XP);
-
-// Iconos SVG únicos por mundo (estilo Gizmo) - mapeados por order
-const WORLD_VISUALS: Record<number, { color: string; bg: string; border: string; grad: string; Icon: () => ReactElement }> = {
-  0: { color: "#26C6DA", bg: "rgba(38,198,218,0.1)", border: "rgba(38,198,218,0.2)", grad: "linear-gradient(90deg,#26C6DA,#FB923C)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L13.8 8.2H20L14.8 11.8L16.6 18L12 14.4L7.4 18L9.2 11.8L4 8.2H10.2L12 2Z" fill="#26C6DA" fillOpacity="0.3" stroke="#26C6DA" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="12" cy="12" r="2" fill="#26C6DA"/></svg> },
-  1: { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/><path d="M9 11V13M12 10V14M15 11V13" stroke="#818CF8" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-  2: { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FB923C" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FB923C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M7 3.5L5 5.5M17 3.5L19 5.5" stroke="#FB923C" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-  3: { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.7 2 6 4.7 6 8C6 10.4 7.4 12.5 9.5 13.5V16H14.5V13.5C16.6 12.5 18 10.4 18 8C18 4.7 15.3 2 12 2Z" stroke="#00D4FF" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9.5 19H14.5M10.5 22H13.5" stroke="#00D4FF" strokeWidth="1.8" strokeLinecap="round"/><path d="M10 8H14M12 6V10" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-  4: { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="4" stroke="#A78BFA" strokeWidth="1.8"/><path d="M8 12H12M10 10V14" stroke="#A78BFA" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="11" r="1" fill="#A78BFA"/><circle cx="15" cy="13.5" r="1" fill="#A78BFA"/></svg> },
-  5: { color: "#F472B6", bg: "rgba(244,114,182,0.1)", border: "rgba(244,114,182,0.18)", grad: "linear-gradient(90deg,#F472B6,#EC4899)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12C2 14.4 2.9 16.6 4.4 18.3L2 22L5.7 19.6C7.4 21.1 9.6 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2Z" stroke="#F472B6" strokeWidth="1.8" strokeLinejoin="round"/><path d="M8 12C8 9.8 9.8 8 12 8C14.2 8 16 9.8 16 12" stroke="#F472B6" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="13" r="1.5" fill="#F472B6"/></svg> },
-  6: { color: "#34D399", bg: "rgba(52,211,153,0.1)", border: "rgba(52,211,153,0.18)", grad: "linear-gradient(90deg,#34D399,#10B981)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18V5L21 3V16" stroke="#34D399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="6" cy="18" r="3" stroke="#34D399" strokeWidth="1.8"/><circle cx="18" cy="16" r="3" stroke="#34D399" strokeWidth="1.8"/></svg> },
-  7: { color: "#F87171", bg: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.18)", grad: "linear-gradient(90deg,#F87171,#EF4444)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 4 14.5 4 9C4 6.2 6.2 4 9 4C10.4 4 11.7 4.6 12.6 5.5C13.5 4.6 14.8 4 16 4C18.8 4 21 6.2 21 9C21 14.5 12 21 12 21Z" stroke="#F87171" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 9H15M12 6V12" stroke="#F87171" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-  8: { color: "#38BDF8", bg: "rgba(56,189,248,0.1)", border: "rgba(56,189,248,0.18)", grad: "linear-gradient(90deg,#38BDF8,#0284C7)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 17H21M5 17V9L12 5L19 9V17" stroke="#38BDF8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><rect x="9" y="11" width="6" height="4" rx="1" stroke="#38BDF8" strokeWidth="1.5"/><circle cx="7" cy="19" r="2" stroke="#38BDF8" strokeWidth="1.5"/><circle cx="17" cy="19" r="2" stroke="#38BDF8" strokeWidth="1.5"/></svg> },
-  9: { color: "#4ADE80", bg: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.18)", grad: "linear-gradient(90deg,#4ADE80,#16A34A)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke="#4ADE80" strokeWidth="1.8"/><path d="M8 14C8 14 9 11 12 11C15 11 16 14 16 14" stroke="#4ADE80" strokeWidth="1.5" strokeLinecap="round"/><path d="M12 8V11M9 9L12 8L15 9" stroke="#4ADE80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-  10: { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)",
-    Icon: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 16.4 7.6 20.5 12 21C16.4 20.5 20 16.4 20 12V7L12 3Z" stroke="#FB923C" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="#FB923C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-};
-function getWorldVisual(order: number) {
-  return WORLD_VISUALS[order] ?? WORLD_VISUALS[1];
-}
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -76,257 +36,218 @@ export default function DashboardPage() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [worlds, setWorlds] = useState<World[]>([]);
   const [loading, setLoading] = useState(true);
-  const [plan, setPlan] = useState("STARTER");
 
   useEffect(() => {
     if (!isLoaded || !user) return;
+
     async function loadData() {
       try {
-        const userRes = await fetch("/api/user");
-        if (userRes.ok) {
-          const { user: u } = await userRes.json();
-          if (u?.subscription?.plan) setPlan(u.subscription.plan);
-        }
+        // Init user in DB
+        await fetch("/api/user");
+
+        // Load gamification data
         const [gamRes, worldRes] = await Promise.all([
           fetch("/api/gamification"),
           fetch("/api/lessons?levelId=level-1"),
         ]);
+
         if (gamRes.ok) {
           const { gamification: g, missions: m } = await gamRes.json();
-          setGamification(g); setMissions(m ?? []);
+          setGamification(g);
+          setMissions(m ?? []);
         }
+
         if (worldRes.ok) {
           const { worlds: w } = await worldRes.json();
           setWorlds(w ?? []);
         }
-      } catch (err) { console.error(err); }
-      finally { setLoading(false); }
+      } catch (err) {
+        console.error("Dashboard load error:", err);
+      } finally {
+        setLoading(false);
+      }
     }
+
     loadData();
   }, [isLoaded, user]);
 
+  if (!isLoaded || loading) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#111", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "32px", marginBottom: "8px" }}>⚡</div>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px" }}>Cargando VYZIO...</p>
+        </div>
+      </div>
+    );
+  }
+
   const rank = gamification?.rank ?? "NOVICE";
-  const rankCfg = RANK_CONFIG[rank] ?? RANK_CONFIG.NOVICE;
   const xp = gamification?.xpTotal ?? 0;
   const nextXP = RANK_NEXT_XP[rank] ?? 500;
-  const prevXP = RANK_PREV_XP[rank] ?? 0;
-  const pct = nextXP > prevXP ? Math.min(((xp - prevXP) / (nextXP - prevXP)) * 100, 100) : 100;
-  const nextRankLabel = RANK_CONFIG[RANK_KEYS[RANK_KEYS.indexOf(rank) + 1]]?.label ?? "AI Titan";
-
-  if (!isLoaded || loading) return (
-    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ width: "40px", height: "40px", borderRadius: "50%", margin: "0 auto 12px", position: "relative" }}>
-          <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9 }} />
-          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="18" height="18" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="26" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
-          </div>
-        </div>
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando BYZAI...</p>
-      </div>
-    </div>
-  );
-
-
+  const prevXP = Object.values(RANK_NEXT_XP).filter(v => v <= xp).pop() ?? 0;
+  const rankProgress = nextXP > prevXP ? ((xp - prevXP) / (nextXP - prevXP)) * 100 : 100;
+  const rankColor = RANK_COLORS[rank] ?? "#6C63FF";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
-      <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.wcard:active{transform:scale(0.97)}`}</style>
+    <div style={{ minHeight: "100vh", background: "#F7F7F5", paddingBottom: "80px" }}>
 
-      {/* HEADER */}
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      {/* TopBar */}
+      <div style={{ position: "sticky", top: 0, zIndex: 40, background: "#111", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ width: "28px", height: "28px", borderRadius: "50%", position: "relative", flexShrink: 0 }}>
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9 }} />
-            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="12" height="12" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
-            </div>
+          <div style={{ width: "28px", height: "28px", background: "#FFFC00", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+              <path d="M4 16L10 4L16 16" stroke="#111" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6.5 11H13.5" stroke="#111" strokeWidth="2.5" strokeLinecap="round"/>
+            </svg>
           </div>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "14px", letterSpacing: "3px", color: "#F8FAFF" }}>BYZAI</span>
-          <div style={{ padding: "2px 8px", borderRadius: "20px", background: `${rankCfg.color}18`, border: `1px solid ${rankCfg.color}33`, fontSize: "9px", fontWeight: 700, color: rankCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label}</div>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          {(gamification?.streakDays ?? 0) > 0 && <span style={{ fontSize: "11px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🔥 {gamification?.streakDays}</span>}
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      </div>
-
-      {/* HERO */}
-      <div style={{ padding: "18px 16px 0", animation: "fadeUp 0.4s ease" }}>
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif", fontWeight: 500 }}>Buenos días,</p>
-        <div style={{ marginBottom: "16px" }}>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "32px", background: "linear-gradient(135deg,#fff,#C7D2FE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.05, letterSpacing: "-0.5px" }}>
-            {user?.firstName ?? "Estudiante"}
+          <span style={{ fontFamily: "sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px", letterSpacing: "2px" }}>VYZIO</span>
+          <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: 700, background: `${rankColor}22`, color: rankColor }}>
+            {rank}
           </span>
-          <span style={{ fontSize: "24px", marginLeft: "8px" }}>👋</span>
         </div>
-
-        <div style={{ background: "linear-gradient(135deg,rgba(123,97,255,0.12),rgba(139,92,246,0.04))", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "16px", padding: "12px 14px", marginBottom: "10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.25)", margin: "0 0 2px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Total XP</p>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
-              <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1 }}>
-                {xp >= 1000 ? `${(xp/1000).toFixed(1)}k` : xp}
-              </span>
-              <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>XP ⚡</span>
-            </div>
-            <p style={{ fontSize: "10px", color: rankCfg.color, margin: "4px 0 0", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{Math.round(pct)}% hacia {nextRankLabel}</p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ fontSize: "9px", color: rankCfg.color, margin: "0 0 4px", fontFamily: "'Syne',sans-serif", fontWeight: 800, letterSpacing: "0.5px" }}>{rankCfg.label.toUpperCase()}</p>
-            <div style={{ width: "72px", height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px" }}>
-              <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,${rankCfg.color},#A78BFA)`, borderRadius: "3px", transition: "width 1s ease" }} />
-            </div>
-          </div>
-        </div>
-
-
+        <UserButton afterSignOutUrl="/" />
       </div>
 
-      {/* CONTENT */}
-      <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
+      {/* Hero */}
+      <div style={{ background: "#111", padding: "16px" }}>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", marginBottom: "4px" }}>
+          Hola, {user?.firstName ?? "Estudiante"} 👋
+        </p>
+        <p style={{ fontWeight: 900, color: "#fff", fontSize: "20px", marginBottom: "16px" }}>
+          ¿Qué aprendemos hoy?
+        </p>
 
-        {/* SELECTOR DE NIVEL */}
-        <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px", marginBottom: "4px" }}>
+        {/* Stats */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "14px" }}>
           {[
-            { id: "level-1", label: "Nivel 0 · Origins", free: true },
-            { id: "level-new-1", label: "Nivel 1 · Explorer", free: false },
-            { id: "level-new-2", label: "Nivel 2 · Thinker", free: false },
-            { id: "level-new-3", label: "Nivel 3 · Creator", free: false },
-          ].map(lvl => {
-            const locked = !lvl.free && plan === "STARTER";
-            const content = (
-              <div style={{
-                flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
-                background: locked ? "rgba(255,255,255,0.04)" : "rgba(123,97,255,0.1)",
-                border: locked ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(123,97,255,0.25)",
-                color: locked ? "rgba(255,255,255,0.35)" : "#fff", fontSize: "11px", fontWeight: 600,
-                fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-                display: "flex", alignItems: "center", gap: "4px",
-              }}>{locked && "🔒"} {lvl.label}{locked && " · Pro"}</div>
-            );
-            return locked
-              ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
-              : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
-          })}
-        </div>
-
-        {/* MUNDOS con iconos Gizmo */}
-        <section>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>Nivel 0 — AI Foundations</h2>
-            <Link href="/worlds" style={{ fontSize: "11px", color: "#818CF8", fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Ver todos →</Link>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            {(worlds.length > 0 ? worlds : [
-              { id: "w0", name: "Comienza", emoji: "🚀", lessonCount: 1, pctComplete: 0, order: 0 },
-              { id: "w1", name: "Fundamentos de IA", emoji: "🌍", lessonCount: 15, pctComplete: 0, order: 1 },
-              { id: "w2", name: "Historia de la IA", emoji: "📜", lessonCount: 15, pctComplete: 0, order: 2 },
-              { id: "w3", name: "IA en tu Vida", emoji: "🤖", lessonCount: 15, pctComplete: 0, order: 3 },
-            ]).slice(0, 6).map(w => {
-              const pctW = Math.round((w.pctComplete ?? 0) * 100);
-              const done = pctW >= 100;
-              const visual = getWorldVisual(w.order);
-              return (
-                <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
-                  <div className="wcard" style={{ background: visual.bg, border: `1px solid ${visual.border}`, borderRadius: "16px", padding: "14px", position: "relative", overflow: "hidden", transition: "all 0.2s" }}>
-                    <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: visual.grad, opacity: pctW > 0 ? 1 : 0 }} />
-                    {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
-                    <div style={{ width: "44px", height: "44px", background: visual.bg, borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "10px" }}>
-                      <visual.Icon />
-                    </div>
-                    <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "14px", color: done ? "#34D399" : visual.color, marginBottom: "6px", lineHeight: 1.2 }}>{w.name}</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
-                      {pctW > 0 && (
-                        <span style={{ fontSize: "10px", color: done ? "#34D399" : visual.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : visual.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* GAMIFICACIÓN */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "8px", marginBottom: "0" }}>
-          {[
-            { v: gamification?.gems ?? 0, l: "Gemas", c: "#C4B5FD", bg: "rgba(196,181,253,0.08)", border: "rgba(196,181,253,0.15)", e: "💎" },
-            { v: gamification?.lessonsCompleted ?? 0, l: "Clases", c: "#7DD3FC", bg: "rgba(125,211,252,0.08)", border: "rgba(125,211,252,0.15)", e: "📚" },
-            { v: `${gamification?.streakDays ?? 0}d`, l: "Racha", c: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.15)", e: "🔥" },
-          ].map(({ v, l, c, bg, border, e }) => (
-            <div key={l} style={{ background: bg, border: `1px solid ${border}`, borderRadius: "14px", padding: "10px 6px", textAlign: "center" }}>
-              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{e}</div>
-              <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "16px", color: c, lineHeight: 1 }}>{v}</div>
-              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.2)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
+            { v: xp.toLocaleString(), l: "XP", c: "#FFFC00" },
+            { v: `💎 ${gamification?.gems ?? 0}`, l: "Gemas", c: "#6C63FF" },
+            { v: `${gamification?.lessonsCompleted ?? 0}`, l: "Lecciones", c: "#00D4FF" },
+            { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#FF5EA8" },
+          ].map(({ v, l, c }) => (
+            <div key={l} style={{ background: "rgba(255,255,255,0.06)", borderRadius: "12px", padding: "10px", textAlign: "center" }}>
+              <div style={{ fontWeight: 900, fontSize: "15px", color: c }}>{v}</div>
+              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>{l}</div>
             </div>
           ))}
         </div>
 
-        {/* MISIONES */}
+        {/* XP Bar */}
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)" }}>{rank}</span>
+            <span style={{ fontSize: "10px", color: rankColor, fontWeight: 700 }}>
+              {xp.toLocaleString()} / {nextXP.toLocaleString()} XP
+            </span>
+          </div>
+          <div style={{ height: "5px", background: "rgba(255,255,255,0.08)", borderRadius: "3px", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: rankColor, borderRadius: "3px", transition: "width 0.5s ease" }} />
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "16px" }}>
+
+        {/* Continuar */}
+        {worlds.length > 0 && (
+          <Link href={`/worlds`} style={{ textDecoration: "none" }}>
+            <div style={{ background: "#111", borderRadius: "20px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{ fontSize: "28px" }}>{worlds[0]?.emoji ?? "🌍"}</div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 700, color: "#fff", fontSize: "14px", marginBottom: "2px" }}>
+                  {worlds[0]?.name ?? "Bienvenido al Futuro"}
+                </p>
+                <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)" }}>
+                  {worlds[0]?.lessonCount ?? 15} lecciones · Nivel 1
+                </p>
+              </div>
+              <div style={{ padding: "8px 16px", background: "#FFFC00", borderRadius: "12px", fontWeight: 800, fontSize: "13px", color: "#111" }}>
+                Ir →
+              </div>
+            </div>
+          </Link>
+        )}
+
+        {/* Mundos */}
+        <section>
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "rgba(0,0,0,0.35)", marginBottom: "10px" }}>
+            Nivel 1 — AI Explorer
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+            {(worlds.length > 0 ? worlds : [
+              { id: "w1", name: "Bienvenido al Futuro", emoji: "🌍", lessonCount: 15, pctComplete: 0, order: 1 },
+              { id: "w2", name: "Historia de la IA", emoji: "📜", lessonCount: 15, pctComplete: 0, order: 2 },
+              { id: "w3", name: "IA en tu Vida", emoji: "🤖", lessonCount: 15, pctComplete: 0, order: 3 },
+              { id: "w4", name: "Prompt Engineering", emoji: "⚡", lessonCount: 15, pctComplete: 0, order: 4 },
+            ]).map(w => (
+              <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
+                <div style={{ background: "#fff", borderRadius: "16px", padding: "12px", border: "0.5px solid rgba(0,0,0,0.08)" }}>
+                  <div style={{ fontSize: "22px", marginBottom: "6px" }}>{w.emoji}</div>
+                  <p style={{ fontWeight: 700, fontSize: "12px", color: "#111", marginBottom: "6px", lineHeight: 1.3 }}>{w.name}</p>
+                  <div style={{ height: "3px", background: "rgba(0,0,0,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
+                    <div style={{ height: "100%", width: `${(w.pctComplete ?? 0) * 100}%`, background: "#6C63FF", borderRadius: "2px" }} />
+                  </div>
+                  <p style={{ fontSize: "9px", color: "rgba(0,0,0,0.3)" }}>{w.lessonCount} lecciones</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Misiones */}
         {missions.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Misiones activas</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-              {missions.slice(0, 3).map(m => {
-                const prog = Math.min((m.progress.current / m.targetValue) * 100, 100);
-                const isD = m.type === "DAILY";
-                return (
-                  <div key={m.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "10px 12px", display: "flex", alignItems: "center", gap: "10px" }}>
-                    <div style={{ width: "34px", height: "34px", flexShrink: 0, background: isD ? "rgba(251,146,60,0.1)" : "rgba(123,97,255,0.1)", border: `1px solid ${isD ? "rgba(251,146,60,0.2)" : "rgba(123,97,255,0.2)"}`, borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>{isD ? "⚡" : "🎯"}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                        <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{m.name}</p>
-                        <span style={{ fontSize: "10px", fontWeight: 700, color: isD ? "#FB923C" : "#818CF8", fontFamily: "'DM Sans',sans-serif" }}>+{m.xpReward} XP</span>
-                      </div>
-                      <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "2px" }}>
-                        <div style={{ height: "100%", width: `${prog}%`, background: isD ? "linear-gradient(90deg,#FB923C,#34D399)" : "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
-                      </div>
-                      <p style={{ fontSize: "8px", color: "rgba(255,255,255,0.2)", marginTop: "3px", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue}</p>
-                    </div>
+            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "rgba(0,0,0,0.35)", marginBottom: "10px" }}>
+              Misiones activas
+            </h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              {missions.map(m => (
+                <div key={m.id} style={{ background: "#fff", borderRadius: "14px", padding: "12px", border: "0.5px solid rgba(0,0,0,0.08)" }}>
+                  <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "#E8F5E9" : "#EDE7F6", color: m.type === "DAILY" ? "#2E7D32" : "#4527A0" }}>
+                    {m.type === "DAILY" ? "Diaria" : "Semanal"}
+                  </span>
+                  <p style={{ fontSize: "12px", fontWeight: 600, color: "#111", margin: "8px 0 6px", lineHeight: 1.3 }}>{m.name}</p>
+                  <div style={{ height: "3px", background: "rgba(0,0,0,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
+                    <div style={{ height: "100%", width: `${Math.min((m.progress.current / m.targetValue) * 100, 100)}%`, background: "#6C63FF", borderRadius: "2px" }} />
                   </div>
-                );
-              })}
+                  <p style={{ fontSize: "9px", color: "rgba(0,0,0,0.3)" }}>{m.progress.current}/{m.targetValue} · +{m.xpReward} XP</p>
+                </div>
+              ))}
             </div>
           </section>
         )}
 
         {/* VY */}
-        <div style={{ background: "linear-gradient(135deg,rgba(0,255,179,0.08),rgba(0,200,150,0.04))", border: "1px solid rgba(0,255,179,0.15)", borderRadius: "18px", padding: "14px", display: "flex", alignItems: "center", gap: "12px", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", bottom: "-10px", right: "-10px", width: "60px", height: "60px", background: "radial-gradient(circle,rgba(0,255,179,0.15),transparent 70%)", borderRadius: "50%" }} />
-          <div style={{ width: "44px", height: "44px", flexShrink: 0, background: "rgba(0,255,179,0.1)", border: "1px solid rgba(0,255,179,0.2)", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="4" fill="rgba(0,255,179,0.1)" stroke="#00FFB3" strokeWidth="1.8"/>
-              <path d="M8 8L12 16L16 8" stroke="#00FFB3" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
+        <div style={{ background: "#111", borderRadius: "20px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: "40px", height: "40px", background: "rgba(108,99,255,0.15)", border: "2px solid #6C63FF", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", flexShrink: 0 }}>🤖</div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#fff", fontSize: "14px", marginBottom: "2px" }}>VY — Tu tutor de IA</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Pregúntame cualquier cosa sobre IA</p>
+            <p style={{ fontWeight: 700, color: "#fff", fontSize: "13px" }}>VY — Tu tutor de IA</p>
+            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)" }}>Pregúntame cualquier cosa sobre IA</p>
           </div>
-          <Link href="/vy" style={{ padding: "8px 14px", background: "linear-gradient(135deg,#00C896,#00A878)", color: "#fff", borderRadius: "11px", fontSize: "12px", fontWeight: 700, textDecoration: "none", flexShrink: 0, fontFamily: "'DM Sans',sans-serif", boxShadow: "none" }}>Hablar</Link>
+          <Link href="/vy" style={{ padding: "8px 14px", background: "#6C63FF", color: "#fff", borderRadius: "10px", fontSize: "12px", fontWeight: 700, textDecoration: "none" }}>
+            Hablar
+          </Link>
         </div>
 
       </div>
 
-      {/* NAVBAR */}
-      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+      {/* NavBar */}
+      <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#fff", borderTop: "0.5px solid rgba(0,0,0,0.08)", display: "flex" }}>
         {[
-          { href: "/dashboard", label: "Inicio", active: true, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-          { href: "/worlds", label: "Mundos", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
-          { href: "/vy", label: "VY", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4" strokeWidth="1.8"/><path d="M8 8L12 16L16 8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-          { href: "/community", label: "Liga", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
-          { href: "/profile", label: "Perfil", active: false, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
-        ].map(({ href, label, active, icon }) => (
-          <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
-            <div style={{ width: "40px", height: "40px", background: active ? "rgba(123,97,255,0.2)" : "transparent", border: active ? "1px solid rgba(123,97,255,0.4)" : "1px solid transparent", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center", color: active ? "#7B61FF" : "#7E8798" }}>{icon}</div>
-            <span style={{ fontSize: "8px", fontFamily: active ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: active ? 800 : 500, color: active ? "#7B61FF" : "#7E8798", letterSpacing: active ? "0.5px" : "0" }}>{active ? label.toUpperCase() : label}</span>
+          { href: "/dashboard", icon: "🏠", label: "Inicio", active: true },
+          { href: "/worlds", icon: "🌍", label: "Mundos", active: false },
+          { href: "/vy", icon: "🤖", label: "VY", active: false },
+          { href: "/community", icon: "👥", label: "Comunidad", active: false },
+          { href: "/profile", icon: "👤", label: "Perfil", active: false },
+        ].map(({ href, icon, label, active }) => (
+          <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "10px 0 6px", gap: "2px", textDecoration: "none" }}>
+            <span style={{ fontSize: "18px", lineHeight: 1 }}>{icon}</span>
+            <span style={{ fontSize: "9px", fontWeight: 500, color: active ? "#6C63FF" : "rgba(0,0,0,0.3)" }}>{label}</span>
           </Link>
         ))}
       </nav>
+
     </div>
   );
 }
