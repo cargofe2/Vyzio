@@ -216,7 +216,7 @@ export default function DashboardPage() {
               <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ background: "#1E2533", borderRadius: "16px", padding: "12px", border: "1px solid #324055" }}>
                   <div style={{ fontSize: "20px", marginBottom: "6px", display: "flex", color: "#468BFF" }}>{renderWorldIcon(w.emoji, 20)}</div>
-                  <p style={{ fontWeight: 700, fontSize: "12px", color: "#F8FAFF", marginBottom: "6px", lineHeight: 1.3, fontFamily: "'DM Sans',sans-serif" }}>{w.name}</p>
+                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
                   <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
                     <div style={{ height: "100%", width: `${(w.pctComplete ?? 0) * 100}%`, background: "#7B61FF", borderRadius: "2px" }} />
                   </div>
