@@ -9,7 +9,7 @@ interface QuizQuestion {
 }
 interface Lesson {
   id: string; number: number; title: string; type: string;
-  content: { blocks: Array<{ type: string; text?: string }> } | null;
+  content: { blocks: Array<{ type: string; text?: string; url?: string; alt?: string }> } | null;
   durationMin: number; xpReward: number;
   world: { id: string; name: string; emoji: string };
   quizQuestions: QuizQuestion[];
