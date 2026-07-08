@@ -197,27 +197,32 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div style={{ padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
-
-        {/* Continuar */}
-        {worlds.length > 0 && (
-          <Link href={`/worlds`} style={{ textDecoration: "none" }}>
-            <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ fontSize: "26px", color: "#7B61FF" }}>{renderWorldIcon(worlds[0]?.emoji ?? "🌍", 26)}</div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontWeight: 700, color: "#F8FAFF", fontSize: "14px", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>
-                  {worlds[0]?.name ?? "Bienvenido al Futuro"}
-                </p>
-                <p style={{ fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>
-                  {worlds[0]?.lessonCount ?? 15} lecciones · Nivel 0
-                </p>
-              </div>
-              <div style={{ padding: "8px 16px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", borderRadius: "12px", fontWeight: 800, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>
-                Ir →
-              </div>
-            </div>
+      {/* Level Tabs */}
+      <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "0 16px 14px" }}>
+        {[
+          { id: "level-1", label: "Nivel 0 · Origins" },
+          { id: "level-new-1", label: "Nivel 1 · Explorer" },
+          { id: "level-new-2", label: "Nivel 2 · Thinker" },
+          { id: "level-new-3", label: "Nivel 3 · Creator" },
+          { id: "level-new-4", label: "Nivel 4 · Builder" },
+          { id: "level-new-5", label: "Nivel 5 · Architect" },
+          { id: "level-new-6", label: "Nivel 6 · Founder" },
+          { id: "level-new-7", label: "Nivel 7 · Researcher" },
+          { id: "level-new-8", label: "Nivel 8 · Residency" },
+        ].map((lvl, i) => (
+          <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>
+            <div style={{
+              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
+              background: i === 0 ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
+              border: "1px solid rgba(123,97,255,0.25)",
+              color: "#fff", fontSize: "11px", fontWeight: 600,
+              fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+            }}>{lvl.label}</div>
           </Link>
-        )}
+        ))}
+      </div>
+
+      <div style={{ padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
 
         {/* Mundos */}
         <section>
