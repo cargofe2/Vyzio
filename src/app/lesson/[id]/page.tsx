@@ -491,7 +491,7 @@ function LevelMapInteractive() {
             )}
             {blocks.map((block, i) => {
               if (block.type === "text") return (
-                <p key={i} style={{ fontSize: "14px", lineHeight: 1.75, color: "rgba(255,255,255,0.8)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
+                <p key={i} style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.85)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
                   dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
               );
               if (block.type === "heading") return (
@@ -500,7 +500,7 @@ function LevelMapInteractive() {
               if (block.type === "callout") return (
                 <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
-                  <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}
+                  <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans',sans-serif" }}
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
               );
