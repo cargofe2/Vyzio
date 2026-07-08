@@ -47,6 +47,24 @@ function renderWorldIcon(emoji: string, size = 20) {
   return <span style={{ fontSize: `${size}px` }}>{emoji}</span>;
 }
 
+const LEVEL_1_PALETTE: { color: string; bg: string; border: string; grad: string }[] = [
+  { color: "#26C6DA", bg: "rgba(38,198,218,0.1)", border: "rgba(38,198,218,0.2)", grad: "linear-gradient(90deg,#26C6DA,#FB923C)" },
+  { color: "#818CF8", bg: "rgba(123,97,255,0.1)", border: "rgba(123,97,255,0.18)", grad: "linear-gradient(90deg,#7B61FF,#8B5CF6)" },
+  { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)" },
+  { color: "#00D4FF", bg: "rgba(0,212,255,0.1)", border: "rgba(0,212,255,0.18)", grad: "linear-gradient(90deg,#00D4FF,#0EA5E9)" },
+  { color: "#A78BFA", bg: "rgba(167,139,250,0.1)", border: "rgba(167,139,250,0.18)", grad: "linear-gradient(90deg,#A78BFA,#7C3AED)" },
+  { color: "#F472B6", bg: "rgba(244,114,182,0.1)", border: "rgba(244,114,182,0.18)", grad: "linear-gradient(90deg,#F472B6,#EC4899)" },
+  { color: "#34D399", bg: "rgba(52,211,153,0.1)", border: "rgba(52,211,153,0.18)", grad: "linear-gradient(90deg,#34D399,#10B981)" },
+  { color: "#F87171", bg: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.18)", grad: "linear-gradient(90deg,#F87171,#EF4444)" },
+  { color: "#38BDF8", bg: "rgba(56,189,248,0.1)", border: "rgba(56,189,248,0.18)", grad: "linear-gradient(90deg,#38BDF8,#0284C7)" },
+  { color: "#4ADE80", bg: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.18)", grad: "linear-gradient(90deg,#4ADE80,#16A34A)" },
+  { color: "#FB923C", bg: "rgba(251,146,60,0.1)", border: "rgba(251,146,60,0.18)", grad: "linear-gradient(90deg,#FB923C,#EA580C)" },
+];
+function getV(order: number) {
+  if (order === 0) return LEVEL_1_PALETTE[0];
+  return LEVEL_1_PALETTE[((order - 1) % (LEVEL_1_PALETTE.length - 1)) + 1];
+}
+
 function NavBar({ active }: { active: string }) {
   const ACCENT = "#7B61FF";
   const items = [
@@ -191,7 +209,7 @@ export default function DashboardPage() {
                   {worlds[0]?.name ?? "Bienvenido al Futuro"}
                 </p>
                 <p style={{ fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>
-                  {worlds[0]?.lessonCount ?? 15} lecciones · Nivel 1
+                  {worlds[0]?.lessonCount ?? 15} lecciones · Nivel 0
                 </p>
               </div>
               <div style={{ padding: "8px 16px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", borderRadius: "12px", fontWeight: 800, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>
@@ -204,26 +222,33 @@ export default function DashboardPage() {
         {/* Mundos */}
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-            Nivel 1 — AI Explorer
+            Nivel 0 — Origins
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             {(worlds.length > 0 ? worlds : [
               { id: "w1", name: "Bienvenido al Futuro", emoji: "🌍", lessonCount: 15, pctComplete: 0, order: 1 },
               { id: "w2", name: "Historia de la IA", emoji: "📜", lessonCount: 15, pctComplete: 0, order: 2 },
               { id: "w3", name: "IA en tu Vida", emoji: "🤖", lessonCount: 15, pctComplete: 0, order: 3 },
               { id: "w4", name: "Prompt Engineering", emoji: "⚡", lessonCount: 15, pctComplete: 0, order: 4 },
-            ]).map(w => (
-              <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ background: "#1E2533", borderRadius: "16px", padding: "12px", border: "1px solid #324055" }}>
-                  <div style={{ fontSize: "20px", marginBottom: "6px", display: "flex", color: "#468BFF" }}>{renderWorldIcon(w.emoji, 20)}</div>
-                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
-                  <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
-                    <div style={{ height: "100%", width: `${(w.pctComplete ?? 0) * 100}%`, background: "#7B61FF", borderRadius: "2px" }} />
+            ]).map(w => {
+              const pctW = Math.round((w.pctComplete ?? 0) * 100);
+              const done = pctW >= 100;
+              const v = getV(w.order);
+              return (
+                <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
+                  <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
+                    <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
+                    {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
+                    <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "10px" }}>{renderWorldIcon(w.emoji, 20)}</div>
+                    <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
+                      {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
+                    </div>
                   </div>
-                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </section>
 
