@@ -25,7 +25,39 @@ const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   EVALUATION: { label: "Evaluación", color: "#F472B6" }, PRACTICE: { label: "Práctica", color: "#34D399" },
 };
 
-export default function LessonPage() {
+const LEVELS_DATA = [
+  { n: 0, name: "Origins", color: "#26C6DA", desc: "Alfabetización en IA. Entiendes qué es la IA, cómo funciona, y por qué importa en tu vida." },
+  { n: 1, name: "Explorer", color: "#468BFF", desc: "Dominas herramientas de IA reales — prompts, ChatGPT, Claude — como usuario avanzado." },
+  { n: 2, name: "Thinker", color: "#A78BFA", desc: "Desarrollas pensamiento crítico, lógica y capacidad de decisión — con o sin IA de por medio." },
+  { n: 3, name: "Creator", color: "#36D399", desc: "Conviertes ideas en productos reales usando design thinking y herramientas sin código." },
+  { n: 4, name: "Builder", color: "#7B61FF", desc: "Construyes sistemas de IA en producción — RAG, fine-tuning, arquitectura real." },
+  { n: 5, name: "Architect", color: "#26C6DA", desc: "Diseñas sistemas a escala — multi-agente, infraestructura, seguridad." },
+  { n: 6, name: "Founder", color: "#FB923C", desc: "Aprendes a crear y liderar una organización alrededor de lo que construyes." },
+  { n: 7, name: "Researcher", color: "#36D399", desc: "Lees, reproduces y produces investigación rigurosa en IA." },
+  { n: 8, name: "Residency", color: "#F472B6", desc: "Aplicas todo en un proyecto real con un stakeholder real. Termina en el Grand Challenge." },
+];
+
+function LevelMapInteractive() {
+  const [active, setActive] = useState(0);
+  const sel = LEVELS_DATA[active];
+  return (
+    <div style={{ marginBottom: "16px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px 20px", position: "relative" }}>
+        <div style={{ position: "absolute", top: "13px", left: "20px", right: "20px", height: "2px", background: "#324055", zIndex: 0 }} />
+        {LEVELS_DATA.map((lvl, i) => (
+          <button key={lvl.n} onClick={() => setActive(i)} style={{ background: "none", border: "none", cursor: "pointer", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: 0 }}>
+            <div style={{ width: active === i ? "26px" : "20px", height: active === i ? "26px" : "20px", borderRadius: "50%", background: active === i ? lvl.color : "#1E2533", border: `2px solid ${lvl.color}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: 800, color: active === i ? "#0F1420" : lvl.color, fontFamily: "'DM Sans',sans-serif", boxShadow: active === i ? `0 0 10px ${lvl.color}` : "none", transition: "all 0.2s" }}>{lvl.n}</div>
+          </button>
+        ))}
+      </div>
+      <div style={{ background: "#1E2533", border: `1px solid ${sel.color}40`, borderRadius: "14px", padding: "16px" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, color: sel.color, marginBottom: "4px", fontFamily: "'DM Sans',sans-serif", letterSpacing: "0.5px" }}>NIVEL {sel.n}</p>
+        <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#F8FAFF", marginBottom: "8px" }}>{sel.name}</p>
+        <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#B3BDD1", fontFamily: "'DM Sans',sans-serif" }}>{sel.desc}</p>
+      </div>
+    </div>
+  );
+}export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
@@ -472,7 +504,8 @@ export default function LessonPage() {
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
               );
-if (block.type === "image") return (
+if (block.type === "level_map") return <LevelMapInteractive key={i} />;
+              if (block.type === "image") return (
                 <img key={i} src={block.url} alt={block.alt ?? ""} style={{ width: "100%", borderRadius: "14px", marginBottom: "16px" }} />
               );
               if (block.type === "tip") return (
