@@ -438,6 +438,8 @@ export default function LessonPage() {
                 <select value={profileLang} onChange={e => setProfileLang(e.target.value)} style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", background: "#1E2533", border: "1px solid #324055", color: "#F8FAFF", fontSize: "14px", fontFamily: "'DM Sans',sans-serif" }}>
                   <option value="es">Español</option>
                   <option value="en">English</option>
+                  <option value="fr">Français</option>
+                  <option value="it">Italiano</option>
                   <option value="pt">Português</option>
                 </select>
               </div>
