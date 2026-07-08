@@ -472,6 +472,9 @@ export default function LessonPage() {
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
               );
+if (block.type === "image") return (
+                <img key={i} src={block.url} alt={block.alt ?? ""} style={{ width: "100%", borderRadius: "14px", marginBottom: "16px" }} />
+              );
               if (block.type === "tip") return (
                 <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
