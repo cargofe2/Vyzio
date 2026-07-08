@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -29,6 +29,23 @@ const RANK_NEXT_XP: Record<string, number> = {
   INNOVATOR: 30000, VISIONARY: 55000, PIONEER: 90000, MASTER: 140000,
   LEGEND: 200000, AI_TITAN: 999999,
 };
+
+const WORLD_ICONS: Record<string, ReactElement> = {
+  "🎯": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/><circle cx="20" cy="4" r="1.3" fill="currentColor" stroke="none"/></svg>,
+  "🌍": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.3 2.2 3.7 5 3.7 8s-1.4 5.8-3.7 8c-2.3-2.2-3.7-5-3.7-8s1.4-5.8 3.7-8Z"/></svg>,
+  "📜": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 4h9a2.5 2.5 0 0 1 2.5 2.5V19a1.5 1.5 0 0 1-1.5 1.5H8A2.5 2.5 0 0 1 5.5 18V5.5A1.5 1.5 0 0 1 7 4"/><circle cx="6.2" cy="4.2" r="1.4"/><circle cx="6.2" cy="19.8" r="1.4"/><path d="M9 9h6M9 12.5h6M9 16h3.5"/></svg>,
+  "🤖": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="9" width="14" height="10" rx="3"/><path d="M12 9V5.5"/><circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/><circle cx="9" cy="14" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.1" fill="currentColor" stroke="none"/><path d="M9 17.5h6M2.5 12.5v3M21.5 12.5v3"/></svg>,
+  "⚡": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M13 3L5.5 13H10l-1 8L18 11h-4.5l-.5-8Z"/></svg>,
+  "💊": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="4.5" y="9" width="15" height="6" rx="3" transform="rotate(-45 12 12)"/><path d="M9.5 9.5L14.5 14.5"/></svg>,
+  "🚗": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 15.5V12l1.8-4.2A2 2 0 0 1 8.1 6.5h7.8a2 2 0 0 1 1.8 1.3L19.5 12v3.5"/><path d="M4.5 15.5h15v2a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-1h-9v1a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1v-2Z"/><circle cx="8" cy="15.5" r="1.3"/><circle cx="16" cy="15.5" r="1.3"/><path d="M6.5 11h11"/></svg>,
+  "🌱": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21V11"/><path d="M12 12c0-3.5-2.5-6-7-6.5C5.3 10 7.5 12.3 12 12Z"/><path d="M12 9c0-2.8 2-4.8 5.5-5.2C17.8 7.3 16 9.3 12 9Z"/></svg>,
+  "⚖️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v17M8.3 20h7.4"/><circle cx="12" cy="4.5" r="1.3" fill="currentColor" stroke="none"/><path d="M12 6.5L5.5 9l3.3 5.8L12 6.5ZM12 6.5l6.5 2.5-3.3 5.8L12 6.5Z"/></svg>,
+};
+function renderWorldIcon(emoji: string, size = 20) {
+  const icon = WORLD_ICONS[emoji];
+  if (icon) return icon;
+  return <span style={{ fontSize: `${size}px` }}>{emoji}</span>;
+}
 
 function NavBar({ active }: { active: string }) {
   const ACCENT = "#7B61FF";
@@ -164,7 +181,7 @@ export default function DashboardPage() {
         {worlds.length > 0 && (
           <Link href={`/worlds`} style={{ textDecoration: "none" }}>
             <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ fontSize: "26px" }}>{worlds[0]?.emoji ?? "🌍"}</div>
+              <div style={{ fontSize: "26px" }}>{renderWorldIcon(worlds[0]?.emoji ?? "🌍", 26)}</div>
               <div style={{ flex: 1 }}>
                 <p style={{ fontWeight: 700, color: "#F8FAFF", fontSize: "14px", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>
                   {worlds[0]?.name ?? "Bienvenido al Futuro"}
@@ -194,7 +211,7 @@ export default function DashboardPage() {
             ]).map(w => (
               <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ background: "#1E2533", borderRadius: "16px", padding: "12px", border: "1px solid #324055" }}>
-                  <div style={{ fontSize: "20px", marginBottom: "6px" }}>{w.emoji}</div>
+                  <div style={{ fontSize: "20px", marginBottom: "6px", display: "flex" }}>{renderWorldIcon(w.emoji, 20)}</div>
                   <p style={{ fontWeight: 700, fontSize: "12px", color: "#F8FAFF", marginBottom: "6px", lineHeight: 1.3, fontFamily: "'DM Sans',sans-serif" }}>{w.name}</p>
                   <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
                     <div style={{ height: "100%", width: `${(w.pctComplete ?? 0) * 100}%`, background: "#7B61FF", borderRadius: "2px" }} />
