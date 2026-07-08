@@ -126,7 +126,7 @@ export default function DashboardPage() {
       {/* TopBar */}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ width: "28px", height: "28px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, rgba(123,97,255,0.9), rgba(70,139,255,0.6) 60%, rgba(38,198,218,0.3) 100%)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 16px rgba(123,97,255,0.6)" }}>
             <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "15px" }}>Z</span>
           </div>
           <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "15px", letterSpacing: "0.5px" }}>BYZAI</span>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
             { v: `${gamification?.lessonsCompleted ?? 0}`, l: "Lecciones", c: "#26C6DA" },
             { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#F472B6" },
           ].map(({ v, l, c }) => (
-            <div key={l} style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "14px", padding: "10px", textAlign: "center" }}>
+            <div key={l} style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "14px", padding: "10px", textAlign: "center", boxShadow: `0 0 12px ${c}25` }}>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", color: c }}>{v}</div>
               <div style={{ fontSize: "9px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
             </div>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
             </span>
           </div>
           <div style={{ height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease" }} />
+            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease", boxShadow: `0 0 8px ${rankColor}` }} />
           </div>
         </div>
       </div>
