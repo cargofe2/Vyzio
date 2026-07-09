@@ -281,8 +281,13 @@ export default function DashboardPage() {
         )}
 
         {/* ZAI */}
-        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.15)", border: "2px solid #7B61FF", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#7B61FF", flexShrink: 0 }}>Z</div>
+       <div style={{ position: "relative", width: "40px", height: "40px", flexShrink: 0 }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width={40 * 0.45} height={40 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+            </div>
+          </div>
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: 700, color: "#F8FAFF", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>ZAI — Tu tutor de IA</p>
             <p style={{ fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Pregúntame cualquier cosa sobre IA</p>
