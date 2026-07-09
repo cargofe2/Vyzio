@@ -47,10 +47,15 @@ export default function ProfilePage() {
   const [certLoading, setCertLoading] = useState<string | null>(null);
 
   const LEVELS = [
-    { id: "level-1", label: "AI Foundations" },
-    { id: "level-new-1", label: "AI Explorer" },
-    { id: "level-new-2", label: "AI Thinker" },
-    { id: "level-new-3", label: "AI Creator" },
+    { id: "level-1", label: "Nivel 0 — Origins" },
+    { id: "level-new-1", label: "Nivel 1 — Explorer" },
+    { id: "level-new-2", label: "Nivel 2 — Thinker" },
+    { id: "level-new-3", label: "Nivel 3 — Creator" },
+    { id: "level-new-4", label: "Nivel 4 — Builder" },
+    { id: "level-new-5", label: "Nivel 5 — Architect" },
+    { id: "level-new-6", label: "Nivel 6 — Founder" },
+    { id: "level-new-7", label: "Nivel 7 — Researcher" },
+    { id: "level-new-8", label: "Nivel 8 — Residency" },
   ];
 
   async function claimCertificate(levelId: string) {
@@ -114,8 +119,8 @@ export default function ProfilePage() {
         <div style={{ background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
           <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🎓</div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Certificado AI Explorer</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Completa el Nivel 1 para obtenerlo</p>
+            <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Certificados</p>
+            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Completa un nivel para obtener tu certificado</p>
           </div>
           <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Ir →</Link>
         </div>

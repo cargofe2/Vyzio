@@ -5,10 +5,15 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 const LEVEL_NAMES: Record<string, string> = {
-  "level-1": "AI Foundations — Origins",
-  "level-new-1": "AI Explorer",
-  "level-new-2": "AI Thinker",
-  "level-new-3": "AI Creator",
+  "level-1": "Nivel 0 — Origins",
+  "level-new-1": "Nivel 1 — Explorer",
+  "level-new-2": "Nivel 2 — Thinker",
+  "level-new-3": "Nivel 3 — Creator",
+  "level-new-4": "Nivel 4 — Builder",
+  "level-new-5": "Nivel 5 — Architect",
+  "level-new-6": "Nivel 6 — Founder",
+  "level-new-7": "Nivel 7 — Researcher",
+  "level-new-8": "Nivel 8 — Residency",
 };
 
 export async function POST(req: NextRequest) {
