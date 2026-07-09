@@ -26,7 +26,7 @@ function ZaiOrb({ size = 36 }: { size?: number }) {
 
 export default function VYPage() {
   const { user } = useUser();
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en BYZAI. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en Bymyzai. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);

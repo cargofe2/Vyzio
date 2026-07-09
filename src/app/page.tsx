@@ -20,7 +20,7 @@ export default async function HomePage() {
               <svg width="22" height="22" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
             </div>
           </div>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", letterSpacing: "5px", color: "#F8FAFF" }}>BYZAI</span>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", letterSpacing: "5px", color: "#F8FAFF" }}>Bymyzai</span>
         </div>
 
         <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "36px", color: "#fff", lineHeight: 1.1, marginBottom: "16px", maxWidth: "320px" }}>

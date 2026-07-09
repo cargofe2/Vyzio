@@ -31,7 +31,7 @@ export default function CommunityPage() {
 
       {/* Header */}
       <div style={{ background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
-        <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", marginBottom: "2px" }}>Liga BYZAI 🏆</h1>
+        <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", marginBottom: "2px" }}>Liga Bymyzai 🏆</h1>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>Ranking · Proyectos · Equipos</p>
       </div>
 

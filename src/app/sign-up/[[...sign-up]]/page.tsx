@@ -11,7 +11,7 @@ export default function SignUpPage() {
             <svg width="18" height="18" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="26" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
           </div>
         </div>
-        <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "22px", letterSpacing: "4px", color: "#F8FAFF" }}>BYZAI</span>
+        <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "22px", letterSpacing: "4px", color: "#F8FAFF" }}>Bymyzai</span>
       </div>
       <SignUp afterSignUpUrl="/dashboard" signInUrl="/sign-in" />
     </main>

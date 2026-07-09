@@ -132,7 +132,7 @@ function LevelMapInteractive() {
     if (!profileName.trim() || !profileAge.trim()) return;
     const ageNum = parseInt(profileAge, 10);
     if (isNaN(ageNum) || ageNum < 16) {
-      setShopMsg("BYZAI está disponible para mayores de 16 años por ahora.");
+      setShopMsg("Bymyzai está disponible para mayores de 16 años por ahora.");
       setTimeout(() => setShopMsg(""), 4000);
       return;
     }
@@ -187,7 +187,7 @@ function LevelMapInteractive() {
     await fetch("/api/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lessonId: lesson.id, score: 100 }) });
     setVyLoading(true); setPhase("diagnostic-result");
     const answersText = finalAnswers.map((a, i) => `Pregunta ${i + 1}: ${a.question}\nRespuesta: ${a.answer}`).join("\n\n");
-    const prompt = `Acabo de completar el diagnóstico inicial de BYZAI. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (responde con exactamente una palabra: Explorer, Thinker, Creator o Developer)\n2. Por qué mundo específico de BYZAI debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nEmpieza tu respuesta con la palabra exacta del perfil entre corchetes, ej: [Explorer]. Luego continúa el resto de tu respuesta normal. Sé directo y motivador. Máximo 150 palabras.`;
+    const prompt = `Acabo de completar el diagnóstico inicial de Bymyzai. Estas son mis respuestas:\n\n${answersText}\n\nBasándote en mis respuestas, dime:\n1. Mi perfil de aprendizaje (responde con exactamente una palabra: Explorer, Thinker, Creator o Developer)\n2. Por qué mundo específico de Bymyzai debo empezar\n3. Qué puedo lograr en los próximos 30 días si sigo mi ruta\n\nEmpieza tu respuesta con la palabra exacta del perfil entre corchetes, ej: [Explorer]. Luego continúa el resto de tu respuesta normal. Sé directo y motivador. Máximo 150 palabras.`;
     try {
       const res = await fetch("/api/vy", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: prompt }) });
       if (res.ok) {

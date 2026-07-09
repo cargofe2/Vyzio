@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "BYZAI", template: "%s · BYZAI" },
+  title: { default: "Bymyzai", template: "%s · Bymyzai" },
   description: "La plataforma donde la nueva generación aprende Inteligencia Artificial.",
 };
 
