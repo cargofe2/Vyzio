@@ -20,7 +20,7 @@ export async function GET() {
       user = await prisma.user.create({
         data: {
           clerkId,
-          email: `${clerkId}@byzai.app`,
+          email: `${clerkId}@bymyzai.app`,
           username,
           displayName: "Estudiante",
           gamification: {
@@ -56,7 +56,7 @@ export async function PATCH(req: Request) {
     const { displayName, bio, avatarEmoji, language, age, goal } = body;
 
     if (age !== undefined && age !== null && age < 16) {
-      return NextResponse.json({ error: "BYZAI está disponible para mayores de 16 años por ahora." }, { status: 403 });
+      return NextResponse.json({ error: "Bymyzai está disponible para mayores de 16 años por ahora." }, { status: 403 });
     }
 
     const user = await prisma.user.update({

@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     });
     const attempts = (existing?.attempts ?? 0) + 1;
 
-    const prompt = `Eres ZAI evaluando un Boss Battle en BYZAI. Este es el brief del proyecto:\n\n"${brief}"\n\nEsta es la entrega del estudiante:\n\n"${submission}"\n\nEvalúa si la entrega demuestra genuinamente la habilidad del brief (no busques perfección, busca evidencia real de comprensión y esfuerzo aplicado). Responde en este formato exacto:\n[APROBADO] o [REINTENTAR]\nLuego da feedback directo de 2-3 frases: qué está bien, qué falta o mejoraría. Tono: mentor exigente pero alentador, nunca condescendiente. Máximo 80 palabras.`;
+    const prompt = `Eres ZAI evaluando un Boss Battle en Bymyzai. Este es el brief del proyecto:\n\n"${brief}"\n\nEsta es la entrega del estudiante:\n\n"${submission}"\n\nEvalúa si la entrega demuestra genuinamente la habilidad del brief (no busques perfección, busca evidencia real de comprensión y esfuerzo aplicado). Responde en este formato exacto:\n[APROBADO] o [REINTENTAR]\nLuego da feedback directo de 2-3 frases: qué está bien, qué falta o mejoraría. Tono: mentor exigente pero alentador, nunca condescendiente. Máximo 80 palabras.`;
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
