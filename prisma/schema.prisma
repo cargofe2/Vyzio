@@ -514,3 +514,16 @@ model ThemeSetting {
 
   @@map("theme_settings")
 }
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String?
+  category  String   @default("other")
+  rating    Int?
+  message   String
+  page      String?
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+
+  @@map("feedback")
+}

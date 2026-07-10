@@ -15,6 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <a href="/admin" style={{ color: "#7E8798", fontSize: "12px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Currículo</a>
             <a href="/admin/users" style={{ color: "#7E8798", fontSize: "12px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Usuarios</a>
             <a href="/admin/theme" style={{ color: "#7E8798", fontSize: "12px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Tema</a>
+            <a href="/admin/feedback" style={{ color: "#7E8798", fontSize: "12px", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Feedback</a>
           </nav>
         </div>
         <a href="/dashboard" style={{ fontSize: "12px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>← Volver a la app</a>
