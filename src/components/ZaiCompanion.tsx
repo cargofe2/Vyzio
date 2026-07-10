@@ -18,7 +18,8 @@ const GRADIENTS = [
 type Trick = null | "jump" | "spin" | "colorshift";
 
 /**
- * Compañero ZAI vivo — cara, expresiones, sueño por inactividad, y trucos aleatorios en reposo.
+ * Compañero ZAI vivo — cara, expresiones, sueño por inactividad, trucos aleatorios en reposo.
+ * El truco "spin" es un flip 3D real: gira y muestra la Z de marca en el reverso, como el logo ZaiOrb.
  */
 export default function ZaiCompanion({ mood, size = 56 }: Props) {
   const [animKey, setAnimKey] = useState(0);
@@ -29,7 +30,6 @@ export default function ZaiCompanion({ mood, size = 56 }: Props) {
 
   useEffect(() => { setAnimKey(k => k + 1); }, [mood]);
 
-  // Parpadeo + mirada errante en reposo
   useEffect(() => {
     if (mood !== "idle" && mood !== "thinking") return;
     const blinkInterval = setInterval(() => { setBlink(true); setTimeout(() => setBlink(false), 140); }, 3200 + Math.random() * 1800);
@@ -37,15 +37,15 @@ export default function ZaiCompanion({ mood, size = 56 }: Props) {
     return () => { clearInterval(blinkInterval); clearInterval(lookInterval); };
   }, [mood]);
 
-  // Trucos aleatorios mientras está despierto e inactivo: salta, gira, cambia de color
   useEffect(() => {
     if (mood !== "idle") { setTrick(null); return; }
     const id = setInterval(() => {
       const options: Trick[] = ["jump", "spin", "colorshift"];
       const pick = options[Math.floor(Math.random() * options.length)];
       setTrick(pick);
-      if (pick === "colorshift") setGradient(GRADIENTS[Math.floor(Math.random() * GRADIENTS.length)]);
-      setTimeout(() => { setTrick(null); if (pick === "colorshift") setGradient(GRADIENTS[0]); }, pick === "spin" ? 700 : pick === "jump" ? 500 : 2200);
+      const dur = pick === "spin" ? 1300 : pick === "jump" ? 500 : 2200;
+      setTimeout(() => { setTrick(null); if (pick === "colorshift") setGradient(GRADIENTS[0]); }, dur);
+      if (pick === "colorshift") setGradient(GRADIENTS[Math.floor(Math.random() * (GRADIENTS.length - 1)) + 1]);
     }, 5000 + Math.random() * 5000);
     return () => clearInterval(id);
   }, [mood]);
@@ -58,8 +58,8 @@ export default function ZaiCompanion({ mood, size = 56 }: Props) {
     mood === "thinking" ? "zaiFloatIdle 3.5s ease-in-out infinite, zaiBob 1.6s ease-in-out infinite" :
     "zaiFloatIdle 6s ease-in-out infinite, zaiBob 2.4s ease-in-out infinite";
 
-  const trickAnim = trick === "jump" ? "zaiJump 0.5s ease-out" : trick === "spin" ? "zaiTrickSpin 0.7s ease-in-out" : "";
-  const orbAnimation = trickAnim ? `${trickAnim}, ${reactionAnim}` : reactionAnim;
+  const jumpAnim = trick === "jump" ? "zaiJump 0.5s ease-out" : "";
+  const orbAnimation = jumpAnim ? `${jumpAnim}, ${reactionAnim}` : reactionAnim;
 
   const ringAnimation =
     mood === "correct" ? "zaiRingPulseGreen 0.7s ease-out" :
@@ -67,55 +67,81 @@ export default function ZaiCompanion({ mood, size = 56 }: Props) {
     "none";
 
   const eyeH = blink || mood === "sleeping" ? 0.6 : 7;
+  const faceSvg = size;
+
+  const face = (
+    <svg width={faceSvg} height={faceSvg} viewBox="0 0 100 100">
+      {mood === "correct" && (
+        <>
+          <path d="M28 46 Q34 38 40 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <path d="M60 46 Q66 38 72 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <path d="M32 62 Q50 78 68 62" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+        </>
+      )}
+      {mood === "incorrect" && (
+        <>
+          <ellipse cx="34" cy="46" rx="6" ry="7" fill="#fff" />
+          <ellipse cx="66" cy="46" rx="6" ry="7" fill="#fff" />
+          <path d="M26 36 L40 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M74 36 L60 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
+          <path d="M36 66 Q50 60 64 66" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+        </>
+      )}
+      {mood === "celebrate" && (
+        <>
+          <path d="M27 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
+          <path d="M59 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
+          <path d="M30 60 Q50 82 70 60 Q50 74 30 60" fill="#fff" />
+        </>
+      )}
+      {mood === "sleeping" && (
+        <>
+          <path d="M28 46 Q34 43 40 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
+          <path d="M60 46 Q66 43 72 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
+          <path d="M42 65 Q50 68 58 65" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" fill="none" opacity="0.7" />
+        </>
+      )}
+      {(mood === "idle" || mood === "thinking") && (
+        <>
+          <ellipse cx={34 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
+          <ellipse cx={66 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
+          <path d={mood === "thinking" ? "M38 65 Q50 62 62 65" : "M36 64 Q50 72 64 64"} stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.85" />
+        </>
+      )}
+    </svg>
+  );
 
   return (
-    <div style={{ position: "relative", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ position: "relative", width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", perspective: "500px" }}>
       <div key={`ring-${animKey}`} style={{ position: "absolute", inset: 0, borderRadius: "50%", animation: ringAnimation }} />
 
-      <div key={`orb-${animKey}-${trick}`} style={{ position: "relative", width: size, height: size, animation: orbAnimation, opacity: mood === "sleeping" ? 0.75 : 1, transition: "opacity 0.5s" }}>
-        <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: gradient, animation: mood === "sleeping" ? "zaiSpin 16s linear infinite" : "zaiSpin 7s linear infinite", transition: "background 0.4s" }} />
-        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+      {/* Contenedor exterior: maneja flotar/reaccionar/saltar */}
+      <div key={`orb-${animKey}-${trick === "jump"}`} style={{ position: "relative", width: size, height: size, animation: orbAnimation, opacity: mood === "sleeping" ? 0.75 : 1, transition: "opacity 0.5s" }}>
 
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width={size} height={size} viewBox="0 0 100 100">
-            {mood === "correct" && (
-              <>
-                <path d="M28 46 Q34 38 40 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-                <path d="M60 46 Q66 38 72 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-                <path d="M32 62 Q50 78 68 62" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-              </>
-            )}
-            {mood === "incorrect" && (
-              <>
-                <ellipse cx="34" cy="46" rx="6" ry="7" fill="#fff" />
-                <ellipse cx="66" cy="46" rx="6" ry="7" fill="#fff" />
-                <path d="M26 36 L40 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M74 36 L60 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M36 66 Q50 60 64 66" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-              </>
-            )}
-            {mood === "celebrate" && (
-              <>
-                <path d="M27 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
-                <path d="M59 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
-                <path d="M30 60 Q50 82 70 60 Q50 74 30 60" fill="#fff" />
-              </>
-            )}
-            {mood === "sleeping" && (
-              <>
-                <path d="M28 46 Q34 43 40 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
-                <path d="M60 46 Q66 43 72 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
-                <path d="M42 65 Q50 68 58 65" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" fill="none" opacity="0.7" />
-              </>
-            )}
-            {(mood === "idle" || mood === "thinking") && (
-              <>
-                <ellipse cx={34 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
-                <ellipse cx={66 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
-                <path d={mood === "thinking" ? "M38 65 Q50 62 62 65" : "M36 64 Q50 72 64 64"} stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.85" />
-              </>
-            )}
-          </svg>
+        {/* Flipper 3D: gira sobre su eje para mostrar la Z de marca en el reverso */}
+        <div
+          key={`flip-${animKey}-${trick === "spin"}`}
+          style={{ position: "relative", width: "100%", height: "100%", transformStyle: "preserve-3d", animation: trick === "spin" ? "zaiFlipReveal 1.3s ease-in-out" : "none" }}
+        >
+          {/* Cara frontal: expresión */}
+          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", backfaceVisibility: "hidden" }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: gradient, animation: mood === "sleeping" ? "zaiSpin 16s linear infinite" : "zaiSpin 7s linear infinite", transition: "background 0.4s" }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>{face}</div>
+          </div>
+
+          {/* Reverso: la Z de marca (ZaiOrb clásico) */}
+          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)" }} />
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width={size * 0.45} height={size * 0.45} viewBox="0 0 256 256">
+                <g transform="rotate(-12 128 128)">
+                  <path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </g>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
