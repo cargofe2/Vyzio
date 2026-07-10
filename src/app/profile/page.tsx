@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import AvatarIcon from "@/components/AvatarIcon";
+import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 
-interface Gamification { xpTotal: number; rank: string; rankLevel: number; streakDays: number; lessonsCompleted: number; gems: number; }
+interface Gamification { xpTotal: number; rank: string; rankLevel: number; streakDays: number; lessonsCompleted: number; gems: number; vyCoins: number; }
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
 
 const RANK_CONFIG: Record<string, { color: string; label: string }> = {
@@ -44,6 +44,9 @@ export default function ProfilePage() {
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [avatarId, setAvatarId] = useState("orb-1");
+  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
+  const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
+  const [avatarSaving, setAvatarSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
   const [certLoading, setCertLoading] = useState<string | null>(null);
@@ -59,6 +62,22 @@ export default function ProfilePage() {
     { id: "level-new-7", label: "Nivel 7 — Researcher" },
     { id: "level-new-8", label: "Nivel 8 — Residency" },
   ];
+
+  async function selectAvatar(id: string, price = 0) {
+    if (price > 0 && !unlockedAvatars.includes(id)) {
+      if ((gamification?.vyCoins ?? 0) < price) return;
+      const res = await fetch("/api/shop/avatar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ avatar: id }) });
+      if (!res.ok) return;
+      const data = await res.json();
+      setUnlockedAvatars(u => [...u, id]);
+      setGamification(g => g ? { ...g, vyCoins: g.vyCoins - (data.spent ?? 0) } : g);
+    }
+    setAvatarSaving(true);
+    await fetch("/api/user", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ avatarEmoji: id }) });
+    setAvatarId(id);
+    setAvatarSaving(false);
+    setAvatarPickerOpen(false);
+  }
 
   async function claimCertificate(levelId: string) {
     setCertLoading(levelId);
@@ -79,7 +98,11 @@ export default function ProfilePage() {
       try {
         const [gamRes, userRes] = await Promise.all([fetch("/api/gamification"), fetch("/api/user")]);
         if (gamRes.ok) { const d = await gamRes.json(); setGamification(d.gamification); setAchievements(d.achievements ?? []); }
-        if (userRes.ok) { const d = await userRes.json(); if (d.user?.avatarEmoji) setAvatarId(d.user.avatarEmoji); }
+        if (userRes.ok) {
+          const d = await userRes.json();
+          if (d.user?.avatarEmoji) setAvatarId(d.user.avatarEmoji);
+          if (d.user?.unlockedAvatars) setUnlockedAvatars(d.user.unlockedAvatars);
+        }
       } catch (err) { console.error(err); } finally { setLoading(false); }
     }
     if (isLoaded && user) load();
@@ -97,7 +120,10 @@ export default function ProfilePage() {
       {/* Header */}
       <div style={{ background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-          <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0, overflow: "hidden" }}><AvatarIcon id={avatarId} size={60} /></div>
+          <button onClick={() => setAvatarPickerOpen(true)} style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0, overflow: "hidden", padding: 0, cursor: "pointer", position: "relative" }}>
+            <AvatarIcon id={avatarId} size={60} />
+            <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
+          </button>
           <div style={{ flex: 1 }}>
             <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{user?.fullName ?? "Estudiante"}</h1>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
@@ -188,6 +214,41 @@ export default function ProfilePage() {
           </div>
         </section>
       </div>
+
+      {avatarPickerOpen && (
+        <div onClick={() => setAvatarPickerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 100, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px 18px 0 0", padding: "20px", width: "100%", maxWidth: "480px", maxHeight: "70vh", overflowY: "auto", display: "flex", flexDirection: "column", gap: "14px" }}>
+            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "15px" }}>Elige tu avatar</p>
+            <div>
+              <p style={{ fontSize: "10px", fontWeight: 700, color: "#7E8798", marginBottom: "8px" }}>GRATIS</p>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {FREE_AVATAR_IDS.map(id => (
+                  <button key={id} disabled={avatarSaving} onClick={() => selectAvatar(id)} style={{ width: "48px", height: "48px", borderRadius: "12px", padding: 0, background: avatarId === id ? "rgba(123,97,255,0.25)" : "#161C27", border: avatarId === id ? "1px solid #7B61FF" : "1px solid #324055", cursor: "pointer", overflow: "hidden" }}><AvatarIcon id={id} size={48} /></button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                <p style={{ fontSize: "10px", fontWeight: 700, color: "#7E8798" }}>PREMIUM</p>
+                <span style={{ fontSize: "11px", fontWeight: 700, color: "#F2C04D" }}>🪙 {gamification?.vyCoins ?? 0}</span>
+              </div>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {PREMIUM_AVATAR_IDS.map(([id, price]) => {
+                  const owned = unlockedAvatars.includes(id);
+                  return (
+                    <button key={id} disabled={avatarSaving} onClick={() => selectAvatar(id, price)} style={{ position: "relative", width: "48px", height: "48px", borderRadius: "12px", padding: 0, background: avatarId === id ? "rgba(123,97,255,0.25)" : "#161C27", border: avatarId === id ? "1px solid #7B61FF" : "1px solid #324055", cursor: "pointer", opacity: owned ? 1 : 0.6, overflow: "hidden" }}>
+                      <AvatarIcon id={id} size={48} />
+                      {!owned && <span style={{ position: "absolute", bottom: "-4px", right: "-4px", fontSize: "8px", background: "#F2C04D", color: "#000", borderRadius: "6px", padding: "1px 4px", fontWeight: 700 }}>{price}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <button onClick={() => setAvatarPickerOpen(false)} style={{ padding: "10px", background: "#324055", color: "#fff", border: "none", borderRadius: "10px", fontSize: "13px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
       <NavBar />
     </div>
   );
