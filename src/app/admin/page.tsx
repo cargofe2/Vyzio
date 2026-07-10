@@ -15,6 +15,12 @@ const card: React.CSSProperties = { background: "#1E2533", border: "1px solid #3
 const btn: React.CSSProperties = { padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "8px", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif", border: "none", cursor: "pointer" };
 const label: React.CSSProperties = { fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" };
 
+// El campo "number" en DB es heredado (level-1=1, level-new-1=11, level-new-2=12...) por eso se mapea a la numeración visible real (Nivel 0-8)
+const DISPLAY_NUMBER: Record<string, number> = {
+  "level-1": 0, "level-new-1": 1, "level-new-2": 2, "level-new-3": 3,
+  "level-new-4": 4, "level-new-5": 5, "level-new-6": 6, "level-new-7": 7, "level-new-8": 8,
+};
+
 export default function AdminHome() {
   const [levels, setLevels] = useState<LevelRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +62,7 @@ export default function AdminHome() {
         <div key={lvl.id} style={card}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
             <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "14px" }}>
-              Nivel {lvl.number} — {lvl.name} {lvl.isFree && <span style={{ ...label, color: "#36D399" }}>· GRATIS</span>}
+              Nivel {DISPLAY_NUMBER[lvl.id] ?? lvl.number} — {lvl.name} {lvl.isFree && <span style={{ ...label, color: "#36D399" }}>· GRATIS</span>}
             </span>
             <button style={btn} onClick={() => { setNewWorldFor(newWorldFor === lvl.id ? null : lvl.id); setErr(""); }}>+ World</button>
           </div>
