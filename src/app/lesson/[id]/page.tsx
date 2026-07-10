@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 
 interface QuizQuestion {
   id: string; question: string; options: string[];
@@ -95,13 +96,13 @@ function LevelMapInteractive() {
   }
 
   const [profileName, setProfileName] = useState("");
-  const [profileEmoji, setProfileEmoji] = useState("🧑‍💻");
+  const [profileEmoji, setProfileEmoji] = useState("orb-1");
   const [profileLang, setProfileLang] = useState("es");
   const [profileAge, setProfileAge] = useState("");
   const [profileGoal, setProfileGoal] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
-  const AVATAR_OPTIONS = ["🧑‍💻", "🧑‍🎨", "🧑‍🚀", "🧑‍🔬", "🧑‍🎓", "🦾"];
-  const PREMIUM_AVATARS: [string, number][] = [["🐉", 80], ["🦄", 80], ["🔮", 100], ["👾", 100], ["🌟", 120], ["🧠", 150]];
+  const AVATAR_OPTIONS = FREE_AVATAR_IDS;
+  const PREMIUM_AVATARS: [string, number][] = PREMIUM_AVATAR_IDS;
   const [vyCoins, setVyCoins] = useState(0);
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
   const [shopMsg, setShopMsg] = useState("");
@@ -433,8 +434,8 @@ function LevelMapInteractive() {
             <div>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>ELIGE TU AVATAR</p>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {AVATAR_OPTIONS.map(e => (
-                  <button key={e} onClick={() => setProfileEmoji(e)} style={{ width: "44px", height: "44px", borderRadius: "12px", fontSize: "20px", background: profileEmoji === e ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === e ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer" }}>{e}</button>
+                {AVATAR_OPTIONS.map(id => (
+                  <button key={id} onClick={() => setProfileEmoji(id)} style={{ width: "44px", height: "44px", borderRadius: "12px", padding: 0, background: profileEmoji === id ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === id ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer", overflow: "hidden" }}><AvatarIcon id={id} size={44} /></button>
                 ))}
               </div>
             </div>
@@ -444,11 +445,11 @@ function LevelMapInteractive() {
                 <span style={{ fontSize: "12px", fontWeight: 700, color: "#FCD34D", fontFamily: "'DM Sans',sans-serif" }}>🪙 {vyCoins}</span>
               </div>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                {PREMIUM_AVATARS.map(([e, price]) => {
-                  const owned = unlockedAvatars.includes(e);
+                {PREMIUM_AVATARS.map(([id, price]) => {
+                  const owned = unlockedAvatars.includes(id);
                   return (
-                    <button key={e} onClick={() => unlockAvatar(e, price)} style={{ position: "relative", width: "44px", height: "44px", borderRadius: "12px", fontSize: "20px", background: profileEmoji === e ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === e ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer", opacity: owned ? 1 : 0.6 }}>
-                      {e}
+                    <button key={id} onClick={() => unlockAvatar(id, price)} style={{ position: "relative", width: "44px", height: "44px", borderRadius: "12px", padding: 0, background: profileEmoji === id ? "rgba(123,97,255,0.2)" : "#1E2533", border: profileEmoji === id ? "1px solid rgba(123,97,255,0.5)" : "1px solid #324055", cursor: "pointer", opacity: owned ? 1 : 0.6, overflow: "hidden" }}>
+                      <AvatarIcon id={id} size={44} />
                       {!owned && <span style={{ position: "absolute", bottom: "-6px", right: "-6px", fontSize: "8px", background: "#FCD34D", color: "#000", borderRadius: "6px", padding: "1px 4px", fontWeight: 700 }}>{price}</span>}
                     </button>
                   );

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import AvatarIcon from "@/components/AvatarIcon";
 
 interface Gamification { xpTotal: number; rank: string; rankLevel: number; streakDays: number; lessonsCompleted: number; gems: number; }
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
@@ -42,6 +43,7 @@ export default function ProfilePage() {
   const { user, isLoaded } = useUser();
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [avatarId, setAvatarId] = useState("orb-1");
   const [loading, setLoading] = useState(true);
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
   const [certLoading, setCertLoading] = useState<string | null>(null);
@@ -75,8 +77,9 @@ export default function ProfilePage() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/gamification");
-        if (res.ok) { const d = await res.json(); setGamification(d.gamification); setAchievements(d.achievements ?? []); }
+        const [gamRes, userRes] = await Promise.all([fetch("/api/gamification"), fetch("/api/user")]);
+        if (gamRes.ok) { const d = await gamRes.json(); setGamification(d.gamification); setAchievements(d.achievements ?? []); }
+        if (userRes.ok) { const d = await userRes.json(); if (d.user?.avatarEmoji) setAvatarId(d.user.avatarEmoji); }
       } catch (err) { console.error(err); } finally { setLoading(false); }
     }
     if (isLoaded && user) load();
@@ -94,7 +97,7 @@ export default function ProfilePage() {
       {/* Header */}
       <div style={{ background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "16px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-          <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0 }}>🧑‍💻</div>
+          <div style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0, overflow: "hidden" }}><AvatarIcon id={avatarId} size={60} /></div>
           <div style={{ flex: 1 }}>
             <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{user?.fullName ?? "Estudiante"}</h1>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
