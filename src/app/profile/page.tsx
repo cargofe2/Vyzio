@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
+import { isSoundEnabled, setSoundEnabled, playClick } from "@/lib/sounds";
 
 interface Gamification { xpTotal: number; rank: string; rankLevel: number; streakDays: number; lessonsCompleted: number; gems: number; vyCoins: number; }
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
@@ -47,6 +48,7 @@ export default function ProfilePage() {
   const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
   const [avatarSaving, setAvatarSaving] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
   const [loading, setLoading] = useState(true);
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
   const [certLoading, setCertLoading] = useState<string | null>(null);
@@ -93,6 +95,8 @@ export default function ProfilePage() {
     finally { setCertLoading(null); }
   }
 
+  useEffect(() => { setSoundOn(isSoundEnabled()); }, []);
+
   useEffect(() => {
     async function load() {
       try {
@@ -129,6 +133,13 @@ export default function ProfilePage() {
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
             <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: `${rankCfg.color}18`, color: rankCfg.color, border: `1px solid ${rankCfg.color}33`, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
           </div>
+          <button
+            onClick={() => { const next = !soundOn; setSoundOn(next); setSoundEnabled(next); if (next) playClick(); }}
+            style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #324055", background: "#1E2533", color: soundOn ? "#F8FAFF" : "#7E8798", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+            aria-label={soundOn ? "Silenciar sonidos" : "Activar sonidos"}
+          >
+            {soundOn ? "🔊" : "🔇"}
+          </button>
           <UserButton afterSignOutUrl="/" />
         </div>
 

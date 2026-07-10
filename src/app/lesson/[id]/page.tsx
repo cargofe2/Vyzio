@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
+import { playCorrect, playIncorrect, playComplete, playXP } from "@/lib/sounds";
 
 interface QuizQuestion {
   id: string; question: string; options: string[];
@@ -167,7 +168,7 @@ function LevelMapInteractive() {
       if (res.ok) {
         const data = await res.json();
         setBattleResult(data);
-        if (data.passed) await completeLesson();
+        if (data.passed) await completeLesson(); else playIncorrect();
       }
     } catch (err) { console.error(err); }
     finally { setBattleLoading(false); }
@@ -180,6 +181,8 @@ function LevelMapInteractive() {
       body: JSON.stringify({ lessonId: lesson.id, score: finalScore }),
     });
     if (res.ok) { const data = await res.json(); setXpEarned(data.xpAwarded ?? lesson.xpReward); }
+    playComplete();
+    setTimeout(() => playXP(), 250);
     setPhase("done");
   }
 
@@ -209,7 +212,7 @@ function LevelMapInteractive() {
     const q = lesson.quizQuestions[currentQ];
     if (!IS_DIAGNOSTIC(id)) {
       await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, selectedIndex: idx }) });
-      if (idx === q.correctIndex) setScore(s => s + 1);
+      if (idx === q.correctIndex) { setScore(s => s + 1); playCorrect(); } else { playIncorrect(); }
     } else {
       setAnswers(p => [...p, { question: q.question, answer: q.options[idx] }]);
     }
