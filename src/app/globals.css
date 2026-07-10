@@ -38,3 +38,58 @@ body {
 }
 
 .font-display { font-family: 'Syne', sans-serif; }
+
+@keyframes zaiSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+@keyframes zaiFloatIdle {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  25%  { transform: translate(6px, -8px) scale(1.02); }
+  50%  { transform: translate(-4px, -3px) scale(1); }
+  75%  { transform: translate(-7px, 5px) scale(0.99); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes zaiBob {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes zaiCorrectPop {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.35) rotate(-8deg); }
+  55%  { transform: scale(0.92) rotate(6deg); }
+  75%  { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes zaiWrongShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px) rotate(-6deg); }
+  40% { transform: translateX(7px) rotate(5deg); }
+  60% { transform: translateX(-5px) rotate(-3deg); }
+  80% { transform: translateX(4px) rotate(2deg); }
+}
+
+@keyframes zaiCelebrate {
+  0%   { transform: scale(1) rotate(0deg); }
+  20%  { transform: scale(1.4) rotate(15deg); }
+  40%  { transform: scale(1.1) rotate(-360deg); }
+  70%  { transform: scale(1.25) rotate(-380deg); }
+  100% { transform: scale(1) rotate(-360deg); }
+}
+
+@keyframes zaiRingPulseGreen {
+  0%   { box-shadow: 0 0 0 0 rgba(54,211,153,0.6); }
+  100% { box-shadow: 0 0 0 22px rgba(54,211,153,0); }
+}
+
+@keyframes zaiRingPulseRed {
+  0%   { box-shadow: 0 0 0 0 rgba(255,107,107,0.5); }
+  100% { box-shadow: 0 0 0 16px rgba(255,107,107,0); }
+}
+
+@keyframes zaiSparkle {
+  0%   { opacity: 0; transform: scale(0) translateY(0); }
+  30%  { opacity: 1; transform: scale(1) translateY(-6px); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-22px); }
+}
