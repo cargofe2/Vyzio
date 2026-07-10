@@ -100,7 +100,12 @@ export default function DashboardPage() {
     if (!isLoaded || !user) return;
     async function loadData() {
       try {
-        await fetch("/api/user");
+        const userRes = await fetch("/api/user");
+        if (userRes.status === 403) {
+          const d = await userRes.json().catch(() => ({}));
+          window.location.href = `/excluido?razon=${encodeURIComponent(d.reason ?? "")}`;
+          return;
+        }
         const [gamRes, worldRes] = await Promise.all([
           fetch("/api/gamification"),
           fetch("/api/lessons?levelId=level-1"),

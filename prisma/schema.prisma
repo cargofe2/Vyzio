@@ -166,6 +166,8 @@ model User {
   goal            String?
   identity        String?
   unlockedAvatars String[] @default([])
+  isBanned     Boolean  @default(false)
+  bannedReason String?
   parentId String?
   parent   User?   @relation("ParentChild", fields: [parentId], references: [id])
   children User[]  @relation("ParentChild")
@@ -502,4 +504,13 @@ model LevelCertificate {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([userId, levelId])
   @@map("level_certificates")
+}
+model ThemeSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String   @default("color")
+  updatedAt DateTime @updatedAt
+
+  @@map("theme_settings")
 }

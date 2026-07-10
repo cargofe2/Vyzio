@@ -36,6 +36,10 @@ export async function GET() {
       });
     }
 
+    if (user.isBanned) {
+      return NextResponse.json({ error: "banned", reason: user.bannedReason ?? "Cuenta excluida" }, { status: 403 });
+    }
+
     return NextResponse.json({ user, evalMode: isEvalMode(clerkId) });
   } catch (error) {
     console.error("[api/user] error:", error);
