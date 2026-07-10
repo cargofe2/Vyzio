@@ -1,13 +1,14 @@
 "use client";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { SignOutButton } from "@clerk/nextjs";
 
-export default function ExcludedPage() {
+function ExcludedContent() {
   const params = useSearchParams();
   const razon = params.get("razon");
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center" }}>
+    <>
       <p style={{ fontSize: "40px", marginBottom: "12px" }}>🚫</p>
       <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", marginBottom: "8px" }}>Tu cuenta fue excluida</h1>
       <p style={{ color: "#7E8798", fontSize: "13px", fontFamily: "'DM Sans',sans-serif", maxWidth: "320px", marginBottom: "20px" }}>
@@ -18,6 +19,16 @@ export default function ExcludedPage() {
           Cerrar sesión
         </button>
       </SignOutButton>
+    </>
+  );
+}
+
+export default function ExcludedPage() {
+  return (
+    <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center" }}>
+      <Suspense fallback={<p style={{ color: "#7E8798" }}>Cargando...</p>}>
+        <ExcludedContent />
+      </Suspense>
     </div>
   );
 }
