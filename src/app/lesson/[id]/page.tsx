@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
-import ZaiCompanion, { ZaiMood } from "@/components/ZaiCompanion";
+import ZaiCompanion from "@/components/ZaiCompanion";
+import { useZai } from "@/lib/ZaiContext";
 import { playCorrect, playIncorrect, playComplete, playXP } from "@/lib/sounds";
 
 interface QuizQuestion {
@@ -65,7 +66,7 @@ function LevelMapInteractive() {
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [phase, setPhase] = useState<"reading" | "quiz" | "done" | "diagnostic-result">("reading");
-  const [zaiMood, setZaiMood] = useState<ZaiMood>("idle");
+  const { triggerMood } = useZai();
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
@@ -170,7 +171,7 @@ function LevelMapInteractive() {
       if (res.ok) {
         const data = await res.json();
         setBattleResult(data);
-        if (data.passed) await completeLesson(); else { playIncorrect(); setZaiMood("incorrect"); }
+        if (data.passed) await completeLesson(); else { playIncorrect(); triggerMood("incorrect"); }
       }
     } catch (err) { console.error(err); }
     finally { setBattleLoading(false); }
@@ -184,7 +185,7 @@ function LevelMapInteractive() {
     });
     if (res.ok) { const data = await res.json(); setXpEarned(data.xpAwarded ?? lesson.xpReward); }
     playComplete();
-    setZaiMood("celebrate");
+    triggerMood("celebrate", 2500);
     setTimeout(() => playXP(), 250);
     setPhase("done");
   }
@@ -215,7 +216,7 @@ function LevelMapInteractive() {
     const q = lesson.quizQuestions[currentQ];
     if (!IS_DIAGNOSTIC(id)) {
       await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, selectedIndex: idx }) });
-      if (idx === q.correctIndex) { setScore(s => s + 1); playCorrect(); setZaiMood("correct"); } else { playIncorrect(); setZaiMood("incorrect"); }
+      if (idx === q.correctIndex) { setScore(s => s + 1); playCorrect(); triggerMood("correct"); } else { playIncorrect(); triggerMood("incorrect"); }
     } else {
       setAnswers(p => [...p, { question: q.question, answer: q.options[idx] }]);
     }
@@ -224,7 +225,7 @@ function LevelMapInteractive() {
   async function nextQuestion() {
     if (!lesson) return;
     if (currentQ < lesson.quizQuestions.length - 1) {
-      setCurrentQ(c => c + 1); setSelected(null); setAnswered(false); setZaiMood("idle");
+      setCurrentQ(c => c + 1); setSelected(null); setAnswered(false);
     } else {
       if (IS_DIAGNOSTIC(id)) await completeDiagnostic(answers);
       else await completeLesson(Math.round((score / lesson.quizQuestions.length) * 100));
@@ -343,12 +344,9 @@ function LevelMapInteractive() {
       <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
           {isDiag && <p style={{ color: "#818CF8", fontSize: "11px", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>🎯 DIAGNÓSTICO INICIAL</p>}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", fontFamily: "'DM Sans',sans-serif" }}>Pregunta {currentQ + 1} de {total}</p>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {!isDiag && <p style={{ color: "#FB923C", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
-              <ZaiCompanion mood={zaiMood} size={40} />
-            </div>
+            {!isDiag && <p style={{ color: "#FB923C", fontSize: "11px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>🎯 Quiz</p>}
           </div>
           <div style={{ height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
             <div style={{ height: "100%", width: `${((currentQ + 1) / total) * 100}%`, background: isDiag ? "linear-gradient(90deg,#7B61FF,#A78BFA)" : "linear-gradient(90deg,#FB923C,#EA580C)", borderRadius: "2px", transition: "width 0.3s" }} />
