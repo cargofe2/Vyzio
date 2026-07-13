@@ -281,13 +281,21 @@ function WorldsContent() {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-            <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-            <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
-            <div>
-              <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px" }}>{selectedWorld?.name ?? "Mundo"}</p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+              <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
+              <div>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px" }}>{selectedWorld?.name ?? "Mundo"}</p>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
+              </div>
             </div>
+            <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
+                <span style={{ fontSize: "16px" }}>📚</span>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
+              </div>
+            </Link>
           </div>
           <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
             <div style={{ height: "100%", width: `${pct}%`, background: v.grad, borderRadius: "2px", transition: "width 0.8s ease" }} />
@@ -357,9 +365,9 @@ function WorldsContent() {
             </div>
           </div>
           <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "4px", padding: "6px 10px", borderRadius: "10px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
-              <span style={{ fontSize: "12px" }}>📚</span>
-              <span style={{ fontSize: "10px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
+              <span style={{ fontSize: "16px" }}>📚</span>
+              <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
             </div>
           </Link>
         </div>
