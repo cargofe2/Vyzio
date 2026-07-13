@@ -6,6 +6,8 @@ export type ZaiMood = "idle" | "correct" | "incorrect" | "celebrate" | "thinking
 interface ZaiContextValue {
   mood: ZaiMood;
   triggerMood: (mood: ZaiMood, durationMs?: number) => void;
+  onTap: (() => void) | null;
+  setOnTap: (fn: (() => void) | null) => void;
 }
 
 const ZaiContext = createContext<ZaiContextValue | null>(null);
@@ -14,6 +16,7 @@ const SLEEP_AFTER_MS = 25000; // dormir tras 25s sin actividad ni reacciones
 
 export function ZaiProvider({ children }: { children: ReactNode }) {
   const [mood, setMood] = useState<ZaiMood>("idle");
+  const [onTap, setOnTapState] = useState<(() => void) | null>(null);
   const reactionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sleepTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const moodRef = useRef<ZaiMood>("idle");
@@ -47,11 +50,15 @@ export function ZaiProvider({ children }: { children: ReactNode }) {
     return () => events.forEach(ev => window.removeEventListener(ev, wake));
   }, [scheduleSleep]);
 
-  return <ZaiContext.Provider value={{ mood, triggerMood }}>{children}</ZaiContext.Provider>;
+  const setOnTap = useCallback((fn: (() => void) | null) => {
+    setOnTapState(() => fn);
+  }, []);
+
+  return <ZaiContext.Provider value={{ mood, triggerMood, onTap, setOnTap }}>{children}</ZaiContext.Provider>;
 }
 
 export function useZai() {
   const ctx = useContext(ZaiContext);
-  if (!ctx) return { mood: "idle" as ZaiMood, triggerMood: () => {} };
+  if (!ctx) return { mood: "idle" as ZaiMood, triggerMood: () => {}, onTap: null, setOnTap: () => {} };
   return ctx;
 }

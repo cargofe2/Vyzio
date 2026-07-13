@@ -527,3 +527,17 @@ model Feedback {
 
   @@map("feedback")
 }
+
+model LevelResource {
+  id          String   @id @default(cuid())
+  levelId     String
+  type        String   // "video" | "article" | "diagram"
+  title       String
+  description String?
+  url         String?  // para video/article
+  content     Json?    // para diagrama: { blocks: [...] } estructura simple de nodos/conexiones
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@map("level_resources")
+}

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
-type Block = { type: string; text?: string; url?: string; alt?: string };
+type Block = { type: string; text?: string; url?: string; alt?: string; terms?: { term: string; def: string }[] };
 interface Quiz { id: string; question: string; options: string[]; correctIndex: number; explanation: string; order: number; }
 interface LessonDetail {
   id: string; title: string; description: string | null; content: { blocks: Block[] } | null;
@@ -16,7 +16,7 @@ const btn: React.CSSProperties = { padding: "6px 12px", background: "#7B61FF", c
 const btnGhost: React.CSSProperties = { ...btn, background: "#324055" };
 const btnDanger: React.CSSProperties = { ...btn, background: "#FF6B6B" };
 const inputStyle: React.CSSProperties = { background: "#0F1420", border: "1px solid #324055", borderRadius: "8px", padding: "8px 10px", color: "#F8FAFF", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", width: "100%", boxSizing: "border-box" };
-const BLOCK_TYPES = ["text", "heading", "callout", "tip", "image"];
+const BLOCK_TYPES = ["text", "heading", "callout", "tip", "image", "glossary"];
 
 export default function AdminLessonPage() {
   const { id } = useParams<{ id: string }>();
@@ -169,6 +169,23 @@ export default function AdminLessonPage() {
                   <input style={inputStyle} placeholder="URL de imagen" value={b.url ?? ""} onChange={e => updateBlock(i, { url: e.target.value })} />
                   <input style={inputStyle} placeholder="Texto alternativo" value={b.alt ?? ""} onChange={e => updateBlock(i, { alt: e.target.value })} />
                 </>
+              ) : b.type === "glossary" ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  {(b.terms ?? []).map((t, ti) => (
+                    <div key={ti} style={{ display: "flex", gap: "6px" }}>
+                      <input style={{ ...inputStyle, width: "140px" }} placeholder="Término" value={t.term} onChange={e => {
+                        const next = [...(b.terms ?? [])]; next[ti] = { ...next[ti], term: e.target.value }; updateBlock(i, { terms: next });
+                      }} />
+                      <input style={inputStyle} placeholder="Definición breve" value={t.def} onChange={e => {
+                        const next = [...(b.terms ?? [])]; next[ti] = { ...next[ti], def: e.target.value }; updateBlock(i, { terms: next });
+                      }} />
+                      <button style={{ ...btnDanger, padding: "4px 8px" }} onClick={() => {
+                        const next = (b.terms ?? []).filter((_, idx) => idx !== ti); updateBlock(i, { terms: next });
+                      }}>×</button>
+                    </div>
+                  ))}
+                  <button style={btnGhost} onClick={() => updateBlock(i, { terms: [...(b.terms ?? []), { term: "", def: "" }] })}>+ Término</button>
+                </div>
               ) : (
                 <textarea style={{ ...inputStyle, minHeight: "70px" }} placeholder="Texto (soporta **negrita**)" value={b.text ?? ""} onChange={e => updateBlock(i, { text: e.target.value })} />
               )}

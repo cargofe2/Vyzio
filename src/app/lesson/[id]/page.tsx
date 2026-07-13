@@ -13,7 +13,7 @@ interface QuizQuestion {
 }
 interface Lesson {
   id: string; number: number; title: string; type: string;
-  content: { blocks: Array<{ type: string; text?: string; url?: string; alt?: string }> } | null;
+  content: { blocks: Array<{ type: string; text?: string; url?: string; alt?: string; terms?: { term: string; def: string }[] }> } | null;
   durationMin: number; xpReward: number;
   world: { id: string; name: string; emoji: string };
   quizQuestions: QuizQuestion[];
@@ -520,6 +520,19 @@ if (block.type === "level_map") return <LevelMapInteractive key={i} />;
                 <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
                   <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
+                </div>
+              );
+              if (block.type === "glossary") return (
+                <div key={i} style={{ padding: "16px", borderRadius: "14px", background: "#161C27", border: "1px solid #324055", marginBottom: "16px", marginTop: "8px" }}>
+                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>📖 Glosario de esta lección</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {(block.terms ?? []).map((t, ti) => (
+                      <div key={ti}>
+                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>{t.term}</p>
+                        <p style={{ fontSize: "13px", lineHeight: 1.5, color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans',sans-serif" }}>{t.def}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               );
               return null;

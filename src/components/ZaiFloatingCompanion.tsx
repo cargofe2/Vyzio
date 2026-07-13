@@ -14,8 +14,13 @@ const SPOTS: { bottom: string; left?: string; right?: string }[] = [
 ];
 
 export default function ZaiFloatingCompanion() {
-  const { mood } = useZai();
+  const { mood, onTap } = useZai();
   const router = useRouter();
+
+  function handleClick() {
+    if (onTap) onTap();
+    else router.push("/vy");
+  }
   const [spotIndex, setSpotIndex] = useState(0);
 
   // Cambia de posición cada tanto, solo mientras está despierto e inactivo (no interrumpe reacciones)
@@ -31,8 +36,8 @@ export default function ZaiFloatingCompanion() {
 
   return (
     <button
-      onClick={() => router.push("/vy")}
-      aria-label="Hablar con ZAI"
+      onClick={handleClick}
+      aria-label={onTap ? "Pídele a ZAI que profundice esta lección" : "Hablar con ZAI"}
       style={{
         position: "fixed", zIndex: 90,
         bottom: spot.bottom, left: spot.left, right: spot.right,
@@ -43,7 +48,12 @@ export default function ZaiFloatingCompanion() {
         transition: "bottom 1.4s cubic-bezier(0.4,0,0.2,1), left 1.4s cubic-bezier(0.4,0,0.2,1), right 1.4s cubic-bezier(0.4,0,0.2,1)",
       }}
     >
-      <ZaiCompanion mood={mood} size={52} />
+      <div style={{ position: "relative" }}>
+        <ZaiCompanion mood={mood} size={52} />
+        {onTap && (
+          <span style={{ position: "absolute", top: "-2px", right: "-2px", width: "14px", height: "14px", borderRadius: "50%", background: "#36D399", border: "2px solid #0F1420", animation: "zaiRingPulseGreen 1.6s ease-out infinite" }} />
+        )}
+      </div>
     </button>
   );
 }
