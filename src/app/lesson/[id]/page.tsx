@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 import ZaiCompanion from "@/components/ZaiCompanion";
 import { useZai } from "@/lib/ZaiContext";
@@ -63,12 +63,11 @@ function LevelMapInteractive() {
   );
 }export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [phase, setPhase] = useState<"reading" | "quiz" | "done" | "diagnostic-result">("reading");
   const { triggerMood, setOnTap } = useZai();
-  const [zaiExpansion, setZaiExpansion] = useState<string | null>(null);
-  const [zaiExpanding, setZaiExpanding] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
@@ -97,27 +96,14 @@ function LevelMapInteractive() {
 
   async function askZaiToExpand() {
     if (!lesson) return;
-    setZaiExpanding(true);
-    try {
-      const plainText = (lesson.content?.blocks ?? [])
-        .filter(b => b.type === "text" || b.type === "heading" || b.type === "callout" || b.type === "tip")
-        .map(b => b.text)
-        .filter(Boolean)
-        .join(" ");
-      const askedBefore = zaiExpansion ? " Dame un ejemplo distinto al que ya me diste, no repitas el mismo caso." : "";
-      const prompt = `Estoy en la lección "${lesson.title}". Contenido: "${plainText.slice(0, 1500)}". Amplía esto con más detalle y dame al menos un ejemplo práctico adicional, concreto (con datos/nombres específicos, no genérico).${askedBefore}`;
-      const res = await fetch("/api/vy", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: prompt }),
-      });
-      const data = await res.json();
-      if (res.ok) setZaiExpansion(data.message);
-      else setZaiExpansion(data.message ?? "No pude conectar con ZAI ahora mismo. Intenta de nuevo.");
-    } catch {
-      setZaiExpansion("No pude conectar con ZAI ahora mismo. Intenta de nuevo.");
-    } finally {
-      setZaiExpanding(false);
-    }
+    const plainText = (lesson.content?.blocks ?? [])
+      .filter(b => b.type === "text" || b.type === "heading" || b.type === "callout" || b.type === "tip")
+      .map(b => b.text)
+      .filter(Boolean)
+      .join(" ");
+    const prompt = `Estoy en la lección "${lesson.title}". Contenido: "${plainText.slice(0, 1500)}". Amplía esto con más detalle y dame al menos un ejemplo práctico adicional, concreto (con datos/nombres específicos, no genérico).`;
+    sessionStorage.setItem("zai_pending_prompt", prompt);
+    router.push("/vy");
   }
 
   useEffect(() => {
@@ -128,7 +114,7 @@ function LevelMapInteractive() {
     }
     return () => setOnTap(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lesson, phase, zaiExpansion]);
+  }, [lesson, phase]);
 
   async function completeReading() {
     if (!lesson) return;
@@ -574,17 +560,6 @@ if (block.type === "level_map") return <LevelMapInteractive key={i} />;
               );
               return null;
             })}
-            {zaiExpansion && (
-              <div style={{ marginTop: "20px", padding: "16px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.2)" }}>
-                <p style={{ fontSize: "11px", fontWeight: 700, color: "#A78BFA", marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>💬 ZAI profundiza</p>
-                <p style={{ fontSize: "14px", lineHeight: 1.7, color: "rgba(255,255,255,0.85)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "pre-wrap" }}
-                  dangerouslySetInnerHTML={{ __html: zaiExpansion.replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
-                <p style={{ marginTop: "10px", fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Toca a ZAI de nuevo para pedirle otro ejemplo distinto.</p>
-              </div>
-            )}
-            {zaiExpanding && !zaiExpansion && (
-              <p style={{ marginTop: "16px", fontSize: "12px", color: "#7E8798", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>ZAI está pensando...</p>
-            )}
           </>
         )}
       </div>
