@@ -246,18 +246,17 @@ function WorldsContent() {
       setLoading(true);
       try {
         if (worldId) {
-          const [worldsRes, lessonsRes] = await Promise.all([
-            fetch(`/api/lessons?levelId=${levelId}`),
-            fetch(`/api/lessons?worldId=${worldId}`),
-          ]);
-          if (worldsRes.ok) {
-            const d = await worldsRes.json();
-            setWorlds(d.worlds ?? []);
-          }
+          const lessonsRes = await fetch(`/api/lessons?worldId=${worldId}`);
+          let realLevelId = levelId;
           if (lessonsRes.ok) {
             const d = await lessonsRes.json();
             setLessons(d.lessons ?? []);
-            if (d.world) setSelectedWorld(d.world);
+            if (d.world) { setSelectedWorld(d.world); if (d.world.levelId) realLevelId = d.world.levelId; }
+          }
+          const worldsRes = await fetch(`/api/lessons?levelId=${realLevelId}`);
+          if (worldsRes.ok) {
+            const d = await worldsRes.json();
+            setWorlds(d.worlds ?? []);
           }
         } else {
           const res = await fetch(`/api/lessons?levelId=${levelId}`);
