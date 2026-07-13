@@ -3,7 +3,7 @@ import { useEffect, useState, Suspense, ReactElement } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; }
+interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
 interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
 
 const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
@@ -253,9 +253,12 @@ function WorldsContent() {
           if (worldsRes.ok) {
             const d = await worldsRes.json();
             setWorlds(d.worlds ?? []);
-            setSelectedWorld(d.worlds?.find((w: World) => w.id === worldId) ?? null);
           }
-          if (lessonsRes.ok) { const d = await lessonsRes.json(); setLessons(d.lessons ?? []); }
+          if (lessonsRes.ok) {
+            const d = await lessonsRes.json();
+            setLessons(d.lessons ?? []);
+            if (d.world) setSelectedWorld(d.world);
+          }
         } else {
           const res = await fetch(`/api/lessons?levelId=${levelId}`);
           if (res.ok) { const d = await res.json(); setWorlds(d.worlds ?? []); }
@@ -290,7 +293,7 @@ function WorldsContent() {
                 <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
               </div>
             </div>
-            <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link href={`/level-resources/${selectedWorld?.levelId ?? levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
                 <span style={{ fontSize: "16px" }}>📚</span>
                 <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>

@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
 
     // Get lessons for a world
     if (worldId) {
+      const world = await prisma.world.findUnique({ where: { id: worldId } });
       const lessons = await prisma.lesson.findMany({
         where: { worldId, isPublished: true },
         orderBy: { order: "asc" },
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest) {
       }
 
       return NextResponse.json({
+        world,
         lessons: lessons.map((l: any) => ({
           ...l,
           progress: lessonProgress[l.id] ?? null,
