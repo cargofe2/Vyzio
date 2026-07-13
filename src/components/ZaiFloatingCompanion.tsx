@@ -6,11 +6,11 @@ import ZaiCompanion from "@/components/ZaiCompanion";
 
 // Posiciones seguras en pantalla (evita el navbar inferior, el header, y el botón de feedback en bottom-right)
 const SPOTS: { bottom: string; left?: string; right?: string }[] = [
-  { bottom: "76px", left: "16px" },
-  { bottom: "76px", left: "50%" },
-  { bottom: "140px", left: "16px" },
-  { bottom: "140px", right: "16px" },
-  { bottom: "220px", left: "20px" },
+  { bottom: "100px", left: "16px" },
+  { bottom: "100px", left: "50%" },
+  { bottom: "160px", left: "16px" },
+  { bottom: "160px", right: "16px" },
+  { bottom: "240px", left: "20px" },
 ];
 
 export default function ZaiFloatingCompanion() {
@@ -39,7 +39,7 @@ export default function ZaiFloatingCompanion() {
       onClick={handleClick}
       aria-label={onTap ? "Pídele a ZAI que profundice esta lección" : "Hablar con ZAI"}
       style={{
-        position: "fixed", zIndex: 90,
+        position: "fixed", zIndex: 500,
         bottom: spot.bottom, left: spot.left, right: spot.right,
         transform: spot.left === "50%" ? "translateX(-50%)" : undefined,
         width: "52px", height: "52px", border: "none", background: "transparent",
