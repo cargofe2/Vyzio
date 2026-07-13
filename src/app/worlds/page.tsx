@@ -6,6 +6,12 @@ import { useSearchParams } from "next/navigation";
 interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
 interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
 
+const LEVEL_NAMES: Record<string, string> = {
+  "level-1": "Nivel 0 · Origins", "level-new-1": "Nivel 1 · Explorer", "level-new-2": "Nivel 2 · Thinker",
+  "level-new-3": "Nivel 3 · Creator", "level-new-4": "Nivel 4 · Builder", "level-new-5": "Nivel 5 · Architect",
+  "level-new-6": "Nivel 6 · Founder", "level-new-7": "Nivel 7 · Researcher", "level-new-8": "Nivel 8 · Residency",
+};
+
 const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string; icon: string }> = {
   VIDEO: { label: "Video", color: "#F87171", bg: "rgba(248,113,113,0.1)", icon: "▶" },
   READING: { label: "Lectura", color: "#7DD3FC", bg: "rgba(125,211,252,0.1)", icon: "📖" },
@@ -287,8 +293,9 @@ function WorldsContent() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
               <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
-              <div>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px" }}>{selectedWorld?.name ?? "Mundo"}</p>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ fontSize: "10px", color: v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "1px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{selectedWorld?.name ?? "Mundo"}</p>
                 <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
               </div>
             </div>
