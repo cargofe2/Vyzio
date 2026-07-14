@@ -36,7 +36,6 @@ export default function VYPage() {
 
   useEffect(() => {
     const pending = sessionStorage.getItem("zai_pending_prompt");
-    console.log("[ZAI DEBUG] /vy montado. prompt pendiente:", pending ? "SI" : "NO");
     if (pending) {
       sessionStorage.removeItem("zai_pending_prompt");
       send(pending);

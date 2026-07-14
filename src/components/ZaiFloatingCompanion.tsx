@@ -28,7 +28,6 @@ export default function ZaiFloatingCompanion() {
   const spot = SPOTS[spotIndex];
 
   function handleClick(e: React.MouseEvent) {
-    console.log("[ZAI DEBUG] boton clickeado. onTap existe:", !!onTap);
     e.preventDefault();
     e.stopPropagation();
     if (onTap) onTap();
