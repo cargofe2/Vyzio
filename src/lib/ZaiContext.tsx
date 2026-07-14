@@ -11,8 +11,7 @@ interface ZaiContextValue {
 }
 
 const ZaiContext = createContext<ZaiContextValue | null>(null);
-
-const SLEEP_AFTER_MS = 25000; // dormir tras 25s sin actividad ni reacciones
+const SLEEP_AFTER_MS = 25000;
 
 export function ZaiProvider({ children }: { children: ReactNode }) {
   const [mood, setMood] = useState<ZaiMood>("idle");
@@ -38,7 +37,10 @@ export function ZaiProvider({ children }: { children: ReactNode }) {
     scheduleSleep();
   }, [scheduleSleep]);
 
-  // Despierta con cualquier actividad del usuario en la página
+  const setOnTap = useCallback((fn: (() => void) | null) => {
+    setOnTapState(() => fn);
+  }, []);
+
   useEffect(() => {
     scheduleSleep();
     function wake() {
@@ -49,10 +51,6 @@ export function ZaiProvider({ children }: { children: ReactNode }) {
     events.forEach(ev => window.addEventListener(ev, wake, { passive: true }));
     return () => events.forEach(ev => window.removeEventListener(ev, wake));
   }, [scheduleSleep]);
-
-  const setOnTap = useCallback((fn: (() => void) | null) => {
-    setOnTapState(() => fn);
-  }, []);
 
   return <ZaiContext.Provider value={{ mood, triggerMood, onTap, setOnTap }}>{children}</ZaiContext.Provider>;
 }

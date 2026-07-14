@@ -95,6 +95,7 @@ function LevelMapInteractive() {
   }, [id]);
 
   async function askZaiToExpand() {
+    console.log("[ZAI DEBUG] askZaiToExpand ejecutado. lesson:", lesson?.title);
     if (!lesson) return;
     const plainText = (lesson.content?.blocks ?? [])
       .filter(b => b.type === "text" || b.type === "heading" || b.type === "callout" || b.type === "tip")
@@ -103,11 +104,14 @@ function LevelMapInteractive() {
       .join(" ");
     const prompt = `Estoy en la lección "${lesson.title}". Contenido: "${plainText.slice(0, 1500)}". Amplía esto con más detalle y dame al menos un ejemplo práctico adicional, concreto (con datos/nombres específicos, no genérico).`;
     sessionStorage.setItem("zai_pending_prompt", prompt);
+    console.log("[ZAI DEBUG] navegando a /vy...");
     router.push("/vy");
   }
 
   useEffect(() => {
-    if (lesson && phase === "reading" && lesson.type !== "PROJECT" && !IS_PROFILE_SETUP(id)) {
+    const shouldRegister = lesson && phase === "reading" && lesson.type !== "PROJECT" && !IS_PROFILE_SETUP(id);
+    console.log("[ZAI DEBUG] registro onTap:", !!shouldRegister, "lesson:", !!lesson, "phase:", phase, "type:", lesson?.type);
+    if (shouldRegister) {
       setOnTap(() => askZaiToExpand);
     } else {
       setOnTap(null);
