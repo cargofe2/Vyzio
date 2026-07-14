@@ -40,6 +40,14 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🚗": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 15.5V12l1.8-4.2A2 2 0 0 1 8.1 6.5h7.8a2 2 0 0 1 1.8 1.3L19.5 12v3.5"/><path d="M4.5 15.5h15v2a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-1h-9v1a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1v-2Z"/><circle cx="8" cy="15.5" r="1.3"/><circle cx="16" cy="15.5" r="1.3"/><path d="M6.5 11h11"/></svg>,
   "🌱": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21V11"/><path d="M12 12c0-3.5-2.5-6-7-6.5C5.3 10 7.5 12.3 12 12Z"/><path d="M12 9c0-2.8 2-4.8 5.5-5.2C17.8 7.3 16 9.3 12 9Z"/></svg>,
   "⚖️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v17M8.3 20h7.4"/><circle cx="12" cy="4.5" r="1.3" fill="currentColor" stroke="none"/><path d="M12 6.5L5.5 9l3.3 5.8L12 6.5ZM12 6.5l6.5 2.5-3.3 5.8L12 6.5Z"/></svg>,
+  "🧭": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-1.7 5.1-5.1 1.7 1.7-5.1 5.1-1.7Z"/></svg>,
+  "🧠": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 4.5c-2 0-3.5 1.5-3.5 3.5-1.3.4-2 1.6-2 3s.7 2.7 2 3.1c0 2.1 1.5 3.9 3.5 3.9M8.5 4.5c1.3 0 2.4.7 3 1.7M8.5 4.5v13.5M15.5 4.5c2 0 3.5 1.5 3.5 3.5 1.3.4 2 1.6 2 3s-.7 2.7-2 3.1c0 2.1-1.5 3.9-3.5 3.9M15.5 4.5c-1.3 0-2.4.7-3 1.7M15.5 4.5v13.5"/></svg>,
+  "🎨": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.5C7.3 3.5 3.5 7.3 3.5 12c0 4.4 3.6 8.5 8.5 8.5.9 0 1.3-.5 1.3-1.1 0-.4-.1-.7-.4-.9-.2-.3-.4-.6-.4-.9 0-.6.5-1.1 1.1-1.1h1.4c3 0 5.5-2.5 5.5-5.5 0-4.1-3.6-7.5-8.5-7.5Z"/></svg>,
+  "🛠️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>,
+  "🏗️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20V10l5-2.5V20M9 20V4.5L14 2v18M14 20V9l5-1.5V20"/><path d="M3 20h18"/></svg>,
+  "🚀": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5c2.8 1.6 4.5 4.9 4.5 8.3 0 1.9-.6 3.6-1.6 5L12 19l-2.9-3.2c-1-1.4-1.6-3.1-1.6-5 0-3.4 1.7-6.7 4.5-8.3Z"/><circle cx="12" cy="10.5" r="1.5"/></svg>,
+  "🔬": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 3.5v6L6.3 16.8A2.3 2.3 0 0 0 8.3 20.2h7.4a2.3 2.3 0 0 0 2-3.4L14 9.5v-6"/><path d="M8.7 3.5h6.6M7.5 15h9"/></svg>,
+  "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
 };
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
@@ -205,26 +213,29 @@ export default function DashboardPage() {
       {/* Level Tabs */}
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "0 16px 14px" }}>
         {[
-          { id: "level-1", label: "Nivel 0 · Origins" },
-          { id: "level-new-1", label: "Nivel 1 · Explorer" },
-          { id: "level-new-2", label: "Nivel 2 · Thinker" },
-          { id: "level-new-3", label: "Nivel 3 · Creator" },
-          { id: "level-new-4", label: "Nivel 4 · Builder" },
-          { id: "level-new-5", label: "Nivel 5 · Architect" },
-          { id: "level-new-6", label: "Nivel 6 · Founder" },
-          { id: "level-new-7", label: "Nivel 7 · Researcher" },
-          { id: "level-new-8", label: "Nivel 8 · Residency" },
-        ].map((lvl, i) => (
-          <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>
-            <div style={{
-              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
-              background: i === 0 ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
-              border: "1px solid rgba(123,97,255,0.25)",
-              color: "#fff", fontSize: "11px", fontWeight: 600,
-              fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-            }}>{lvl.label}</div>
-          </Link>
-        ))}
+          { id: "level-1", label: "Origins", icon: "🌱" },
+          { id: "level-new-1", label: "Explorer", icon: "🧭" },
+          { id: "level-new-2", label: "Thinker", icon: "🧠" },
+          { id: "level-new-3", label: "Creator", icon: "🎨" },
+          { id: "level-new-4", label: "Builder", icon: "🛠️" },
+          { id: "level-new-5", label: "Architect", icon: "🏗️" },
+          { id: "level-new-6", label: "Founder", icon: "🚀" },
+          { id: "level-new-7", label: "Researcher", icon: "🔬" },
+          { id: "level-new-8", label: "Residency", icon: "🎓" },
+        ].map((lvl, i) => {
+          const lv = getV(i === 0 ? 0 : i);
+          return (
+            <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>
+              <div style={{
+                flexShrink: 0, display: "flex", alignItems: "center", gap: "6px", padding: "7px 13px", borderRadius: "999px",
+                background: i === 0 ? lv.bg : "rgba(123,97,255,0.06)",
+                border: i === 0 ? `1px solid ${lv.border}` : "1px solid rgba(123,97,255,0.15)",
+                color: i === 0 ? lv.color : "rgba(255,255,255,0.55)", fontSize: "12px", fontWeight: 700,
+                fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
+              }}><span style={{ display: "flex" }}>{renderWorldIcon(lvl.icon, 15)}</span>{lvl.label}</div>
+            </Link>
+          );
+        })}
       </div>
 
       <div style={{ padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
