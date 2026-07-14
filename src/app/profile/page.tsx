@@ -169,16 +169,6 @@ export default function ProfilePage() {
 
       <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
 
-        {/* Certificado */}
-        <div style={{ background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🎓</div>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Certificados</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Completa un nivel para obtener tu certificado</p>
-          </div>
-          <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Ir →</Link>
-        </div>
-
         {/* Nivel actual */}
         <Link href={`/worlds?levelId=${currentLevel?.id ?? "level-1"}`} style={{ textDecoration: "none" }}>
           <div style={{ background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
@@ -189,6 +179,16 @@ export default function ProfilePage() {
             </div>
           </div>
         </Link>
+
+        {/* Certificado */}
+        <div style={{ background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🎓</div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Certificados</p>
+            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Completa un nivel para obtener tu certificado</p>
+          </div>
+          <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Ir →</Link>
+        </div>
 
         {/* Certificados */}
         <section style={{ marginBottom: "20px" }}>

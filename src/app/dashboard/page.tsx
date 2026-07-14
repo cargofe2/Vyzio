@@ -197,8 +197,8 @@ export default function DashboardPage() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "14px" }}>
           {[
-            { v: xp.toLocaleString(), l: "XP", c: "#F2C04D" },
             { v: `${LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"} ${currentLevel?.name ?? "Origins"}`, l: "Nivel", c: "#7B61FF", small: true, href: `/worlds?levelId=${currentLevel?.id ?? "level-1"}` },
+            { v: xp.toLocaleString(), l: "XP", c: "#F2C04D" },
             { v: `${gamification?.lessonsCompleted ?? 0}`, l: "Lecciones", c: "#26C6DA" },
             { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#F472B6" },
           ].map(({ v, l, c, small, href }) => {
