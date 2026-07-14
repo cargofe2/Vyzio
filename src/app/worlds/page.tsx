@@ -181,6 +181,8 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🚗": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 15.5V12l1.8-4.2A2 2 0 0 1 8.1 6.5h7.8a2 2 0 0 1 1.8 1.3L19.5 12v3.5"/><path d="M4.5 15.5h15v2a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-1h-9v1a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1v-2Z"/><circle cx="8" cy="15.5" r="1.3"/><circle cx="16" cy="15.5" r="1.3"/><path d="M6.5 11h11"/></svg>,
   "🌱": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21V11"/><path d="M12 12c0-3.5-2.5-6-7-6.5C5.3 10 7.5 12.3 12 12Z"/><path d="M12 9c0-2.8 2-4.8 5.5-5.2C17.8 7.3 16 9.3 12 9Z"/></svg>,
   "🌍": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.3 2.2 3.7 5 3.7 8s-1.4 5.8-3.7 8c-2.3-2.2-3.7-5-3.7-8s1.4-5.8 3.7-8Z"/></svg>,
+  "🏗️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20V10l5-2.5V20M9 20V4.5L14 2v18M14 20V9l5-1.5V20"/><path d="M3 20h18"/></svg>,
+  "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
 };
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
@@ -384,26 +386,27 @@ function WorldsContent() {
 
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
         {[
-          { id: "level-1", label: "Nivel 0 · Origins", free: true },
-          { id: "level-new-1", label: "Nivel 1 · Explorer", free: false },
-          { id: "level-new-2", label: "Nivel 2 · Thinker", free: false },
-          { id: "level-new-3", label: "Nivel 3 · Creator", free: false },
-          { id: "level-new-4", label: "Nivel 4 · Builder", free: false },
-          { id: "level-new-5", label: "Nivel 5 · Architect", free: false },
-          { id: "level-new-6", label: "Nivel 6 · Founder", free: false },
-          { id: "level-new-7", label: "Nivel 7 · Researcher", free: false },
-          { id: "level-new-8", label: "Nivel 8 · Residency", free: false },
-        ].map(lvl => {
+          { id: "level-1", label: "Origins", icon: "🌱", free: true },
+          { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
+          { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
+          { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
+          { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
+          { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
+          { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
+          { id: "level-new-7", label: "Researcher", icon: "🔬", free: false },
+          { id: "level-new-8", label: "Residency", icon: "🎓", free: false },
+        ].map((lvl, i) => {
           const locked = !lvl.free && plan === "STARTER" && !evalMode;
           const active = lvl.id === levelId;
+          const lv = getV(0, lvl.id);
           const content = (
             <div style={{
-              flexShrink: 0, padding: "6px 12px", borderRadius: "999px",
-              background: locked ? "rgba(255,255,255,0.04)" : active ? "rgba(123,97,255,0.3)" : "rgba(123,97,255,0.1)",
-              border: locked ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(123,97,255,0.25)",
-              color: locked ? "rgba(255,255,255,0.35)" : "#fff", fontSize: "11px", fontWeight: 600,
+              flexShrink: 0, display: "flex", alignItems: "center", gap: "6px", padding: "7px 13px", borderRadius: "999px",
+              background: locked ? "rgba(255,255,255,0.04)" : active ? lv.bg : "rgba(123,97,255,0.06)",
+              border: locked ? "1px solid rgba(255,255,255,0.08)" : active ? `1px solid ${lv.border}` : "1px solid rgba(123,97,255,0.15)",
+              color: locked ? "rgba(255,255,255,0.35)" : active ? lv.color : "rgba(255,255,255,0.55)", fontSize: "12px", fontWeight: 700,
               fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-            }}>{locked && "🔒 "}{lvl.label}{locked && " · Pro"}</div>
+            }}><span style={{ display: "flex" }}>{locked ? <span style={{fontSize:"13px"}}>🔒</span> : renderWorldIcon(lvl.icon, 15)}</span>{lvl.label}{locked && <span style={{ opacity: 0.7 }}>· Pro</span>}</div>
           );
           return locked
             ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
