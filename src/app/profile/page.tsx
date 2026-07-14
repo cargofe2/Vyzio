@@ -5,6 +5,11 @@ import Link from "next/link";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 import { isSoundEnabled, setSoundEnabled, playClick } from "@/lib/sounds";
 
+const LEVEL_ICON: Record<string, string> = {
+  "level-1": "🌱", "level-new-1": "🧭", "level-new-2": "🧠", "level-new-3": "🎨",
+  "level-new-4": "🛠️", "level-new-5": "🏗️", "level-new-6": "🚀", "level-new-7": "🔬", "level-new-8": "🎓",
+};
+
 interface Gamification { xpTotal: number; rank: string; rankLevel: number; streakDays: number; lessonsCompleted: number; gems: number; vyCoins: number; }
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
 
@@ -45,6 +50,8 @@ export default function ProfilePage() {
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [avatarId, setAvatarId] = useState("orb-1");
+  const [plan, setPlan] = useState<string>("STARTER");
+  const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
   const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
   const [avatarSaving, setAvatarSaving] = useState(false);
@@ -101,11 +108,18 @@ export default function ProfilePage() {
     async function load() {
       try {
         const [gamRes, userRes] = await Promise.all([fetch("/api/gamification"), fetch("/api/user")]);
-        if (gamRes.ok) { const d = await gamRes.json(); setGamification(d.gamification); setAchievements(d.achievements ?? []); }
+        if (gamRes.ok) {
+          const d = await gamRes.json();
+          setGamification(d.gamification);
+          setAchievements(d.achievements ?? []);
+          const lvl = d.recentLessons?.[0]?.lesson?.world?.level;
+          setCurrentLevel(lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" });
+        }
         if (userRes.ok) {
           const d = await userRes.json();
           if (d.user?.avatarEmoji) setAvatarId(d.user.avatarEmoji);
           if (d.user?.unlockedAvatars) setUnlockedAvatars(d.user.unlockedAvatars);
+          setPlan(d.user?.subscription?.plan ?? "STARTER");
         }
       } catch (err) { console.error(err); } finally { setLoading(false); }
     }
@@ -165,14 +179,16 @@ export default function ProfilePage() {
           <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Ir →</Link>
         </div>
 
-        {/* Gemas */}
-        <div style={{ background: "rgba(196,181,253,0.07)", border: "1px solid rgba(196,181,253,0.15)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "40px", height: "40px", background: "rgba(196,181,253,0.1)", border: "1px solid rgba(196,181,253,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>💎</div>
-          <div>
-            <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{gamification?.gems ?? 0} Gemas</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Ganas gemas con quizzes perfectos</p>
+        {/* Nivel actual */}
+        <Link href={`/worlds?levelId=${currentLevel?.id ?? "level-1"}`} style={{ textDecoration: "none" }}>
+          <div style={{ background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "16px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>{LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}</div>
+            <div>
+              <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>Nivel {currentLevel?.name ?? "Origins"}</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>Donde vas ahora — toca para continuar</p>
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Certificados */}
         <section style={{ marginBottom: "20px" }}>

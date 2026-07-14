@@ -3,6 +3,11 @@ import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
+const LEVEL_ICON: Record<string, string> = {
+  "level-1": "🌱", "level-new-1": "🧭", "level-new-2": "🧠", "level-new-3": "🎨",
+  "level-new-4": "🛠️", "level-new-5": "🏗️", "level-new-6": "🚀", "level-new-7": "🔬", "level-new-8": "🎓",
+};
+
 interface Gamification {
   xpTotal: number; xpWeekly: number; gems: number; vyCoins: number;
   rank: string; rankLevel: number; streakDays: number;
@@ -102,6 +107,8 @@ export default function DashboardPage() {
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [worlds, setWorlds] = useState<World[]>([]);
+  const [plan, setPlan] = useState<string>("STARTER");
+  const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -114,14 +121,20 @@ export default function DashboardPage() {
           window.location.href = `/excluido?razon=${encodeURIComponent(d.reason ?? "")}`;
           return;
         }
+        if (userRes.ok) {
+          const { user: u } = await userRes.json();
+          setPlan(u?.subscription?.plan ?? "STARTER");
+        }
         const [gamRes, worldRes] = await Promise.all([
           fetch("/api/gamification"),
           fetch("/api/lessons?levelId=level-1"),
         ]);
         if (gamRes.ok) {
-          const { gamification: g, missions: m } = await gamRes.json();
+          const { gamification: g, missions: m, recentLessons } = await gamRes.json();
           setGamification(g);
           setMissions(m ?? []);
+          const lvl = recentLessons?.[0]?.lesson?.world?.level;
+          setCurrentLevel(lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" });
         }
         if (worldRes.ok) {
           const { worlds: w } = await worldRes.json();
@@ -185,15 +198,18 @@ export default function DashboardPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "14px" }}>
           {[
             { v: xp.toLocaleString(), l: "XP", c: "#F2C04D" },
-            { v: `💎 ${gamification?.gems ?? 0}`, l: "Gemas", c: "#7B61FF" },
+            { v: `${LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"} ${currentLevel?.name ?? "Origins"}`, l: "Nivel", c: "#7B61FF", small: true, href: `/worlds?levelId=${currentLevel?.id ?? "level-1"}` },
             { v: `${gamification?.lessonsCompleted ?? 0}`, l: "Lecciones", c: "#26C6DA" },
             { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#F472B6" },
-          ].map(({ v, l, c }) => (
-            <div key={l} style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "14px", padding: "10px", textAlign: "center", boxShadow: `0 0 12px ${c}25` }}>
-              <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", color: c }}>{v}</div>
-              <div style={{ fontSize: "9px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
-            </div>
-          ))}
+          ].map(({ v, l, c, small, href }) => {
+            const card = (
+              <div style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "14px", padding: "10px", textAlign: "center", boxShadow: `0 0 12px ${c}25`, cursor: href ? "pointer" : "default" }}>
+                <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: small ? "11px" : "15px", color: c, whiteSpace: "nowrap" }}>{v}</div>
+                <div style={{ fontSize: "9px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
+              </div>
+            );
+            return href ? <Link key={l} href={href} style={{ textDecoration: "none" }}>{card}</Link> : <div key={l}>{card}</div>;
+          })}
         </div>
 
         {/* XP Bar */}
