@@ -201,7 +201,7 @@ function NavBar({ active }: { active: string }) {
   const items = [
     { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
     { href: "/worlds", label: "Mundos", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
-    { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="4" strokeWidth="1.8"/><path d="M8 8L12 16L16 8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+    { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
     { href: "/community", label: "Liga", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
     { href: "/profile", label: "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
@@ -293,7 +293,7 @@ function WorldsContent() {
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "8px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Link href="/worlds" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+              <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
               <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
               <div style={{ minWidth: 0 }}>
                 <p style={{ fontSize: "10px", color: v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "1px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
@@ -369,7 +369,7 @@ function WorldsContent() {
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+            <Link href="/dashboard" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
             <div>
               <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
               <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{worlds.length} mundos · Gratis</p>
