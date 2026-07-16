@@ -312,7 +312,7 @@ function WorldsContent() {
               </div>
             </Link>
           </div>
-          <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px" }}>
+          <div style={{ height: "6px", background: "#FF00FF", borderRadius: "4px" }}>
             <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px", transition: "width 0.8s ease" }} />
           </div>
         </div>
@@ -461,7 +461,7 @@ function WorldsContent() {
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "6px" }}>{currentLevelInfo.desc}</p>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
+            <div style={{ flex: 1, height: "6px", background: "#FF00FF", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
               <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px" }} />
             </div>
             <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
@@ -517,7 +517,7 @@ function WorldsContent() {
                   {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
                 </div>
                 {pctW > 0 && (
-                  <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
+                  <div style={{ height: "6px", background: "#FF00FF", borderRadius: "4px", overflow: "hidden" }}>
                     <div style={{ height: "100%", width: `${pctW}%`, background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px" }} />
                   </div>
                 )}
