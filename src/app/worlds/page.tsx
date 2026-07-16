@@ -444,10 +444,7 @@ function WorldsContent() {
       {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "16px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
-          </div>
+          <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
           <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
               <span style={{ fontSize: "16px" }}>📚</span>
