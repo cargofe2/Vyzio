@@ -421,6 +421,20 @@ function WorldsContent() {
   }
 
   // Vista de mundos con iconos coloridos (Level Screen)
+  const LEVEL_DESC: Record<string, { desc: string; icon: string; free: boolean }> = {
+    "level-1": { desc: "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
+    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: false },
+    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: false },
+    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: false },
+    "level-new-4": { desc: "Construye sistemas de IA listos para producción.", icon: "🛠️", free: false },
+    "level-new-5": { desc: "Diseña arquitecturas de IA a gran escala.", icon: "🏗️", free: false },
+    "level-new-6": { desc: "Crea y escala tu propia organización.", icon: "🚀", free: false },
+    "level-new-7": { desc: "Investiga con rigor científico en IA.", icon: "🔬", free: false },
+    "level-new-8": { desc: "Aplica todo en un entorno real, con impacto real.", icon: "🎓", free: false },
+  };
+  const currentLevelInfo = LEVEL_DESC[levelId] ?? LEVEL_DESC["level-1"];
+  const worldsDoneCount = worlds.filter(w => Math.round((w.pctComplete ?? 0) * 100) >= 100).length;
+  const levelV = getV(0, levelId);
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
       {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
@@ -428,10 +442,7 @@ function WorldsContent() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-            <div>
-              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
-              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{worlds.length} mundos · Gratis</p>
-            </div>
+            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "16px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
           </div>
           <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
@@ -439,6 +450,24 @@ function WorldsContent() {
               <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
             </div>
           </Link>
+        </div>
+      </div>
+
+      {/* Ilustración + descripción + progreso del nivel */}
+      <div style={{ padding: "18px 16px 4px", display: "flex", alignItems: "center", gap: "14px" }}>
+        <div style={{ width: "64px", height: "64px", borderRadius: "20px", background: levelV.bg, border: `1px solid ${levelV.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: levelV.color, flexShrink: 0, fontSize: "30px" }}>
+          {renderWorldIcon(currentLevelInfo.icon, 32)}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "6px" }}>{currentLevelInfo.desc}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ flex: 1, height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "3px", overflow: "hidden", maxWidth: "160px" }}>
+              <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: levelV.grad, borderRadius: "3px" }} />
+            </div>
+            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+              {worldsDoneCount}/{worlds.length} mundos{currentLevelInfo.free ? " · Gratis" : ""}
+            </span>
+          </div>
         </div>
       </div>
 
