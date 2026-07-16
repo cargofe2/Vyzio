@@ -213,8 +213,8 @@ export default function DashboardPage() {
                   Nivel {levelNumber} {activeMission ? `· ${activeMission.name}` : ""}
                 </p>
 
-                <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "26px" }}>
-                  {LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}
+                <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor }}>
+                  {renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 28)}
                 </div>
 
                 <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
@@ -263,7 +263,7 @@ export default function DashboardPage() {
             <Link href="/profile" style={{ fontSize: "11px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, fontSize: "15px", flexShrink: 0 }}>{LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}</div>
+            <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 18)}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{rank}</p>
               <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
