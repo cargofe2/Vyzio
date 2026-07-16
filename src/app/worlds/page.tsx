@@ -312,8 +312,8 @@ function WorldsContent() {
               </div>
             </Link>
           </div>
-          <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
-            <div style={{ height: "100%", width: `${pct}%`, background: v.grad, borderRadius: "2px", transition: "width 0.8s ease" }} />
+          <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px" }}>
+            <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px", transition: "width 0.8s ease" }} />
           </div>
         </div>
 
