@@ -313,7 +313,7 @@ function WorldsContent() {
             </Link>
           </div>
           <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px" }}>
-            <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px", transition: "width 0.8s ease" }} />
+            <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px", transition: "width 0.8s ease" }} />
           </div>
         </div>
 
@@ -462,7 +462,7 @@ function WorldsContent() {
           <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "6px" }}>{currentLevelInfo.desc}</p>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
-              <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
+              <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px" }} />
             </div>
             <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
               {worldsDoneCount}/{worlds.length} mundos{currentLevelInfo.free ? " · Gratis" : ""}
@@ -518,7 +518,7 @@ function WorldsContent() {
                 </div>
                 {pctW > 0 && (
                   <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${pctW}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
+                    <div style={{ height: "100%", width: `${pctW}%`, background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px" }} />
                   </div>
                 )}
               </div>
