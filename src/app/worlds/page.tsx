@@ -517,8 +517,8 @@ function WorldsContent() {
                   {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
                 </div>
                 {pctW > 0 && (
-                  <div style={{ height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "3px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${pctW}%`, background: v.grad, borderRadius: "3px" }} />
+                  <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${pctW}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
                   </div>
                 )}
               </div>
