@@ -29,6 +29,12 @@ const RANK_COLORS: Record<string, string> = {
   PIONEER: "#FB923C", MASTER: "#A78BFA", LEGEND: "#FF6B6B", AI_TITAN: "#F2C04D",
 };
 
+const RANK_LABELS: Record<string, string> = {
+  NOVICE: "Novato", EXPLORER: "Explorer", CREATOR: "Creator", BUILDER: "Builder",
+  INNOVATOR: "Innovator", VISIONARY: "Visionary", PIONEER: "Pioneer", MASTER: "Master",
+  LEGEND: "Legend", AI_TITAN: "AI Titan",
+};
+
 const RANK_NEXT_XP: Record<string, number> = {
   NOVICE: 500, EXPLORER: 2000, CREATOR: 6000, BUILDER: 15000,
   INNOVATOR: 30000, VISIONARY: 55000, PIONEER: 90000, MASTER: 140000,
@@ -176,7 +182,7 @@ export default function DashboardPage() {
           <img src="/logo.png" alt="Bymyzai" width={32} height={32} style={{ borderRadius: "50%", flexShrink: 0 }} />
           <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "15px", letterSpacing: "0.5px" }}>Bymyzai</span>
           <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: 700, background: `${rankColor}22`, color: rankColor, fontFamily: "'DM Sans',sans-serif" }}>
-            {rank}
+            {RANK_LABELS[rank] ?? rank}
           </span>
         </div>
         <UserButton afterSignOutUrl="/" />
@@ -265,7 +271,7 @@ export default function DashboardPage() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
             <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 18)}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{rank}</p>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{RANK_LABELS[rank] ?? rank}</p>
               <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
             </div>
             <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
