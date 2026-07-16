@@ -298,7 +298,7 @@ function WorldsContent() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "8px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <Link href={`/worlds?levelId=${selectedWorld?.levelId ?? levelId}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-              <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
+              <span style={{ width: "48px", height: "48px", borderRadius: "16px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, flexShrink: 0 }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 26)}</span>
               <div style={{ minWidth: 0 }}>
                 <p style={{ fontSize: "10px", color: v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "1px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{selectedWorld?.name ?? "Mundo"}</p>
@@ -334,14 +334,14 @@ function WorldsContent() {
           </div>
         )}
 
-        <div style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: "7px" }}>
+        <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "9px" }}>
           {lessons.map((lesson, i) => {
             const done = lesson.progress?.completed ?? false;
             const isNext = !done && lessons.slice(0, i).every(l => l.progress?.completed);
             const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
             return (
               <Link key={lesson.id} href={`/lesson/${lesson.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 14px", borderRadius: "16px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", borderRadius: "18px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)" }}>
                   <div style={{ width: "36px", height: "36px", borderRadius: "11px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "rgba(52,211,153,0.12)" : typeCfg.bg, border: `1px solid ${done ? "rgba(52,211,153,0.2)" : typeCfg.color + "30"}`, fontFamily: "'Syne',sans-serif", fontSize: done ? "14px" : "16px", fontWeight: 800, color: done ? "#34D399" : typeCfg.color }}>
                     {done ? "✓" : typeCfg.icon}
                   </div>
