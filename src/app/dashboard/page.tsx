@@ -173,7 +173,7 @@ export default function DashboardPage() {
 
       {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
-        <p style={{ color: "#7E8798", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>
+        <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>
           Hola, {user?.firstName ?? "Estudiante"} 👋
         </p>
         <p style={{ color: "#F8FAFF", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>
@@ -192,7 +192,7 @@ export default function DashboardPage() {
           return (
             <Link href={missionHref} style={{ textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
-                <span style={{ display: "inline-block", fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", color: "#C4B5FD", background: "rgba(123,97,255,0.25)", padding: "4px 10px", borderRadius: "999px", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
+                <span style={{ display: "inline-block", fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", color: "#D4C9FF", background: "rgba(139,117,255,0.25)", padding: "4px 10px", borderRadius: "999px", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
                   Misión actual
                 </span>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15 }}>
@@ -210,10 +210,10 @@ export default function DashboardPage() {
                   <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", color: "#F8FAFF" }}>{heroPct}%</span>
                 </div>
                 <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", marginBottom: "16px" }}>
-                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#7B61FF,#468BFF)", borderRadius: "4px" }} />
+                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
                 </div>
 
-                <div style={{ padding: "13px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", color: "#fff", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <div style={{ padding: "13px", background: "linear-gradient(135deg,#8B75FF,#468BFF)", color: "#0B0E16", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
                   <span style={{ fontSize: "11px" }}>▶</span> Continuar
                 </div>
               </div>
@@ -249,13 +249,13 @@ export default function DashboardPage() {
         <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
-            <Link href="/profile" style={{ fontSize: "11px", color: "#7B61FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
+            <Link href="/profile" style={{ fontSize: "11px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
             <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, fontSize: "15px", flexShrink: 0 }}>{LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{rank}</p>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
+              <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
             </div>
             <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
               <span style={{ fontSize: "10px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "3px 8px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} lecciones</span>
@@ -265,7 +265,7 @@ export default function DashboardPage() {
           <div style={{ height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
             <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease" }} />
           </div>
-          <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
+          <p style={{ fontSize: "9px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
         </div>
       </div>
 
@@ -275,7 +275,7 @@ export default function DashboardPage() {
 
         {/* Niveles */}
         <section>
-          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#8B94A8", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
             Tu camino
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
@@ -313,20 +313,20 @@ export default function DashboardPage() {
         {/* Misiones (restantes, sin repetir la promovida arriba) */}
         {missions.length > 1 && (
           <section>
-            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
+            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#8B94A8", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
               Otras misiones activas
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {missions.slice(1).map(m => (
                 <div key={m.id} style={{ background: "#1E2533", borderRadius: "16px", padding: "14px", border: "1px solid #324055", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-                  <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(123,97,255,0.12)", color: m.type === "DAILY" ? "#36D399" : "#7B61FF", fontFamily: "'DM Sans',sans-serif" }}>
+                  <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(123,97,255,0.12)", color: m.type === "DAILY" ? "#36D399" : "#8B75FF", fontFamily: "'DM Sans',sans-serif" }}>
                     {m.type === "DAILY" ? "Diaria" : "Semanal"}
                   </span>
                   <p style={{ fontSize: "12px", fontWeight: 600, color: "#F8FAFF", margin: "8px 0 6px", lineHeight: 1.3, fontFamily: "'DM Sans',sans-serif" }}>{m.name}</p>
                   <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
-                    <div style={{ height: "100%", width: `${Math.min((m.progress.current / m.targetValue) * 100, 100)}%`, background: "#7B61FF", borderRadius: "2px" }} />
+                    <div style={{ height: "100%", width: `${Math.min((m.progress.current / m.targetValue) * 100, 100)}%`, background: "#8B75FF", borderRadius: "2px" }} />
                   </div>
-                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue} · +{m.xpReward} XP</p>
+                  <p style={{ fontSize: "9px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue} · +{m.xpReward} XP</p>
                 </div>
               ))}
             </div>
