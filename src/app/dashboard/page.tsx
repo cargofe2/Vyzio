@@ -220,8 +220,8 @@ export default function DashboardPage() {
                 <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
                   <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", color: "#F8FAFF" }}>{heroPct}%</span>
                 </div>
-                <div style={{ height: "6px", background: "#FF00FF", borderRadius: "4px", overflow: "hidden", marginBottom: "16px" }}>
-                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#00FF00,#00FF00)", borderRadius: "4px" }} />
+                <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", marginBottom: "16px" }}>
+                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
                 </div>
 
                 <div style={{ padding: "13px", background: "linear-gradient(135deg,#8B75FF,#468BFF)", color: "#0B0E16", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
