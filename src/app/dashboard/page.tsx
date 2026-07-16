@@ -185,17 +185,65 @@ export default function DashboardPage() {
         <UserButton afterSignOutUrl="/" />
       </div>
 
-      {/* Hero */}
-      <div style={{ padding: "16px" }}>
-        <p style={{ color: "#7E8798", fontSize: "12px", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
+      {/* Hero — compact greeting */}
+      <div style={{ padding: "14px 16px 0" }}>
+        <p style={{ color: "#7E8798", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>
           Hola, {user?.firstName ?? "Estudiante"} 👋
         </p>
-        <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "20px", marginBottom: "16px" }}>
-          ¿Qué aprendemos hoy?
-        </p>
+      </div>
 
-        {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "14px" }}>
+      {/* Misión actual + Continuar */}
+      <div style={{ padding: "8px 16px 0" }}>
+        {(() => {
+          const activeMission = missions[0];
+          const missionHref = `/worlds?levelId=${currentLevel?.id ?? "level-1"}`;
+          return (
+            <Link href={missionHref} style={{ textDecoration: "none" }}>
+              <div style={{ background: "linear-gradient(135deg, rgba(123,97,255,0.14), rgba(70,139,255,0.08))", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "18px", padding: "14px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7B61FF", fontFamily: "'DM Sans',sans-serif", marginBottom: "4px" }}>
+                    {activeMission ? (activeMission.type === "DAILY" ? "Misión diaria" : "Misión semanal") : "Tu misión"}
+                  </p>
+                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "14px", color: "#F8FAFF", lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {activeMission ? activeMission.name : "¿Qué aprendemos hoy?"}
+                  </p>
+                  {activeMission && (
+                    <div style={{ height: "3px", background: "rgba(255,255,255,0.08)", borderRadius: "2px", marginTop: "8px", maxWidth: "200px" }}>
+                      <div style={{ height: "100%", width: `${Math.min((activeMission.progress.current / activeMission.targetValue) * 100, 100)}%`, background: "#7B61FF", borderRadius: "2px" }} />
+                    </div>
+                  )}
+                </div>
+                <div style={{ flexShrink: 0, padding: "9px 16px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", color: "#fff", borderRadius: "10px", fontSize: "12px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+                  Continuar
+                </div>
+              </div>
+            </Link>
+          );
+        })()}
+      </div>
+
+      {/* ZAI — compacto */}
+      <div style={{ padding: "10px 16px 0" }}>
+        <Link href="/vy" style={{ textDecoration: "none" }}>
+          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "16px", padding: "10px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ position: "relative", width: "28px", height: "28px", flexShrink: 0 }}>
+              <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
+              <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width={28 * 0.45} height={28 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+              </div>
+            </div>
+            <p style={{ flex: 1, fontSize: "12px", color: "#B3BDD1", fontFamily: "'DM Sans',sans-serif" }}>
+              Pregúntale algo a <span style={{ color: "#F8FAFF", fontWeight: 700 }}>ZAI</span>
+            </p>
+            <span style={{ fontSize: "11px", color: "#7B61FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>Hablar →</span>
+          </div>
+        </Link>
+      </div>
+
+      {/* Resumen de progreso — compacto */}
+      <div style={{ padding: "10px 16px 0" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "8px" }}>
           {[
             { v: `${LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"} ${currentLevel?.name ?? "Origins"}`, l: "Nivel", c: "#7B61FF", small: true, href: `/worlds?levelId=${currentLevel?.id ?? "level-1"}` },
             { v: xp.toLocaleString(), l: "XP", c: "#F2C04D" },
@@ -203,9 +251,9 @@ export default function DashboardPage() {
             { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#F472B6" },
           ].map(({ v, l, c, small, href }) => {
             const card = (
-              <div style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "14px", padding: "10px", textAlign: "center", boxShadow: `0 0 12px ${c}25`, cursor: href ? "pointer" : "default" }}>
-                <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: small ? "11px" : "15px", color: c, whiteSpace: "nowrap" }}>{v}</div>
-                <div style={{ fontSize: "9px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
+              <div style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "12px", padding: "8px", textAlign: "center", cursor: href ? "pointer" : "default" }}>
+                <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: small ? "10px" : "14px", color: c, whiteSpace: "nowrap" }}>{v}</div>
+                <div style={{ fontSize: "8px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
               </div>
             );
             return href ? <Link key={l} href={href} style={{ textDecoration: "none" }}>{card}</Link> : <div key={l}>{card}</div>;
@@ -225,6 +273,8 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* ----- Debajo del primer viewport: info secundaria ----- */}
 
       {/* Level Tabs */}
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "0 16px 14px" }}>
@@ -289,14 +339,14 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Misiones */}
-        {missions.length > 0 && (
+        {/* Misiones (restantes, sin repetir la promovida arriba) */}
+        {missions.length > 1 && (
           <section>
             <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-              Misiones activas
+              Otras misiones activas
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-              {missions.map(m => (
+              {missions.slice(1).map(m => (
                 <div key={m.id} style={{ background: "#1E2533", borderRadius: "14px", padding: "12px", border: "1px solid #324055" }}>
                   <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(123,97,255,0.12)", color: m.type === "DAILY" ? "#36D399" : "#7B61FF", fontFamily: "'DM Sans',sans-serif" }}>
                     {m.type === "DAILY" ? "Diaria" : "Semanal"}
@@ -311,24 +361,6 @@ export default function DashboardPage() {
             </div>
           </section>
         )}
-
-      {/* ZAI */}
-        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "16px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ position: "relative", width: "40px", height: "40px", flexShrink: 0 }}>
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
-            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width={40 * 0.45} height={40 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
-            </div>
-          </div>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 700, color: "#F8FAFF", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>ZAI — Tu tutor de IA</p>
-            <p style={{ fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Pregúntame cualquier cosa sobre IA</p>
-          </div>
-          <Link href="/vy" style={{ padding: "8px 14px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", color: "#fff", borderRadius: "10px", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
-            Hablar
-          </Link>
-        </div>
 
       </div>
 
