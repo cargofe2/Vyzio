@@ -106,7 +106,6 @@ export default function DashboardPage() {
   const { user, isLoaded } = useUser();
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
-  const [worlds, setWorlds] = useState<World[]>([]);
   const [plan, setPlan] = useState<string>("STARTER");
   const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -125,20 +124,13 @@ export default function DashboardPage() {
           const { user: u } = await userRes.json();
           setPlan(u?.subscription?.plan ?? "STARTER");
         }
-        const [gamRes, worldRes] = await Promise.all([
-          fetch("/api/gamification"),
-          fetch("/api/lessons?levelId=level-1"),
-        ]);
+        const gamRes = await fetch("/api/gamification");
         if (gamRes.ok) {
           const { gamification: g, missions: m, recentLessons } = await gamRes.json();
           setGamification(g);
           setMissions(m ?? []);
           const lvl = recentLessons?.[0]?.lesson?.world?.level;
           setCurrentLevel(lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" });
-        }
-        if (worldRes.ok) {
-          const { worlds: w } = await worldRes.json();
-          setWorlds(w ?? []);
         }
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -285,65 +277,41 @@ export default function DashboardPage() {
 
       {/* ----- Debajo del primer viewport: info secundaria ----- */}
 
-      {/* Level Tabs */}
-      <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "0 16px 14px" }}>
-        {[
-          { id: "level-1", label: "Origins", icon: "🌱" },
-          { id: "level-new-1", label: "Explorer", icon: "🧭" },
-          { id: "level-new-2", label: "Thinker", icon: "🧠" },
-          { id: "level-new-3", label: "Creator", icon: "🎨" },
-          { id: "level-new-4", label: "Builder", icon: "🛠️" },
-          { id: "level-new-5", label: "Architect", icon: "🏗️" },
-          { id: "level-new-6", label: "Founder", icon: "🚀" },
-          { id: "level-new-7", label: "Researcher", icon: "🔬" },
-          { id: "level-new-8", label: "Residency", icon: "🎓" },
-        ].map((lvl, i) => {
-          const lv = getV(i === 0 ? 0 : i);
-          return (
-            <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>
-              <div style={{
-                flexShrink: 0, display: "flex", alignItems: "center", gap: "6px", padding: "7px 13px", borderRadius: "999px",
-                background: i === 0 ? lv.bg : "rgba(123,97,255,0.06)",
-                border: i === 0 ? `1px solid ${lv.border}` : "1px solid rgba(123,97,255,0.15)",
-                color: i === 0 ? lv.color : "rgba(255,255,255,0.55)", fontSize: "12px", fontWeight: 700,
-                fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap",
-              }}><span style={{ display: "flex" }}>{renderWorldIcon(lvl.icon, 15)}</span>{lvl.label}</div>
-            </Link>
-          );
-        })}
-      </div>
+      <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "16px" }}>
 
-      <div style={{ padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
-
-        {/* Mundos */}
+        {/* Niveles */}
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-            Nivel 0 — Origins
+            Tu camino
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            {(worlds.length > 0 ? worlds : [
-              { id: "w1", name: "Bienvenido al Futuro", emoji: "🌍", lessonCount: 15, pctComplete: 0, order: 1 },
-              { id: "w2", name: "Historia de la IA", emoji: "📜", lessonCount: 15, pctComplete: 0, order: 2 },
-              { id: "w3", name: "IA en tu Vida", emoji: "🤖", lessonCount: 15, pctComplete: 0, order: 3 },
-              { id: "w4", name: "Prompt Engineering", emoji: "⚡", lessonCount: 15, pctComplete: 0, order: 4 },
-            ]).map(w => {
-              const pctW = Math.round((w.pctComplete ?? 0) * 100);
-              const done = pctW >= 100;
-              const v = getV(w.order);
-              return (
-                <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
-                  <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "20px", padding: "16px", position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-                    <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
-                    {done && <div style={{ position: "absolute", top: "10px", right: "10px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
-                    <div style={{ width: "42px", height: "42px", borderRadius: "13px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "12px" }}>{renderWorldIcon(w.emoji, 20)}</div>
-                    <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "10px", lineHeight: 1.3 }}>{w.name}</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
-                      {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
-                    </div>
+            {[
+              { id: "level-1", label: "Origins", icon: "🌱", free: true },
+              { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
+              { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
+              { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
+              { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
+              { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
+              { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
+              { id: "level-new-7", label: "Researcher", icon: "🔬", free: false },
+              { id: "level-new-8", label: "Residency", icon: "🎓", free: false },
+            ].map((lvl, i) => {
+              const locked = !lvl.free && plan === "STARTER";
+              const active = lvl.id === currentLevel?.id;
+              const lv = getV(i === 0 ? 0 : i);
+              const content = (
+                <div style={{ background: "#1E2533", border: locked ? "1px solid #324055" : active ? `1px solid ${lv.border}` : "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.18)", opacity: locked ? 0.65 : 1 }}>
+                  <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: locked ? "rgba(255,255,255,0.04)" : lv.bg, border: locked ? "1px solid rgba(255,255,255,0.08)" : `1px solid ${lv.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: locked ? "rgba(255,255,255,0.3)" : lv.color, marginBottom: "10px", fontSize: "17px" }}>
+                    {locked ? "🔒" : renderWorldIcon(lvl.icon, 18)}
                   </div>
-                </Link>
+                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: locked ? "rgba(255,255,255,0.4)" : "#F8FAFF", lineHeight: 1.3 }}>
+                    {lvl.label}{locked && <span style={{ fontSize: "9px", fontWeight: 700, color: "#A78BFA", marginLeft: "6px" }}>Pro</span>}
+                  </p>
+                </div>
               );
+              return locked
+                ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
+                : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
             })}
           </div>
         </section>
