@@ -260,7 +260,7 @@ export default function DashboardPage() {
 
       {/* Tu progreso general */}
       <div style={{ padding: "10px 16px 0" }}>
-        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px" }}>
+        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
             <Link href="/profile" style={{ fontSize: "11px", color: "#7B61FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
@@ -332,11 +332,11 @@ export default function DashboardPage() {
               const v = getV(w.order);
               return (
                 <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
-                  <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
+                  <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "20px", padding: "16px", position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
                     <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
-                    {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
-                    <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "10px" }}>{renderWorldIcon(w.emoji, 20)}</div>
-                    <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
+                    {done && <div style={{ position: "absolute", top: "10px", right: "10px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
+                    <div style={{ width: "42px", height: "42px", borderRadius: "13px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "12px" }}>{renderWorldIcon(w.emoji, 20)}</div>
+                    <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "10px", lineHeight: 1.3 }}>{w.name}</p>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
                       {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
@@ -356,7 +356,7 @@ export default function DashboardPage() {
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {missions.slice(1).map(m => (
-                <div key={m.id} style={{ background: "#1E2533", borderRadius: "14px", padding: "12px", border: "1px solid #324055" }}>
+                <div key={m.id} style={{ background: "#1E2533", borderRadius: "16px", padding: "14px", border: "1px solid #324055", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
                   <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(123,97,255,0.12)", color: m.type === "DAILY" ? "#36D399" : "#7B61FF", fontFamily: "'DM Sans',sans-serif" }}>
                     {m.type === "DAILY" ? "Diaria" : "Semanal"}
                   </span>
