@@ -259,13 +259,7 @@ function LevelMapInteractive() {
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
-        <div style={{ width: "36px", height: "36px", borderRadius: "50%", margin: "0 auto 10px", position: "relative" }}>
-          <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9 }} />
-          <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="16" height="16" viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="28" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
-          </div>
-        </div>
+        <img src="/logo.png" alt="Bymyzai" width={36} height={36} style={{ borderRadius: "50%", flexShrink: 0 }} />
         <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando lección...</p>
       </div>
     </div>
