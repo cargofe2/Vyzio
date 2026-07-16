@@ -108,6 +108,7 @@ export default function DashboardPage() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [plan, setPlan] = useState<string>("STARTER");
   const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
+  const [levelPct, setLevelPct] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -130,7 +131,17 @@ export default function DashboardPage() {
           setGamification(g);
           setMissions(m ?? []);
           const lvl = recentLessons?.[0]?.lesson?.world?.level;
-          setCurrentLevel(lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" });
+          const resolvedLevel = lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" };
+          setCurrentLevel(resolvedLevel);
+
+          const worldsRes = await fetch(`/api/lessons?levelId=${resolvedLevel.id}`);
+          if (worldsRes.ok) {
+            const { worlds: lvlWorlds } = await worldsRes.json();
+            if (lvlWorlds && lvlWorlds.length > 0) {
+              const avgPct = lvlWorlds.reduce((sum: number, w: { pctComplete?: number }) => sum + (w.pctComplete ?? 0), 0) / lvlWorlds.length;
+              setLevelPct(Math.round(avgPct * 100));
+            }
+          }
         }
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -188,7 +199,7 @@ export default function DashboardPage() {
           const missionHref = `/worlds?levelId=${currentLevel?.id ?? "level-1"}`;
           const LEVEL_ORDER = ["level-1", "level-new-1", "level-new-2", "level-new-3", "level-new-4", "level-new-5", "level-new-6", "level-new-7", "level-new-8"];
           const levelNumber = Math.max(0, LEVEL_ORDER.indexOf(currentLevel?.id ?? "level-1"));
-          const heroPct = activeMission ? Math.min(Math.round((activeMission.progress.current / activeMission.targetValue) * 100), 100) : Math.round(rankProgress);
+          const heroPct = levelPct;
           return (
             <Link href={missionHref} style={{ textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
