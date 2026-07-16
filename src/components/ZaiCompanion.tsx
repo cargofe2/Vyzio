@@ -66,46 +66,41 @@ export default function ZaiCompanion({ mood, size = 56 }: Props) {
     mood === "incorrect" ? "zaiRingPulseRed 0.5s ease-out" :
     "none";
 
-  const eyeH = blink || mood === "sleeping" ? 0.6 : 7;
+  const eyeH = blink || mood === "sleeping" ? 0.6 : 10;
   const faceSvg = size;
 
   const face = (
     <svg width={faceSvg} height={faceSvg} viewBox="0 0 100 100">
       {mood === "correct" && (
         <>
-          <path d="M28 46 Q34 38 40 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-          <path d="M60 46 Q66 38 72 46" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
-          <path d="M32 62 Q50 78 68 62" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <path d="M24 44 Q34 30 44 44" stroke="#fff" strokeWidth="7" strokeLinecap="round" fill="none" />
+          <path d="M56 44 Q66 30 76 44" stroke="#fff" strokeWidth="7" strokeLinecap="round" fill="none" />
         </>
       )}
       {mood === "incorrect" && (
         <>
-          <ellipse cx="34" cy="46" rx="6" ry="7" fill="#fff" />
-          <ellipse cx="66" cy="46" rx="6" ry="7" fill="#fff" />
-          <path d="M26 36 L40 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-          <path d="M74 36 L60 40" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-          <path d="M36 66 Q50 60 64 66" stroke="#fff" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <ellipse cx="34" cy="48" rx="9" ry="10" fill="#fff" />
+          <ellipse cx="66" cy="48" rx="9" ry="10" fill="#fff" />
+          <path d="M22 33 L40 39" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" />
+          <path d="M78 33 L60 39" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" />
         </>
       )}
       {mood === "celebrate" && (
         <>
-          <path d="M27 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
-          <path d="M59 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff" />
-          <path d="M30 60 Q50 82 70 60 Q50 74 30 60" fill="#fff" />
+          <path d="M23 37l4.5 10 10 4.5-10 4.5-4.5 10-4.5-10-10-4.5 10-4.5z" fill="#fff" />
+          <path d="M55 37l4.5 10 10 4.5-10 4.5-4.5 10-4.5-10-10-4.5 10-4.5z" fill="#fff" />
         </>
       )}
       {mood === "sleeping" && (
         <>
-          <path d="M28 46 Q34 43 40 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
-          <path d="M60 46 Q66 43 72 46" stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" />
-          <path d="M42 65 Q50 68 58 65" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" fill="none" opacity="0.7" />
+          <path d="M24 46 Q34 40 44 46" stroke="#fff" strokeWidth="5.5" strokeLinecap="round" fill="none" />
+          <path d="M56 46 Q66 40 76 46" stroke="#fff" strokeWidth="5.5" strokeLinecap="round" fill="none" />
         </>
       )}
       {(mood === "idle" || mood === "thinking") && (
         <>
-          <ellipse cx={34 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
-          <ellipse cx={66 + lookX} cy="46" rx="6" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
-          <path d={mood === "thinking" ? "M38 65 Q50 62 62 65" : "M36 64 Q50 72 64 64"} stroke="#fff" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.85" />
+          <ellipse cx={34 + lookX} cy="47" rx="9" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
+          <ellipse cx={66 + lookX} cy="47" rx="9" ry={eyeH} fill="#fff" style={{ transition: "cy 0.3s, rx 0.3s" }} />
         </>
       )}
     </svg>
