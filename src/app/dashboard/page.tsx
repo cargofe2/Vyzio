@@ -190,11 +190,8 @@ export default function DashboardPage() {
 
       {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
-        <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>
+        <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>
           Hola, {user?.firstName ?? "Estudiante"} 👋
-        </p>
-        <p style={{ color: "#F8FAFF", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>
-          Continúa tu misión actual
         </p>
       </div>
 
@@ -209,10 +206,7 @@ export default function DashboardPage() {
           return (
             <Link href={missionHref} style={{ textDecoration: "none" }}>
               <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
-                <span style={{ display: "inline-block", fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", color: "#D4C9FF", background: "rgba(139,117,255,0.25)", padding: "4px 10px", borderRadius: "999px", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-                  Misión actual
-                </span>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15 }}>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15, marginTop: "4px" }}>
                   {currentLevel?.name ?? "Origins"}
                 </p>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.5)", fontSize: "13px", marginBottom: "14px" }}>
@@ -242,48 +236,48 @@ export default function DashboardPage() {
       {/* ZAI — estilo prompt */}
       <div style={{ padding: "10px 16px 0" }}>
         <Link href="/vy" style={{ textDecoration: "none" }}>
-          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
-            <div style={{ position: "relative", width: "36px", height: "36px", flexShrink: 0 }}>
+          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{ position: "relative", width: "44px", height: "44px", flexShrink: 0 }}>
               <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
               <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
               <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width={36 * 0.45} height={36 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+                <svg width={44 * 0.45} height={44 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>ZAI</p>
-              <p style={{ fontSize: "13px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>¿En qué quieres trabajar hoy?</p>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "3px" }}>ZAI</p>
+              <p style={{ fontSize: "14px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>¿En qué quieres trabajar hoy?</p>
             </div>
-            <span style={{ flexShrink: 0, padding: "8px 14px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "11px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+            <span style={{ flexShrink: 0, padding: "9px 15px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "12px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
               Hablar con ZAI
             </span>
           </div>
         </Link>
       </div>
 
-      {/* Tu progreso general */}
+      {/* Tu progreso */}
       <div style={{ padding: "10px 16px 0" }}>
         <Link href="/profile" style={{ textDecoration: "none" }}>
-        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-            <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
-            <span style={{ fontSize: "11px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>Ver más ›</span>
+        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+            <p style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso</p>
+            <span style={{ fontSize: "12px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>Ver más ›</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 18)}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: "13px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 22)}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{RANK_LABELS[rank] ?? rank}</p>
-              <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
+              <p style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{RANK_LABELS[rank] ?? rank}</p>
+              <p style={{ fontSize: "11px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
             </div>
             <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
-              <span style={{ fontSize: "10px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "3px 8px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} lecciones</span>
-              <span style={{ fontSize: "10px", color: "#F472B6", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(244,114,182,0.1)", padding: "3px 8px", borderRadius: "8px" }}>🔥 {gamification?.streakDays ?? 0}</span>
+              <span style={{ fontSize: "11px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "4px 9px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} lecciones</span>
+              <span style={{ fontSize: "11px", color: "#F472B6", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(244,114,182,0.1)", padding: "4px 9px", borderRadius: "8px" }}>🔥 {gamification?.streakDays ?? 0}</span>
             </div>
           </div>
-          <div style={{ height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease" }} />
+          <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "4px", transition: "width 0.5s ease" }} />
           </div>
-          <p style={{ fontSize: "9px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
+          <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "6px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
         </div>
         </Link>
       </div>
@@ -315,7 +309,7 @@ export default function DashboardPage() {
               const content = (
                 <div style={{ background: "#1E2533", border: locked ? "1px solid #324055" : active ? `1px solid ${lv.border}` : "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.18)", opacity: locked ? 0.65 : 1 }}>
                   <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: locked ? "rgba(255,255,255,0.04)" : lv.bg, border: locked ? "1px solid rgba(255,255,255,0.08)" : `1px solid ${lv.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: locked ? "rgba(255,255,255,0.3)" : lv.color, marginBottom: "10px", fontSize: "17px" }}>
-                    {locked ? "🔒" : renderWorldIcon(lvl.icon, 18)}
+                    {locked ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/><circle cx="12" cy="15.2" r="1.3" fill="currentColor" stroke="none"/></svg> : renderWorldIcon(lvl.icon, 18)}
                   </div>
                   <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: locked ? "rgba(255,255,255,0.4)" : "#F8FAFF", lineHeight: 1.3 }}>
                     {lvl.label}{locked && <span style={{ fontSize: "9px", fontWeight: 700, color: "#A78BFA", marginLeft: "6px" }}>Pro</span>}
