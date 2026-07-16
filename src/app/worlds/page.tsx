@@ -223,7 +223,9 @@ function NavBar({ active }: { active: string }) {
 function WorldsContent() {
   const searchParams = useSearchParams();
   const worldId = searchParams.get("id");
-  const levelId = searchParams.get("levelId") || "level-1";
+  const levelIdParam = searchParams.get("levelId");
+  const levelId = levelIdParam || "level-1";
+  const showJourney = !worldId && !levelIdParam;
   const levelNames: Record<string, string> = {
     "level-1": "Nivel 0 — Origins",
     "level-new-1": "Nivel 1 — AI Explorer",
@@ -253,7 +255,9 @@ function WorldsContent() {
     async function load() {
       setLoading(true);
       try {
-        if (worldId) {
+        if (showJourney) {
+          // Journey no necesita datos de mundos, solo el plan (ya cargado aparte)
+        } else if (worldId) {
           const lessonsRes = await fetch(`/api/lessons?worldId=${worldId}`);
           let realLevelId = levelId;
           if (lessonsRes.ok) {
@@ -274,7 +278,7 @@ function WorldsContent() {
       finally { setLoading(false); }
     }
     load();
-  }, [worldId, levelId]);
+  }, [worldId, levelId, showJourney]);
 
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -293,7 +297,7 @@ function WorldsContent() {
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "8px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+              <Link href={`/worlds?levelId=${selectedWorld?.levelId ?? levelId}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
               <span style={{ fontSize: "24px", display: "flex" }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 24)}</span>
               <div style={{ minWidth: 0 }}>
                 <p style={{ fontSize: "10px", color: v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "1px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
@@ -362,14 +366,68 @@ function WorldsContent() {
     );
   }
 
-  // Vista de mundos con iconos coloridos
+  // Vista Journey — solo Levels, sin Worlds
+  if (showJourney) {
+    const LEVELS = [
+      { id: "level-1", label: "Origins", icon: "🌱", desc: "Descubre qué es la IA y aprende a aprender con ella.", free: true },
+      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: false },
+      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: false },
+      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: false },
+      { id: "level-new-4", label: "Builder", icon: "🛠️", desc: "Construye sistemas de IA listos para producción.", free: false },
+      { id: "level-new-5", label: "Architect", icon: "🏗️", desc: "Diseña arquitecturas de IA a gran escala.", free: false },
+      { id: "level-new-6", label: "Founder", icon: "🚀", desc: "Crea y escala tu propia organización.", free: false },
+      { id: "level-new-7", label: "Researcher", icon: "🔬", desc: "Investiga con rigor científico en IA.", free: false },
+      { id: "level-new-8", label: "Residency", icon: "🎓", desc: "Aplica todo en un entorno real, con impacto real.", free: false },
+    ];
+    return (
+      <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
+        {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
+        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Link href="/dashboard" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+            <div>
+              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>Tu camino en Bymyzai</h1>
+              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>9 niveles</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
+          {LEVELS.map((lvl, i) => {
+            const locked = !lvl.free && plan === "STARTER" && !evalMode;
+            const lv = getV(0, lvl.id);
+            const content = (
+              <div style={{ background: "#1E2533", border: locked ? "1px solid #324055" : `1px solid ${lv.border}`, borderRadius: "18px", padding: "16px", display: "flex", alignItems: "center", gap: "14px", opacity: locked ? 0.7 : 1 }}>
+                <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: locked ? "rgba(255,255,255,0.04)" : lv.bg, border: locked ? "1px solid rgba(255,255,255,0.08)" : `1px solid ${lv.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: locked ? "rgba(255,255,255,0.3)" : lv.color, flexShrink: 0, fontSize: "22px" }}>
+                  {locked ? "🔒" : renderWorldIcon(lvl.icon, 24)}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "15px", color: locked ? "rgba(255,255,255,0.5)" : "#F8FAFF", marginBottom: "3px" }}>
+                    {lvl.label}{locked && <span style={{ fontSize: "10px", fontWeight: 700, color: "#A78BFA", marginLeft: "8px" }}>🔒 Pro</span>}
+                  </p>
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4 }}>{lvl.desc}</p>
+                </div>
+                <span style={{ fontSize: "16px", color: "rgba(255,255,255,0.25)", flexShrink: 0 }}>›</span>
+              </div>
+            );
+            return locked
+              ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
+              : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
+          })}
+        </div>
+        <NavBar active="/worlds" />
+      </div>
+    );
+  }
+
+  // Vista de mundos con iconos coloridos (Level Screen)
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
       {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Link href="/dashboard" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+            <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
             <div>
               <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
               <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{worlds.length} mundos · Gratis</p>
