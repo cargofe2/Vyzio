@@ -185,36 +185,50 @@ export default function DashboardPage() {
         <UserButton afterSignOutUrl="/" />
       </div>
 
-      {/* Hero — compact greeting */}
+      {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
-        <p style={{ color: "#7E8798", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>
+        <p style={{ color: "#7E8798", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>
           Hola, {user?.firstName ?? "Estudiante"} 👋
+        </p>
+        <p style={{ color: "#F8FAFF", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>
+          Continúa tu misión actual
         </p>
       </div>
 
-      {/* Misión actual + Continuar */}
-      <div style={{ padding: "8px 16px 0" }}>
+      {/* Misión actual — tarjeta grande */}
+      <div style={{ padding: "10px 16px 0" }}>
         {(() => {
           const activeMission = missions[0];
           const missionHref = `/worlds?levelId=${currentLevel?.id ?? "level-1"}`;
+          const LEVEL_ORDER = ["level-1", "level-new-1", "level-new-2", "level-new-3", "level-new-4", "level-new-5", "level-new-6", "level-new-7", "level-new-8"];
+          const levelNumber = Math.max(0, LEVEL_ORDER.indexOf(currentLevel?.id ?? "level-1"));
+          const heroPct = activeMission ? Math.min(Math.round((activeMission.progress.current / activeMission.targetValue) * 100), 100) : Math.round(rankProgress);
           return (
             <Link href={missionHref} style={{ textDecoration: "none" }}>
-              <div style={{ background: "linear-gradient(135deg, rgba(123,97,255,0.14), rgba(70,139,255,0.08))", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "18px", padding: "14px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7B61FF", fontFamily: "'DM Sans',sans-serif", marginBottom: "4px" }}>
-                    {activeMission ? (activeMission.type === "DAILY" ? "Misión diaria" : "Misión semanal") : "Tu misión"}
-                  </p>
-                  <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "14px", color: "#F8FAFF", lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {activeMission ? activeMission.name : "¿Qué aprendemos hoy?"}
-                  </p>
-                  {activeMission && (
-                    <div style={{ height: "3px", background: "rgba(255,255,255,0.08)", borderRadius: "2px", marginTop: "8px", maxWidth: "200px" }}>
-                      <div style={{ height: "100%", width: `${Math.min((activeMission.progress.current / activeMission.targetValue) * 100, 100)}%`, background: "#7B61FF", borderRadius: "2px" }} />
-                    </div>
-                  )}
+              <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
+                <span style={{ display: "inline-block", fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", color: "#C4B5FD", background: "rgba(123,97,255,0.25)", padding: "4px 10px", borderRadius: "999px", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
+                  Misión actual
+                </span>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15 }}>
+                  {currentLevel?.name ?? "Origins"}
+                </p>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.5)", fontSize: "13px", marginBottom: "14px" }}>
+                  Nivel {levelNumber} {activeMission ? `· ${activeMission.name}` : ""}
+                </p>
+
+                <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "26px" }}>
+                  {LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}
                 </div>
-                <div style={{ flexShrink: 0, padding: "9px 16px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", color: "#fff", borderRadius: "10px", fontSize: "12px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
-                  Continuar
+
+                <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
+                  <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", color: "#F8FAFF" }}>{heroPct}%</span>
+                </div>
+                <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", marginBottom: "16px" }}>
+                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#7B61FF,#468BFF)", borderRadius: "4px" }} />
+                </div>
+
+                <div style={{ padding: "13px", background: "linear-gradient(135deg,#7B61FF,#468BFF)", color: "#fff", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                  <span style={{ fontSize: "11px" }}>▶</span> Continuar
                 </div>
               </div>
             </Link>
@@ -222,55 +236,50 @@ export default function DashboardPage() {
         })()}
       </div>
 
-      {/* ZAI — compacto */}
+      {/* ZAI — estilo prompt */}
       <div style={{ padding: "10px 16px 0" }}>
         <Link href="/vy" style={{ textDecoration: "none" }}>
-          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "16px", padding: "10px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
-            <div style={{ position: "relative", width: "28px", height: "28px", flexShrink: 0 }}>
+          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ position: "relative", width: "36px", height: "36px", flexShrink: 0 }}>
               <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
               <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
               <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width={28 * 0.45} height={28 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+                <svg width={36 * 0.45} height={36 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
               </div>
             </div>
-            <p style={{ flex: 1, fontSize: "12px", color: "#B3BDD1", fontFamily: "'DM Sans',sans-serif" }}>
-              Pregúntale algo a <span style={{ color: "#F8FAFF", fontWeight: 700 }}>ZAI</span>
-            </p>
-            <span style={{ fontSize: "11px", color: "#7B61FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>Hablar →</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>ZAI</p>
+              <p style={{ fontSize: "13px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>¿En qué quieres trabajar hoy?</p>
+            </div>
+            <span style={{ flexShrink: 0, padding: "8px 14px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "11px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+              Hablar con ZAI
+            </span>
           </div>
         </Link>
       </div>
 
-      {/* Resumen de progreso — compacto */}
+      {/* Tu progreso general */}
       <div style={{ padding: "10px 16px 0" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "6px", marginBottom: "8px" }}>
-          {[
-            { v: `${LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"} ${currentLevel?.name ?? "Origins"}`, l: "Nivel", c: "#7B61FF", small: true, href: `/worlds?levelId=${currentLevel?.id ?? "level-1"}` },
-            { v: xp.toLocaleString(), l: "XP", c: "#F2C04D" },
-            { v: `${gamification?.lessonsCompleted ?? 0}`, l: "Lecciones", c: "#26C6DA" },
-            { v: `🔥 ${gamification?.streakDays ?? 0}`, l: "Racha", c: "#F472B6" },
-          ].map(({ v, l, c, small, href }) => {
-            const card = (
-              <div style={{ background: "#1E2533", border: `1px solid ${c}40`, borderRadius: "12px", padding: "8px", textAlign: "center", cursor: href ? "pointer" : "default" }}>
-                <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: small ? "10px" : "14px", color: c, whiteSpace: "nowrap" }}>{v}</div>
-                <div style={{ fontSize: "8px", color: "#7E8798", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
-              </div>
-            );
-            return href ? <Link key={l} href={href} style={{ textDecoration: "none" }}>{card}</Link> : <div key={l}>{card}</div>;
-          })}
-        </div>
-
-        {/* XP Bar */}
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-            <span style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{rank}</span>
-            <span style={{ fontSize: "10px", color: rankColor, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>
-              {xp.toLocaleString()} / {nextXP.toLocaleString()} XP
-            </span>
+        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
+            <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
+            <Link href="/profile" style={{ fontSize: "11px", color: "#7B61FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+            <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, fontSize: "15px", flexShrink: 0 }}>{LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{rank}</p>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
+            </div>
+            <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
+              <span style={{ fontSize: "10px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "3px 8px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} lecciones</span>
+              <span style={{ fontSize: "10px", color: "#F472B6", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(244,114,182,0.1)", padding: "3px 8px", borderRadius: "8px" }}>🔥 {gamification?.streakDays ?? 0}</span>
+            </div>
           </div>
           <div style={{ height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease", boxShadow: `0 0 8px ${rankColor}` }} />
+            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "3px", transition: "width 0.5s ease" }} />
           </div>
+          <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
         </div>
       </div>
 
