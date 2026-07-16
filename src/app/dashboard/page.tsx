@@ -263,10 +263,11 @@ export default function DashboardPage() {
 
       {/* Tu progreso general */}
       <div style={{ padding: "10px 16px 0" }}>
+        <Link href="/profile" style={{ textDecoration: "none" }}>
         <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
-            <Link href="/profile" style={{ fontSize: "11px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
+            <span style={{ fontSize: "11px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>Ver más ›</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
             <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 18)}</div>
@@ -284,6 +285,7 @@ export default function DashboardPage() {
           </div>
           <p style={{ fontSize: "9px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
         </div>
+        </Link>
       </div>
 
       {/* ----- Debajo del primer viewport: info secundaria ----- */}
