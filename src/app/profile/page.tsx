@@ -20,6 +20,7 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🚀": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5c2.8 1.6 4.5 4.9 4.5 8.3 0 1.9-.6 3.6-1.6 5L12 19l-2.9-3.2c-1-1.4-1.6-3.1-1.6-5 0-3.4 1.7-6.7 4.5-8.3Z"/><circle cx="12" cy="10.5" r="1.5"/><path d="M8.8 16.2L6.5 20.5l3-1.3M15.2 16.2l2.3 4.3-3-1.3"/></svg>,
   "🔬": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 3.5v6L6.3 16.8A2.3 2.3 0 0 0 8.3 20.2h7.4a2.3 2.3 0 0 0 2-3.4L14 9.5v-6"/><path d="M8.7 3.5h6.6M7.5 15h9"/><circle cx="12" cy="17.3" r="0.6" fill="currentColor" stroke="none"/></svg>,
   "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
+  "🏆": <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg>,
 };
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
@@ -31,11 +32,11 @@ interface Gamification { xpTotal: number; rank: string; rankLevel: number; strea
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
 
 const RANK_CONFIG: Record<string, { color: string; label: string }> = {
-  NOVICE: { color: "#94A3B8", label: "Novato" }, EXPLORER: { color: "#818CF8", label: "Explorer" },
-  CREATOR: { color: "#34D399", label: "Creator" }, BUILDER: { color: "#38BDF8", label: "Builder" },
-  INNOVATOR: { color: "#FB923C", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
-  PIONEER: { color: "#FB923C", label: "Pioneer" }, MASTER: { color: "#C084FC", label: "Master" },
-  LEGEND: { color: "#F87171", label: "Legend" }, AI_TITAN: { color: "#FB923C", label: "AI Titan" },
+  NOVICE: { color: "#7E8798", label: "Novato" }, EXPLORER: { color: "#7B61FF", label: "Explorer" },
+  CREATOR: { color: "#26C6DA", label: "Creator" }, BUILDER: { color: "#36D399", label: "Builder" },
+  INNOVATOR: { color: "#F2C04D", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
+  PIONEER: { color: "#FB923C", label: "Pioneer" }, MASTER: { color: "#A78BFA", label: "Master" },
+  LEGEND: { color: "#FF6B6B", label: "Legend" }, AI_TITAN: { color: "#F2C04D", label: "AI Titan" },
 };
 
 function NavBar() {
@@ -243,7 +244,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
-              <p style={{ fontSize: "28px", marginBottom: "8px" }}>🏆</p>
+              <div style={{ width: "44px", height: "44px", margin: "0 auto 10px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA" }}>{renderWorldIcon("🏆", 24)}</div>
               <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>Sin logros aún</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>Completa lecciones para desbloquear logros</p>
             </div>
