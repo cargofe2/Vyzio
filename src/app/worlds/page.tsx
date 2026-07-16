@@ -294,14 +294,8 @@ function WorldsContent() {
 
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
-        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+        <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
           <Link href={`/worlds?levelId=${selectedWorld?.levelId ?? levelId}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-          <Link href={`/level-resources/${selectedWorld?.levelId ?? levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
-              <span style={{ fontSize: "16px" }}>📚</span>
-              <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
-            </div>
-          </Link>
         </div>
 
         {/* Tarjeta del mundo — misma tarjeta morada que Dashboard y Level Screen */}
@@ -443,14 +437,8 @@ function WorldsContent() {
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
       {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-          <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
-              <span style={{ fontSize: "16px" }}>📚</span>
-              <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
-            </div>
-          </Link>
         </div>
       </div>
 
@@ -529,6 +517,14 @@ function WorldsContent() {
             </Link>
           );
         })}
+
+        <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none" }}>
+          <div style={{ background: "rgba(123,97,255,0.08)", border: "1px dashed rgba(123,97,255,0.35)", borderRadius: "18px", padding: "14px", display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", minHeight: "116px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA", marginBottom: "10px", fontSize: "18px" }}>📚</div>
+            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "4px" }}>Profundiza</p>
+            <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Recursos extra de este nivel</p>
+          </div>
+        </Link>
       </div>
       <NavBar active="/worlds" />
     </div>
