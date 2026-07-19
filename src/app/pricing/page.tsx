@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Precios â€” Bymyzai",
+  description: "Planes de Bymyzai: gratis, Pro mensual y anual. Accede a 630+ lecciones de IA, tutor ZAI y certificados verificables.",
+  alternates: { canonical: "https://www.bymyzai.com/pricing" },
+};
 import Link from "next/link";
 
 const PLANS = [

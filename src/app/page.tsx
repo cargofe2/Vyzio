@@ -1,3 +1,18 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Bymyzai â€” Aprende IA. Construye el futuro.",
+  description: "La academia de IA para jovenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
+  openGraph: {
+    title: "Bymyzai â€” Aprende IA. Construye el futuro.",
+    description: "La academia de IA para jovenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
+    url: "https://www.bymyzai.com",
+    siteName: "Bymyzai",
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: "Bymyzai", description: "La academia de IA para jovenes." },
+  alternates: { canonical: "https://www.bymyzai.com" },
+};
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

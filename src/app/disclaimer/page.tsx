@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Disclaimer â€” Bymyzai",
+  description: "Aviso legal de Bymyzai. Contenido educativo, uso de IA, menores de edad y GDPR.",
+  alternates: { canonical: "https://www.bymyzai.com/disclaimer" },
+};
 "use client";
 import { useState } from "react";
 
