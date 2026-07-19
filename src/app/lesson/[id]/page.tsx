@@ -418,7 +418,7 @@ function LevelMapInteractive() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "100px" }}>
       <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
-        <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
+        <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "24px", textDecoration: "none", padding: "8px 12px 8px 0", display: "inline-block", minHeight: "44px", lineHeight: "44px" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
           <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
             {lesson.world.emoji} {lesson.world.name} · Lección {lesson.number}
@@ -525,7 +525,7 @@ function LevelMapInteractive() {
               );
               if (block.type === "callout") return (
                 <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
-                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#818CF8", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
                   <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans',sans-serif" }}
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
@@ -536,14 +536,14 @@ if (block.type === "level_map") return <LevelMapInteractive key={i} />;
               );
               if (block.type === "tip") return (
                 <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
-                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
-                  <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
+                  <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.75)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
                 </div>
               );
               if (block.type === "glossary") return (
                 <div key={i} style={{ padding: "16px", borderRadius: "14px", background: "#161C27", border: "1px solid #324055", marginBottom: "16px", marginTop: "8px" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>📖 Glosario de esta lección</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>📖 Glosario de esta lección</p>
                     {(block.terms ?? []).map((t, ti) => (
                       <div key={ti}>
                         <p style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>{t.term}</p>
