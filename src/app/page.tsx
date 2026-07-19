@@ -23,13 +23,13 @@ export default async function HomePage() {
         </h1>
 
         <p style={{ fontSize: "13px", maxWidth: "300px", lineHeight: 1.7, marginBottom: "32px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>
-          112+ lecciones · Tutor IA personal · Gamificación real · Certificados verificables.
+          630+ lecciones · Tutor IA personal · Gamificación real · Certificados verificables.
           La plataforma donde aprendes IA de verdad.
         </p>
 
         {/* Stats */}
         <div style={{ display: "flex", gap: "28px", marginBottom: "32px" }}>
-          {[["112+","Lecciones"],["10","Mundos"],["100%","Gratis al inicio"]].map(([n,l]) => (
+          {[["630+","Lecciones"],["84","Mundos"],["100%","Gratis al inicio"]].map(([n,l]) => (
             <div key={l} style={{ textAlign: "center" }}>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "22px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{n}</div>
               <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif", marginTop: "2px" }}>{l}</div>
@@ -58,7 +58,7 @@ export default async function HomePage() {
       {/* Mundos preview */}
       <div style={{ padding: "0 24px 48px" }}>
         <p style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", textAlign: "center", marginBottom: "16px", color: "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif" }}>
-          10 mundos de aprendizaje
+          9 niveles · 84 mundos de aprendizaje
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", maxWidth: "320px", margin: "0 auto" }}>
           {[
