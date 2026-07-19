@@ -418,7 +418,7 @@ function LevelMapInteractive() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "100px" }}>
       <div style={{ padding: "16px", borderBottom: "1px solid rgba(123,97,255,0.1)" }}>
-        <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "24px", textDecoration: "none", padding: "8px 12px 8px 0", display: "inline-block", minHeight: "44px", lineHeight: "44px" }}>←</Link>
+        <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "24px", textDecoration: "none", padding: "8px 12px 8px 0", display: "inline-block", minHeight: "44px", lineHeight: "44px" }}>&larr;</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
           <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
             {lesson.world.emoji} {lesson.world.name} · Lección {lesson.number}
