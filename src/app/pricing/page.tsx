@@ -43,6 +43,14 @@ export default function PricingPage() {
           </div>
         ))}
       </div>
+      <p style={{ marginTop: "24px", fontSize: "11px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", textAlign: "center" }}>
+        Al suscribirte aceptas nuestros{" "}
+        <a href="/terms" style={{ color: "#7B61FF" }}>Términos</a>
+        {" · "}
+        <a href="/privacy" style={{ color: "#7B61FF" }}>Privacidad</a>
+        {" · "}
+        <a href="/disclaimer" style={{ color: "#7B61FF" }}>Disclaimer</a>
+      </p>
     </div>
   );
 }
