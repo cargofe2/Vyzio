@@ -214,7 +214,7 @@ export default function ProfilePage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {LEVELS.map(lvl => (
               <div key={lvl.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}><div style={{ width: "32px", height: "32px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[lvl.id] ?? "\uD83C\uDF31", 16)}</div><p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label}</p></div>
                 {certMsg[lvl.id] ? (
                   <p style={{ fontSize: "10px", color: certMsg[lvl.id].startsWith("✓") ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>{certMsg[lvl.id]}</p>
                 ) : (
