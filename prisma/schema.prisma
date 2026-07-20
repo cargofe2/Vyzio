@@ -109,6 +109,7 @@ model World {
 }
 
 model Lesson {
+  isFree      Boolean @default(false)
   id          String      @id @default(cuid())
   number      Int
   title       String
