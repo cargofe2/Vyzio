@@ -96,12 +96,12 @@ function LevelMapInteractive() {
 
   async function askZaiToExpand() {
     if (!lesson) return;
-    const plainText = (lesson.content?.blocks ?? [])
-      .filter(b => b.type === "text" || b.type === "heading" || b.type === "callout" || b.type === "tip")
-      .map(b => b.text)
-      .filter(Boolean)
-      .join(" ");
-    const prompt = `Estoy en la lección "${lesson.title}". Contenido: "${plainText.slice(0, 1500)}". Amplía esto con más detalle y dame al menos un ejemplo práctico adicional, concreto (con datos/nombres específicos, no genérico).`;
+    const prompt = `Estoy estudiando "${lesson.title}" en ${lesson.world.name}. Dame un ejemplo practico y concreto en maximo 3 oraciones.`;
+
+
+
+
+
     sessionStorage.setItem("zai_pending_prompt", prompt);
     router.push("/vy");
   }
