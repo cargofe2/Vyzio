@@ -7,6 +7,10 @@ export const dynamic = "force-dynamic";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+const BATTLE_LIMITS: Record<string, number> = {
+  STARTER: 2, PRO: 5, PREMIUM: 5, FAMILY: 5, SCHOOL: 5, ENTERPRISE: 10,
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
@@ -20,8 +24,28 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.findUnique({ where: { clerkId } });
     if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
 
-    const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } });
-    if (!lesson) return NextResponse.json({ error: "Lección no encontrada" }, { status: 404 });
+    const plan = (await prisma.subscription.findUnique({ where: { userId: user.id } }))?.plan ?? "STARTER";
+
+    const lesson = await prisma.lesson.findUnique({
+      where: { id: lessonId },
+      include: { world: { include: { level: true } } },
+    });
+    if (!lesson) return NextResponse.json({ error: "Leccion no encontrada" }, { status: 404 });
+
+    const levelIsFree = (lesson.world as any)?.level?.isFree ?? false;
+    if (!levelIsFree && plan === "STARTER") {
+      return NextResponse.json({ error: "plan_required", message: "Los Boss Battles de niveles avanzados requieren plan Pro." }, { status: 403 });
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayAttempts = await prisma.lessonProgress.count({
+      where: { userId: user.id, updatedAt: { gte: today }, lessonId },
+    });
+    const limit = BATTLE_LIMITS[plan] ?? 2;
+    if (todayAttempts >= limit) {
+      return NextResponse.json({ error: "battle_limit", message: `Limite de ${limit} intentos diarios alcanzado.`, attemptsLimit: limit }, { status: 429 });
+    }
 
     const content = lesson.content as any;
     const brief = content?.blocks?.map((b: any) => b.text).filter(Boolean).join("\n") ?? lesson.title;
@@ -35,7 +59,7 @@ export async function POST(req: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 300,
+      max_tokens: 150,
       messages: [{ role: "user", content: prompt }],
     });
 
