@@ -28,7 +28,7 @@ export async function GET(
     const user = await prisma.user.findUnique({ where: { clerkId }, include: { subscription: true } });
     const plan = user?.subscription?.plan ?? "STARTER";
     const levelIsFree = (lesson as any).world?.level?.isFree ?? true;
-    const lessonIsFree = (lesson as any).isFree ?? false;
+    const lessonIsFree = lesson.isFree === true;
 
     if (!levelIsFree && !lessonIsFree && plan === "STARTER" && !isEvalMode(clerkId)) {
       return NextResponse.json({ error: "PAYWALL", requiredPlan: "PRO" }, { status: 402 });
