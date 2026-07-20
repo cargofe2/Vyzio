@@ -28,7 +28,7 @@ SCOPE: Solo hablas de IA, tecnología y aprendizaje. Si preguntan otra cosa, red
 IDIOMA: Siempre en español.`;
 
 const VY_LIMITS: Record<string, number> = {
-  STARTER: 8, PRO: 30, PREMIUM: 30, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
+  STARTER: 10, PRO: 9999, PREMIUM: 9999, FAMILY: 9999, SCHOOL: 9999, ENTERPRISE: 9999,
 };
 
 export async function POST(req: NextRequest) {
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     // Call Claude
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
+      max_tokens: 350,
       system: VY_SYSTEM,
       messages: [
         ...history.reverse().map((m: any) => ({ role: m.role as "user" | "assistant", content: m.content })),
