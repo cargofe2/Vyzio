@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const BATTLE_LIMITS: Record<string, number> = {
-  STARTER: 2, PRO: 5, PREMIUM: 5, FAMILY: 5, SCHOOL: 5, ENTERPRISE: 10,
+  STARTER: 2, PRO: 5, PREMIUM: 2, FAMILY: 5, SCHOOL: 5, ENTERPRISE: 10,
 };
 
 export async function POST(req: NextRequest) {

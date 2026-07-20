@@ -28,7 +28,7 @@ SCOPE: Solo hablas de IA, tecnología y aprendizaje. Si preguntan otra cosa, red
 IDIOMA: Siempre en español.`;
 
 const VY_LIMITS: Record<string, number> = {
-  STARTER: 8, PRO: 30, PREMIUM: 30, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
+  STARTER: 8, PRO: 30, PREMIUM: 8, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
 };
 
 export async function POST(req: NextRequest) {
