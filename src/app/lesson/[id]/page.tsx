@@ -86,8 +86,8 @@ function LevelMapInteractive() {
 
 
 
-
-
+}
+export default function LessonPage() {
 
 
 
