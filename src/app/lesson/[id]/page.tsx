@@ -29,15 +29,15 @@ const TYPE_CONFIG: Record<string, { label: string; color: string }> = {
   EVALUATION: { label: "Evaluación", color: "#F472B6" }, PRACTICE: { label: "Práctica", color: "#34D399" },
 };
 
-const LEVELS_DATA = [
-  { n: 0, name: "Origins", color: "#26C6DA", desc: "Alfabetización en IA. Entiendes qué es la IA, cómo funciona, y por qué importa en tu vida." },
-  { n: 1, name: "Explorer", color: "#468BFF", desc: "Dominas herramientas de IA reales — prompts, ChatGPT, Claude — como usuario avanzado." },
-  { n: 2, name: "Thinker", color: "#A78BFA", desc: "Desarrollas pensamiento crítico, lógica y capacidad de decisión — con o sin IA de por medio." },
-  { n: 3, name: "Creator", color: "#36D399", desc: "Conviertes ideas en productos reales usando design thinking y herramientas sin código." },
-  { n: 4, name: "Builder", color: "#7B61FF", desc: "Construyes sistemas de IA en producción — RAG, fine-tuning, arquitectura real." },
-  { n: 5, name: "Architect", color: "#26C6DA", desc: "Diseñas sistemas a escala — multi-agente, infraestructura, seguridad." },
-  { n: 6, name: "Founder", color: "#FB923C", desc: "Aprendes a crear y liderar una organización alrededor de lo que construyes." },
-  { n: 7, name: "Researcher", color: "#36D399", desc: "Lees, reproduces y produces investigación rigurosa en IA." },
+  { n: 0, name: "Origins", color: "#26C6DA", desc: "Entiendes que es la IA, como funciona por dentro y por que esta cambiando el mundo. No necesitas experiencia previa. Solo curiosidad y disposicion para aprender desde cero." },
+  { n: 1, name: "Explorer", color: "#468BFF", desc: "Aprendes a usar las herramientas de IA mas importantes del momento: prompts, modelos de lenguaje, flujos de trabajo y automatizacion basica. El objetivo es que salgas siendo un usuario competente, no un espectador." },
+  { n: 2, name: "Thinker", color: "#A78BFA", desc: "Trabajas las habilidades que la IA no puede reemplazar: razonar bien, evaluar evidencia, detectar sesgos y tomar decisiones en contextos inciertos. Pensar mejor es una ventaja que dura toda la vida." },
+  { n: 3, name: "Creator", color: "#36D399", desc: "Aprendes a transformar una idea en algo concreto. Diseno centrado en el usuario, validacion antes de construir, primeros prototipos y comunicacion de producto. No necesitas saber programar para llegar hasta aqui." },
+  { n: 4, name: "Builder", color: "#7B61FF", desc: "Construyes aplicaciones reales con IA integrada. APIs, bases de datos, logica de backend y despliegue. Es el nivel mas tecnico y tambien donde empiezas a tener algo real en tus manos." },
+  { n: 5, name: "Architect", color: "#26C6DA", desc: "Disenias sistemas mas complejos: escalables, seguros y mantenibles. Para quienes quieren ir mas alla de una sola aplicacion y pensar en plataformas completas." },
+  { n: 6, name: "Founder", color: "#FB923C", desc: "Aprendes a crear y sostener una organizacion alrededor de lo que construyes. Modelo de negocio, estrategia, equipo, metricas y ejecucion. Emprender no es un talento, es una habilidad que se aprende." },
+  { n: 7, name: "Researcher", color: "#36D399", desc: "Te introduces al pensamiento cientifico aplicado a la IA. Leer papers, disenar experimentos, reproducir resultados y comunicar con rigor. Para quienes quieren contribuir al avance del campo." },
+
   { n: 8, name: "Residency", color: "#F472B6", desc: "Aplicas todo en un proyecto real con un stakeholder real. Termina en el Grand Challenge." },
 ];
 
