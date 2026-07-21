@@ -44,23 +44,55 @@ const LEVELS_DATA = [
 function LevelMapInteractive() {
   const [active, setActive] = useState(0);
   const sel = LEVELS_DATA[active];
+  const icons = ["🌱","🧭","🧠","🎨","🛠️","🏗️","🚀","🔬","🎓"];
+  const worlds = [11,11,10,10,10,10,10,9,2];
   return (
     <div style={{ marginBottom: "16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px 20px", position: "relative" }}>
-        <div style={{ position: "absolute", top: "13px", left: "20px", right: "20px", height: "2px", background: "#324055", zIndex: 0 }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px 24px", position: "relative" }}>
+        <div style={{ position: "absolute", top: "20px", left: "24px", right: "24px", height: "2px", background: "#324055", zIndex: 0 }} />
         {LEVELS_DATA.map((lvl, i) => (
-          <button key={lvl.n} onClick={() => setActive(i)} style={{ background: "none", border: "none", cursor: "pointer", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: 0 }}>
-            <div style={{ width: active === i ? "26px" : "20px", height: active === i ? "26px" : "20px", borderRadius: "50%", background: active === i ? lvl.color : "#1E2533", border: `2px solid ${lvl.color}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "9px", fontWeight: 800, color: active === i ? "#0F1420" : lvl.color, fontFamily: "'DM Sans',sans-serif", boxShadow: active === i ? `0 0 10px ${lvl.color}` : "none", transition: "all 0.2s" }}>{lvl.n}</div>
+          <button key={lvl.n} onClick={() => setActive(i)} style={{ background: "none", border: "none", cursor: "pointer", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: 0 }}>
+            <div style={{ width: active === i ? "42px" : "34px", height: active === i ? "42px" : "34px", borderRadius: "50%", background: active === i ? lvl.color : "#1E2533", border: `2px solid ${lvl.color}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: active === i ? "18px" : "14px", boxShadow: active === i ? `0 0 16px ${lvl.color}88` : "none", transition: "all 0.2s" }}>{icons[i]}</div>
+            <span style={{ fontSize: "7px", fontWeight: 700, color: active === i ? lvl.color : "#7E8798", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>{lvl.name}</span>
           </button>
         ))}
       </div>
-      <div style={{ background: "#1E2533", border: `1px solid ${sel.color}40`, borderRadius: "14px", padding: "16px" }}>
-        <p style={{ fontSize: "10px", fontWeight: 700, color: sel.color, marginBottom: "4px", fontFamily: "'DM Sans',sans-serif", letterSpacing: "0.5px" }}>NIVEL {sel.n}</p>
-        <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#F8FAFF", marginBottom: "8px" }}>{sel.name}</p>
-        <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#B3BDD1", fontFamily: "'DM Sans',sans-serif" }}>{sel.desc}</p>
+      <div style={{ background: "linear-gradient(135deg, #1E2533, #161C27)", border: `1px solid ${sel.color}50`, borderRadius: "16px", padding: "18px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+          <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: sel.color + "20", border: `1px solid ${sel.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px", flexShrink: 0 }}>{icons[active]}</div>
+          <div>
+            <p style={{ fontSize: "9px", fontWeight: 700, color: sel.color, fontFamily: "'DM Sans',sans-serif", letterSpacing: "1px", marginBottom: "2px" }}>NIVEL {sel.n}</p>
+            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "18px", color: "#F8FAFF" }}>{sel.name}</p>
+          </div>
+        </div>
+        <p style={{ fontSize: "13px", lineHeight: 1.7, color: "#B3BDD1", fontFamily: "'DM Sans',sans-serif", marginBottom: "12px" }}>{sel.desc}</p>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <span style={{ fontSize: "10px", fontWeight: 700, color: sel.color, background: sel.color + "15", border: `1px solid ${sel.color}30`, borderRadius: "8px", padding: "3px 10px", fontFamily: "'DM Sans',sans-serif" }}>{worlds[active]} mundos</span>
+          <span style={{ fontSize: "10px", fontWeight: 700, color: "#7E8798", background: "rgba(255,255,255,0.05)", borderRadius: "8px", padding: "3px 10px", fontFamily: "'DM Sans',sans-serif" }}>~{Math.round(worlds[active] * 1.5)} semanas</span>
+        </div>
       </div>
     </div>
   );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
