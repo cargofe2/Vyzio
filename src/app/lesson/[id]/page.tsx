@@ -140,7 +140,7 @@ export default function LessonPage() {
                   const worlds = lvData.worlds ?? [];
                   const wIdx = worlds.findIndex((w: any) => w.id === worldId);
                   if (wIdx >= 0 && wIdx < worlds.length - 1) {
-                    setNextUrl('/worlds?id=' + worlds[wIdx + 1].id);
+                    setNextUrl('/worlds?levelId=' + levelId);
                   } else {
                     setNextUrl('/worlds');
                   }
