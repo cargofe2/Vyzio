@@ -295,9 +295,9 @@ export default function DashboardPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             {[
               { id: "level-1", label: "Origins", icon: "🌱", free: true },
-              { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
-              { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
-              { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
+              { id: "level-new-1", label: "Explorer", icon: "🧭", free: true },
+              { id: "level-new-2", label: "Thinker", icon: "🧠", free: true },
+              { id: "level-new-3", label: "Creator", icon: "🎨", free: true },
               { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
               { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
               { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
