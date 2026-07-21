@@ -371,9 +371,9 @@ function WorldsContent() {
   if (showJourney) {
     const LEVELS = [
       { id: "level-1", label: "Origins", icon: "🌱", desc: "Descubre qué es la IA y aprende a aprender con ella.", free: true },
-      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: false },
-      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: false },
-      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: false },
+      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: true },
+      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: true },
+      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: true },
       { id: "level-new-4", label: "Builder", icon: "🛠️", desc: "Construye sistemas de IA listos para producción.", free: false },
       { id: "level-new-5", label: "Architect", icon: "🏗️", desc: "Diseña arquitecturas de IA a gran escala.", free: false },
       { id: "level-new-6", label: "Founder", icon: "🚀", desc: "Crea y escala tu propia organización.", free: false },
@@ -424,9 +424,9 @@ function WorldsContent() {
   // Vista de mundos con iconos coloridos (Level Screen)
   const LEVEL_DESC: Record<string, { desc: string; icon: string; free: boolean }> = {
     "level-1": { desc: "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
-    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: false },
-    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: false },
-    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: false },
+    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: true },
+    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: true },
+    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: true },
     "level-new-4": { desc: "Construye sistemas de IA listos para producción.", icon: "🛠️", free: false },
     "level-new-5": { desc: "Diseña arquitecturas de IA a gran escala.", icon: "🏗️", free: false },
     "level-new-6": { desc: "Crea y escala tu propia organización.", icon: "🚀", free: false },
@@ -469,9 +469,9 @@ function WorldsContent() {
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
         {[
           { id: "level-1", label: "Origins", icon: "🌱", free: true },
-          { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
-          { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
-          { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
+          { id: "level-new-1", label: "Explorer", icon: "🧭", free: true },
+          { id: "level-new-2", label: "Thinker", icon: "🧠", free: true },
+          { id: "level-new-3", label: "Creator", icon: "🎨", free: true },
           { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
           { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
           { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
