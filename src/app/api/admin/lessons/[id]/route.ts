@@ -23,7 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const body = await req.json();
-  const { title, description, content, isPublished, order, durationMin, xpReward } = body;
+  const { title, description, content, isPublished, order, durationMin, xpReward, isFree } = body;
   const lesson = await prisma.lesson.update({
     where: { id },
     data: {
@@ -34,6 +34,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       ...(order !== undefined && { order }),
       ...(durationMin !== undefined && { durationMin }),
       ...(xpReward !== undefined && { xpReward }),
+      ...(isFree !== undefined && { isFree }),
     },
   });
   return NextResponse.json({ lesson });
