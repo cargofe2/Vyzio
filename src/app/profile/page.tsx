@@ -170,7 +170,7 @@ export default function ProfilePage() {
             <AvatarIcon id={avatarId} size={60} />
             <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
           </button>
-            <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}><h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || "Estudiante"}</h1><button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>&#9998;</button></div>
+            <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}><h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || "Estudiante"}</h1><button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>✎</button></div>
 
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
