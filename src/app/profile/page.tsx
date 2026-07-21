@@ -77,6 +77,8 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
   const [certLoading, setCertLoading] = useState<string | null>(null);
 
   const LEVELS = [
@@ -90,6 +92,12 @@ export default function ProfilePage() {
     { id: "level-new-7", label: "Nivel 7 — Researcher" },
     { id: "level-new-8", label: "Nivel 8 — Residency" },
   ];
+  async function saveName() {
+    if (!nameInput.trim()) return;
+    await fetch('/api/user', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ displayName: nameInput.trim() }) });
+    setDisplayName(nameInput.trim());
+    setEditingName(false);
+  }
 
   async function selectAvatar(id: string, price = 0) {
     if (price > 0 && !unlockedAvatars.includes(id)) {
@@ -162,11 +170,12 @@ export default function ProfilePage() {
             <AvatarIcon id={avatarId} size={60} />
             <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
           </button>
-          <div style={{ flex: 1 }}>
-            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{displayName || user?.fullName || "Estudiante"}</h1>
+            <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}><h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || "Estudiante"}</h1><button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>&#9998;</button></div>
+
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
             <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: rankCfg.color + "18", color: rankCfg.color, border: "1px solid " + rankCfg.color + "33", fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
+            {editingName && (<div style={{ display:"flex",gap:"6px",marginTop:"6px" }}><input value={nameInput} onChange={e => setNameInput(e.target.value)} autoFocus style={{ flex:1,background:"#0F1420",border:"1px solid #7B61FF",borderRadius:"8px",padding:"4px 8px",color:"#F8FAFF",fontSize:"14px",fontFamily:"DM Sans,sans-serif" }} /><button onClick={saveName} style={{ padding:"4px 10px",background:"#7B61FF",color:"#fff",borderRadius:"7px",fontSize:"11px",fontWeight:700,border:"none",cursor:"pointer" }}>OK</button><button onClick={() => setEditingName(false)} style={{ padding:"4px 8px",background:"#324055",color:"#fff",borderRadius:"7px",fontSize:"11px",border:"none",cursor:"pointer" }}>X</button></div>)}
           </div>
           <button
             style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #324055", background: "#1E2533", color: soundOn ? "#F8FAFF" : "#7E8798", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
