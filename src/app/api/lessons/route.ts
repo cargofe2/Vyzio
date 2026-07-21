@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
       include: { _count: { select: { worlds: true } } },
     });
 
-    return NextResponse.json({ levels });
+    return NextResponse.json({ levels: levels.map((l: any) => ({ ...l, free: l.isFree })) });
   } catch (error) {
     console.error("[api/lessons] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
