@@ -77,6 +77,8 @@ function LevelMapInteractive() {
   const [vyResponse, setVyResponse] = useState("");
   const [vyLoading, setVyLoading] = useState(false);
   const [paywalled, setPaywalled] = useState(false);
+  const [nextLessonId, setNextLessonId] = useState<string|null>(null);
+  const [nextUrl, setNextUrl] = useState<string>('/worlds');
 
   useEffect(() => {
     async function load() {
@@ -87,6 +89,33 @@ function LevelMapInteractive() {
           const data = await res.json();
           setLesson(data.lesson);
           if (data.lesson?.type === "QUIZ") setPhase("quiz");
+          // Calcular siguiente URL
+          const les = data.lesson;
+          const worldId = les?.world?.id;
+          const levelId = les?.world?.levelId;
+          if (worldId) {
+            const wRes = await fetch('/api/lessons?worldId=' + worldId);
+            if (wRes.ok) {
+              const wData = await wRes.json();
+              const lessons = wData.lessons ?? [];
+              const curr = lessons.findIndex((l: any) => l.id === id);
+              if (curr >= 0 && curr < lessons.length - 1) {
+                setNextUrl('/lesson/' + lessons[curr + 1].id);
+              } else if (levelId) {
+                const lvRes = await fetch('/api/lessons?levelId=' + levelId);
+                if (lvRes.ok) {
+                  const lvData = await lvRes.json();
+                  const worlds = lvData.worlds ?? [];
+                  const wIdx = worlds.findIndex((w: any) => w.id === worldId);
+                  if (wIdx >= 0 && wIdx < worlds.length - 1) {
+                    setNextUrl('/worlds?levelId=' + levelId);
+                  } else {
+                    setNextUrl('/worlds');
+                  }
+                }
+              }
+            }
+          }
         }
       } catch (err) { console.error(err); }
       finally { setLoading(false); }
@@ -341,8 +370,8 @@ function LevelMapInteractive() {
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
-          <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.25)" }}>
-            Siguiente lección →
+          <Link href={nextUrl} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.25)" }}>
+            {nextUrl.startsWith("/lesson") ? "Siguiente leccion →" : nextUrl === "/worlds" ? "Ver niveles →" : "Siguiente mundo →"}
           </Link>
           <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
             Ir al Dashboard
