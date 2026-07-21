@@ -73,10 +73,10 @@ function LevelMapInteractive() {
       </div>
     </div>
   );
+
 }
 
-
-
+export default function LessonPage() {
 
 
 
