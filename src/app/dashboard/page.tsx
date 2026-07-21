@@ -130,8 +130,8 @@ export default function DashboardPage() {
           return;
         }
         if (userRes.ok) {
-          if (d?.user?.displayName) setDbName(d.user.displayName);
           const { user: u } = await userRes.json();
+          if (u?.displayName) setDbName(u.displayName);
           setPlan(u?.subscription?.plan ?? "STARTER");
           const lvlRes = await fetch('/api/lessons');
           if (lvlRes.ok) { const { levels: lvls } = await lvlRes.json(); if (lvls) setLevels(lvls); }
