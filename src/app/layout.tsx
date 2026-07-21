@@ -6,7 +6,7 @@ import { ZaiProvider } from "@/lib/ZaiContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Bymyzai", template: "%s Â· Bymyzai" },
+  title: { default: "Bymyzai", template: "%s · Bymyzai" },
   description: "La academia de IA para la nueva generacion. 630+ lecciones, 84 mundos, tutor IA personal y certificados verificables.",
 };
 
