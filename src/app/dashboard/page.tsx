@@ -114,6 +114,7 @@ export default function DashboardPage() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [plan, setPlan] = useState<string>("STARTER");
   const [levels, setLevels] = useState<any[]>([]);
+  const [dbName, setDbName] = useState("");
   const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
   const [levelPct, setLevelPct] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -129,6 +130,7 @@ export default function DashboardPage() {
           return;
         }
         if (userRes.ok) {
+          if (d?.user?.displayName) setDbName(d.user.displayName);
           const { user: u } = await userRes.json();
           setPlan(u?.subscription?.plan ?? "STARTER");
           const lvlRes = await fetch('/api/lessons');
@@ -194,7 +196,7 @@ export default function DashboardPage() {
       {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
         <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "5px" }}>
-          Hola, {user?.firstName ?? "Estudiante"}
+          Hola, {dbName || user?.firstName || "Estudiante"}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 13.5l-2-3.5a1.3 1.3 0 0 1 2.2-1.3l1.6 2.3"/><path d="M10.3 11L7.5 6.2a1.3 1.3 0 0 1 2.2-1.3l3.3 5.1"/><path d="M9.7 4.9a1.3 1.3 0 0 1 2.4-.9l3 5.4"/><path d="M12.2 4.6a1.3 1.3 0 0 1 2.4-.8l2.6 4.9"/><path d="M6.5 12l-1.2-.7a1.3 1.3 0 0 0-1.7 1.9l3.2 4.4a6 6 0 0 0 6.9 2.1l1.5-.5a5 5 0 0 0 3.1-2.9l1.6-4a1.4 1.4 0 0 0-2.5-1.2"/></svg>
         </p>
       </div>
