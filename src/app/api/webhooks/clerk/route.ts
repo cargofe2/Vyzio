@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
             clerkId,
             email,
             username,
-            displayName: `${firstName} ${lastName}`.trim() || "Estudiante",
+            displayName: `${firstName} ${lastName}`.trim() || email,
             avatarUrl,
             gamification: {
               create: {
