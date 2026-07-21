@@ -162,13 +162,13 @@ export default function ProfilePage() {
             <AvatarIcon id={avatarId} size={60} />
             <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
           </button>
+          <div style={{ flex: 1 }}>
             <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{displayName || user?.fullName || "Estudiante"}</h1>
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
-            <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: `${rankCfg.color}18`, color: rankCfg.color, border: `1px solid ${rankCfg.color}33`, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
+            <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: rankCfg.color + "18", color: rankCfg.color, border: "1px solid " + rankCfg.color + "33", fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
           </div>
           <button
-            onClick={() => { const next = !soundOn; setSoundOn(next); setSoundEnabled(next); if (next) playClick(); }}
             style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #324055", background: "#1E2533", color: soundOn ? "#F8FAFF" : "#7E8798", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
             aria-label={soundOn ? "Silenciar sonidos" : "Activar sonidos"}
           >
