@@ -83,10 +83,10 @@ export async function GET(req: NextRequest) {
     // Get all levels
     const levels = await prisma.level.findMany({
       orderBy: { order: "asc" },
-      include: { _count: { select: { worlds: true } } },
+      include: { _count: { select: { worlds: true } }, worlds: { include: { lessons: { where: { isFree: true }, select: { id: true } } } } },
     });
 
-    return NextResponse.json({ levels: levels.map((l: any) => ({ ...l, free: l.isFree })) });
+    return NextResponse.json({ levels: levels.map((l: any) => ({ ...l, free: l.isFree, hasFreeLessons: l.worlds.some((w: any) => w.lessons.length > 0) })) });
   } catch (error) {
     console.error("[api/lessons] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });

@@ -113,6 +113,7 @@ export default function DashboardPage() {
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [plan, setPlan] = useState<string>("STARTER");
+  const [levels, setLevels] = useState<any[]>([]);
   const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
   const [levelPct, setLevelPct] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -130,6 +131,8 @@ export default function DashboardPage() {
         if (userRes.ok) {
           const { user: u } = await userRes.json();
           setPlan(u?.subscription?.plan ?? "STARTER");
+          const lvlRes = await fetch('/api/lessons');
+          if (lvlRes.ok) { const { levels: lvls } = await lvlRes.json(); if (lvls) setLevels(lvls); }
         }
         const gamRes = await fetch("/api/gamification");
         if (gamRes.ok) {
@@ -293,17 +296,17 @@ export default function DashboardPage() {
             Tu camino
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            {[
-              { id: "level-1", label: "Origins", icon: "🌱", free: true },
-              { id: "level-new-1", label: "Explorer", icon: "🧭", free: true },
-              { id: "level-new-2", label: "Thinker", icon: "🧠", free: true },
-              { id: "level-new-3", label: "Creator", icon: "🎨", free: true },
-              { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
-              { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
-              { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
-              { id: "level-new-7", label: "Researcher", icon: "🔬", free: false },
-              { id: "level-new-8", label: "Residency", icon: "🎓", free: false },
-            ].map((lvl, i) => {
+            {(levels.length > 0 ? levels.map((l: any) => ({ id: l.id, label: l.name, icon: LEVEL_ICON[l.id] ?? l.id, free: l.free || l.hasFreeLessons })) : [
+              { id: "level-1", label: "Origins", icon: "level-1", free: true },
+              { id: "level-new-1", label: "Explorer", icon: "level-new-1", free: false },
+              { id: "level-new-2", label: "Thinker", icon: "level-new-2", free: false },
+              { id: "level-new-3", label: "Creator", icon: "level-new-3", free: false },
+              { id: "level-new-4", label: "Builder", icon: "level-new-4", free: false },
+              { id: "level-new-5", label: "Architect", icon: "level-new-5", free: false },
+              { id: "level-new-6", label: "Founder", icon: "level-new-6", free: false },
+              { id: "level-new-7", label: "Researcher", icon: "level-new-7", free: false },
+              { id: "level-new-8", label: "Residency", icon: "level-new-8", free: false },
+            ]).map((lvl: any, i: number) => {
               const locked = !lvl.free && plan === "STARTER";
               const active = lvl.id === currentLevel?.id;
               const lv = getV(i === 0 ? 0 : i);
