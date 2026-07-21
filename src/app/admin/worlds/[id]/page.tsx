@@ -8,14 +8,12 @@ interface LessonRow {
   isPublished: boolean; isFree: boolean; _count: { quizQuestions: number };
 }
 interface WorldDetail {
-  id: string; name: string; description: string; emoji: string; isFree: boolean;
+  id: string; name: string; description: string; emoji: string;
   lessons: LessonRow[];
 }
 
 const card: React.CSSProperties = { background: "#1E2533", border: "1px solid #324055", borderRadius: "14px", padding: "14px" };
 const btn: React.CSSProperties = { padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "8px", fontSize: "12px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", border: "none", cursor: "pointer" };
-const btnGreen: React.CSSProperties = { ...btn, background: "#36D399" };
-const btnGray: React.CSSProperties = { ...btn, background: "#324055" };
 const inputStyle: React.CSSProperties = { background: "#0F1420", border: "1px solid #324055", borderRadius: "8px", padding: "8px 10px", color: "#F8FAFF", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" };
 const LESSON_TYPES = ["READING", "VIDEO", "QUIZ", "PROJECT", "EVALUATION", "PRACTICE"];
 
@@ -42,15 +40,6 @@ export default function AdminWorldPage() {
   async function saveMeta() {
     await fetch(`/api/admin/worlds/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(meta) });
     setEditingMeta(false);
-    load();
-  }
-
-  async function toggleWorldFree() {
-    if (!world) return;
-    await fetch(`/api/admin/worlds/${id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isFree: !world.isFree }),
-    });
     load();
   }
 
@@ -94,15 +83,11 @@ export default function AdminWorldPage() {
         {!editingMeta ? (
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "18px", color: "#F8FAFF" }}>{world.emoji} {world.name}</h1>
-                {world.isFree && <span style={{ fontSize: "10px", fontWeight: 700, color: "#36D399", background: "rgba(54,211,153,0.1)", border: "1px solid rgba(54,211,153,0.3)", borderRadius: "6px", padding: "2px 8px" }}>WORLD GRATIS</span>}
-              </div>
+              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "18px", color: "#F8FAFF" }}>{world.emoji} {world.name}</h1>
               <p style={{ color: "#7E8798", fontSize: "12px", marginTop: "6px", fontFamily: "'DM Sans',sans-serif" }}>{world.description}</p>
               <p style={{ color: "#7E8798", fontSize: "11px", marginTop: "4px", fontFamily: "'DM Sans',sans-serif" }}>{freeCount} de {world.lessons.length} lecciones gratuitas</p>
             </div>
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
-              <button style={world.isFree ? btnGray : btnGreen} onClick={toggleWorldFree}>{world.isFree ? "Bloquear world" : "Liberar world"}</button>
+            <div style={{ display: "flex", gap: "8px" }}>
               <button style={btn} onClick={() => setEditingMeta(true)}>Editar</button>
               <button style={{ ...btn, background: "#FF6B6B" }} onClick={deleteWorld}>Borrar</button>
             </div>
