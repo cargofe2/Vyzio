@@ -329,28 +329,28 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* Misiones (restantes, sin repetir la promovida arriba) */}
-        {missions.length > 1 && (
-          <section>
-            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#8B94A8", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-              Otras misiones activas
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-              {missions.slice(1).map(m => (
-                <div key={m.id} style={{ background: "#1E2533", borderRadius: "16px", padding: "14px", border: "1px solid #324055", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-                  <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(123,97,255,0.12)", color: m.type === "DAILY" ? "#36D399" : "#8B75FF", fontFamily: "'DM Sans',sans-serif" }}>
-                    {m.type === "DAILY" ? "Diaria" : "Semanal"}
-                  </span>
-                  <p style={{ fontSize: "12px", fontWeight: 600, color: "#F8FAFF", margin: "8px 0 6px", lineHeight: 1.3, fontFamily: "'DM Sans',sans-serif" }}>{m.name}</p>
-                  <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
-                    <div style={{ height: "100%", width: `${Math.min((m.progress.current / m.targetValue) * 100, 100)}%`, background: "#8B75FF", borderRadius: "2px" }} />
-                  </div>
-                  <p style={{ fontSize: "9px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue} · +{m.xpReward} XP</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       </div>
 
