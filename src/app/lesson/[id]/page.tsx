@@ -1,4 +1,5 @@
 "use client";
+import LevelMap from "@/components/LevelMap";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -584,7 +585,7 @@ function LevelMapInteractive() {
                   </div>
                 </div>
               );
-              if (block.type === "level_map") return <LevelMapInteractive key={i} />;
+              if (block.type === "level_map") return <LevelMap key={i} />;
               return null;
             })}
           </>
