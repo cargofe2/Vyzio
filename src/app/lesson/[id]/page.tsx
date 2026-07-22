@@ -213,6 +213,9 @@ function LevelMapInteractive() {
   }
 
   const [battleSubmission, setBattleSubmission] = useState("");
+  const prevSubmission = (lesson?.progress as any)?.submission ?? null;
+  const prevFeedback = (lesson?.progress as any)?.battleFeedback ?? null;
+  const prevPassed = (lesson?.progress as any)?.battlePassed ?? false;
   const [battleLoading, setBattleLoading] = useState(false);
   const [battleResult, setBattleResult] = useState<{ passed: boolean; feedback: string; attempts: number } | null>(null);
 
