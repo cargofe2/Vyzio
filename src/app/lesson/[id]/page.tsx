@@ -79,6 +79,7 @@ function LevelMapInteractive() {
   const [paywalled, setPaywalled] = useState(false);
   const [nextLessonId, setNextLessonId] = useState<string|null>(null);
   const [nextUrl, setNextUrl] = useState<string>('/worlds');
+  const [lightbox, setLightbox] = useState<string|null>(null);
 
   useEffect(() => {
     async function load() {
@@ -96,6 +97,7 @@ function LevelMapInteractive() {
           if (worldId) {
             const wRes = await fetch('/api/lessons?worldId=' + worldId);
             if (wRes.ok) {
+
               const wData = await wRes.json();
               const lessons = wData.lessons ?? [];
               const curr = lessons.findIndex((l: any) => l.id === id);
@@ -559,10 +561,10 @@ function LevelMapInteractive() {
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
               );
-if (block.type === "level_map") return <LevelMapInteractive key={i} />;
-              if (block.type === "image") return (
-                <img key={i} src={block.url} alt={block.alt ?? ""} style={{ width: "100%", borderRadius: "14px", marginBottom: "16px" }} />
-              );
+              if (block.type === "image") return (<img key={i} src={block.url} alt={block.alt ?? ""} onClick={() => setLightbox(block.url ?? null)} style={{ width: "100%", borderRadius: "14px", marginBottom: "16px", cursor: "zoom-in" }} />);
+
+
+
               if (block.type === "tip") return (
                 <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, color: "#FB923C", marginBottom: "5px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
@@ -605,6 +607,7 @@ if (block.type === "level_map") return <LevelMapInteractive key={i} />;
           </button>
         )}
       </div>
+      {lightbox && (<div onClick={() => setLightbox(null)} style={{ position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:"16px",cursor:"zoom-out" }}><img src={lightbox} style={{ maxWidth:"100%",maxHeight:"90vh",borderRadius:"12px" }} alt="" /></div>)}
     </div>
   );
 }
