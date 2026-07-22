@@ -584,6 +584,7 @@ function LevelMapInteractive() {
                   </div>
                 </div>
               );
+              if (block.type === "level_map") return <LevelMapInteractive key={i} />;
               return null;
             })}
           </>
