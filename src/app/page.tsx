@@ -131,10 +131,19 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div style={{ display: "flex", gap: "20px", marginTop: "28px", fontSize: "12px", color: "rgba(255,255,255,0.25)" }}>
-            <span>🎮 Gamificación</span>
-            <span>🤖 Tutor IA</span>
-            <span>🎓 Certificados</span>
+          <div style={{ display: "flex", gap: "20px", marginTop: "28px", fontSize: "12px", color: "rgba(255,255,255,0.25)", alignItems: "center" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor" strokeWidth="1.8"/><path d="M6 12H10M8 10V14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg>
+              Gamificación
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" stroke="currentColor" strokeWidth="1.8"/><path d="M9 14.5C6.5 15.5 5 17.5 5 20H19C19 17.5 17.5 15.5 15 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 13V16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              Tutor IA
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8H21L16.5 12L18 18L12 15L6 18L7.5 12L3 8H9L12 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>
+              Certificados
+            </span>
           </div>
         </div>
 
@@ -201,15 +210,15 @@ export default async function HomePage() {
         </h2>
         <div className="features-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px", maxWidth: "820px", margin: "0 auto" }}>
           {[
-            { icon: "🤖", title: "ZAI, tu tutor IA", desc: "Un mentor personal que recuerda tu progreso, adapta las explicaciones y te guía en cada paso." },
-            { icon: "🎮", title: "Gamificación real", desc: "XP, VY Coins, avatares, Boss Battles. Aprender se siente como jugar." },
-            { icon: "🎓", title: "Certificados verificables", desc: "Cada nivel completado genera un certificado público con código único verificable." },
-            { icon: "🌍", title: "84 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
-            { icon: "⚡", title: "Aprende creando", desc: "Proyectos reales, Boss Battles, portfolio de evidencia. No solo teoría." },
-            { icon: "🔓", title: "Empieza gratis", desc: "Origins y Explorer accesibles sin tarjeta de crédito. Crece a tu ritmo." },
-          ].map(({ icon, title, desc }) => (
+            { color: "#7B61FF", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#7B61FF" strokeWidth="1.8"/><path d="M5 20C5 17.2 8.1 15 12 15C15.9 15 19 17.2 19 20" stroke="#7B61FF" strokeWidth="1.8" strokeLinecap="round"/><path d="M17 4.5C18.2 5.1 19 6.4 19 8" stroke="#7B61FF" strokeWidth="1.8" strokeLinecap="round"/><circle cx="19" cy="3.5" r="1" fill="#7B61FF"/></svg>, title: "ZAI, tu tutor IA", desc: "Un mentor personal que recuerda tu progreso, adapta las explicaciones y te guía en cada paso." },
+            { color: "#F2C04D", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="3" stroke="#F2C04D" strokeWidth="1.8"/><path d="M6 12.5H10M8 10.5V14.5" stroke="#F2C04D" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="12.5" r="1.2" fill="#F2C04D"/><circle cx="19" cy="12.5" r="1.2" fill="#F2C04D"/></svg>, title: "Gamificación real", desc: "XP, VY Coins, avatares, Boss Battles. Aprender se siente como jugar." },
+            { color: "#36D399", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8H21L16.5 12.5L18.5 19L12 15.5L5.5 19L7.5 12.5L3 8H9L12 2Z" stroke="#36D399" strokeWidth="1.8" strokeLinejoin="round"/></svg>, title: "Certificados verificables", desc: "Cada nivel completado genera un certificado público con código único verificable." },
+            { color: "#468BFF", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#468BFF" strokeWidth="1.8"/><path d="M2 12H22" stroke="#468BFF" strokeWidth="1.8"/><path d="M12 2C9.5 5.5 8 8.5 8 12C8 15.5 9.5 18.5 12 22" stroke="#468BFF" strokeWidth="1.8"/><path d="M12 2C14.5 5.5 16 8.5 16 12C16 15.5 14.5 18.5 12 22" stroke="#468BFF" strokeWidth="1.8"/></svg>, title: "84 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
+            { color: "#FF7DAE", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 16.4 7.6 20.5 12 21C16.4 20.5 20 16.4 20 12V7L12 3Z" stroke="#FF7DAE" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="#FF7DAE" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: "Aprende creando", desc: "Proyectos reales, Boss Battles, portfolio de evidencia. No solo teoría." },
+            { color: "#26C6DA", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="10" rx="2" stroke="#26C6DA" strokeWidth="1.8"/><path d="M7 11V7C7 4.8 9.2 3 12 3C14.8 3 17 4.8 17 7V11" stroke="#26C6DA" strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="16" r="1.5" fill="#26C6DA"/></svg>, title: "Empieza gratis", desc: "Origins y Explorer accesibles sin tarjeta de crédito. Crece a tu ritmo." },
+          ].map(({ icon, color, title, desc }) => (
             <div key={title} style={{ borderRadius: "16px", padding: "20px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-              <span style={{ fontSize: "24px", display: "block", marginBottom: "10px" }}>{icon}</span>
+              <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>{icon}</div>
               <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "14px", marginBottom: "6px", color: "#F8FAFF" }}>{title}</p>
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>{desc}</p>
             </div>
