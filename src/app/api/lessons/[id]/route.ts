@@ -42,7 +42,10 @@ export async function GET(
       });
     }
 
-    return NextResponse.json({ lesson: { ...lesson, progress } });
+    const userLang = (user as any)?.language ?? "es";
+    const { content_en, ...lessonBase } = lesson as any;
+    const finalContent = userLang === "en" && content_en ? content_en : lessonBase.content;
+    return NextResponse.json({ lesson: { ...lessonBase, content: finalContent, progress } });
   } catch (error) {
     console.error("[api/lessons/[id]] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
