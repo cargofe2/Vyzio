@@ -1,9 +1,3 @@
-import type { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Terminos de Servicio â€” Bymyzai",
-  description: "Terminos y condiciones de uso de la plataforma Bymyzai.",
-  alternates: { canonical: "https://www.bymyzai.com/terms" },
-};
 export default function TermsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", padding: "40px 20px", fontFamily: "'DM Sans',sans-serif" }}>

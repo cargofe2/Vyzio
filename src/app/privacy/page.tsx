@@ -1,9 +1,3 @@
-import type { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Politica de Privacidad â€” Bymyzai",
-  description: "Politica de privacidad de Bymyzai. Como recopilamos, usamos y protegemos tus datos personales.",
-  alternates: { canonical: "https://www.bymyzai.com/privacy" },
-};
 export default function PrivacyPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", padding: "40px 20px", fontFamily: "'DM Sans',sans-serif" }}>

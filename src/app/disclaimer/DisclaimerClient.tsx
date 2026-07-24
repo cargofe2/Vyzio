@@ -12,6 +12,7 @@ export default function DisclaimerClient() {
     p: { marginBottom: "16px" },
     a: { color: "#7B61FF" },
     callout: { background: "#1E2533", border: "1px solid #324055", borderLeft: "3px solid #F2C04D", borderRadius: "8px", padding: "12px 16px", marginTop: "12px", marginBottom: "16px", fontSize: "14px" },
+    betaNotice: { background: "#1E2533", border: "1px solid #324055", borderLeft: "3px solid #7B61FF", borderRadius: "8px", padding: "14px 16px", marginBottom: "32px", fontSize: "14px" },
     toggle: { display: "flex", gap: "4px", background: "#1E2533", border: "1px solid #324055", borderRadius: "8px", padding: "4px", marginBottom: "32px", width: "fit-content" },
     btnActive: { background: "#7B61FF", color: "#fff", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" },
     btnInactive: { background: "none", color: "#7E8798", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" },
@@ -23,6 +24,12 @@ export default function DisclaimerClient() {
     <>
       <h1 style={s.h1}>Disclaimer — Bymyzai</h1>
       <p style={s.date}>Last updated: July 2025</p>
+
+      <div style={s.betaNotice}>
+        <strong style={{ color: "#A78BFA", display: "block", marginBottom: "6px" }}>Public Beta Notice</strong>
+        Bymyzai is currently available as a Public Beta. The platform is actively being tested and refined before its official commercial launch. During this period, features, content, pricing, availability, and functionality may change without prior notice. Some areas of the platform may still be under development or subject to improvement as feedback is incorporated. Use of the platform during this beta period is intended for testing, evaluation, and continuous improvement.
+      </div>
+
       <p style={s.p}>Please read this disclaimer carefully before using Bymyzai.</p>
 
       <h2 style={s.h2}>1. Educational Content</h2>
@@ -40,14 +47,14 @@ export default function DisclaimerClient() {
         <li style={s.li}>Bymyzai does not use your personal learning data to train external AI models without explicit opt-in consent.</li>
       </ul>
 
-      <h2 style={s.h2}>3. Users Under 18</h2>
-      <p style={s.p}>Bymyzai serves learners aged 13 and older. Users between 13 and 17 must have verifiable parental or guardian consent before creating an account.</p>
+      <h2 style={s.h2}>3. Minimum Age Requirement</h2>
+      <p style={s.p}>Bymyzai is available exclusively to users aged 16 and older. Users between 16 and 17 years of age must have verifiable parental or guardian consent before creating an account.</p>
       <ul style={s.ul}>
-        <li style={s.li}>Users under 13 are strictly prohibited from using the platform (COPPA compliance).</li>
-        <li style={s.li}>Parents may request access, correction, or deletion of their child's data at <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
-        <li style={s.li}>Parental consent for users aged 16-17 is obtained via email confirmation prior to account activation.</li>
+        <li style={s.li}>Users under 16 are strictly prohibited from registering or using the platform.</li>
+        <li style={s.li}>Parental consent for users aged 16–17 is obtained via email confirmation prior to account activation.</li>
+        <li style={s.li}>Parents or guardians may request access, correction, or deletion of their child's data at <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
       </ul>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Parents:</strong> If your child under 13 has registered on Bymyzai, contact <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> and we will delete the account within 5 business days.</div>
+      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Parents:</strong> If your child under 16 has registered on Bymyzai, contact <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> and we will delete the account within 5 business days.</div>
 
       <h2 style={s.h2}>4. International Users & GDPR</h2>
       <p style={s.p}>Bymyzai is operated by Carlos Eduardo Gonzalez Fernandez, an individual based in New Jersey, United States, governed by the laws of New Jersey and applicable U.S. federal law.</p>
@@ -64,6 +71,12 @@ export default function DisclaimerClient() {
     <>
       <h1 style={s.h1}>Aviso Legal — Bymyzai</h1>
       <p style={s.date}>Ultima actualizacion: julio 2025</p>
+
+      <div style={s.betaNotice}>
+        <strong style={{ color: "#A78BFA", display: "block", marginBottom: "6px" }}>Aviso de Beta Publica</strong>
+        Bymyzai esta disponible actualmente como Beta Publica. La plataforma se encuentra en proceso activo de prueba y refinamiento previo a su lanzamiento comercial oficial. Durante este periodo, las funciones, el contenido, los precios, la disponibilidad y las funcionalidades pueden cambiar sin previo aviso. Algunas areas de la plataforma pueden estar aun en desarrollo o sujetas a mejoras a medida que se incorpora el feedback de los usuarios. El uso de la plataforma durante este periodo beta esta destinado a pruebas, evaluacion y mejora continua.
+      </div>
+
       <p style={s.p}>Lee este aviso detenidamente antes de usar Bymyzai.</p>
 
       <h2 style={s.h2}>1. Contenido Educativo</h2>
@@ -81,14 +94,14 @@ export default function DisclaimerClient() {
         <li style={s.li}>Bymyzai no utiliza tus datos para entrenar modelos de IA externos sin consentimiento explicito.</li>
       </ul>
 
-      <h2 style={s.h2}>3. Usuarios Menores de 18 Anos</h2>
-      <p style={s.p}>Bymyzai atiende a estudiantes de 13 anos en adelante. Los usuarios de 13 a 17 anos deben contar con el consentimiento verificable de sus padres o tutores antes de crear una cuenta.</p>
+      <h2 style={s.h2}>3. Edad Minima Requerida</h2>
+      <p style={s.p}>Bymyzai esta disponible exclusivamente para usuarios de 16 anos de edad o mas. Los usuarios de entre 16 y 17 anos deben contar con el consentimiento verificable de sus padres o tutores antes de crear una cuenta.</p>
       <ul style={s.ul}>
-        <li style={s.li}>Los usuarios menores de 13 anos tienen prohibido el uso de la plataforma (cumplimiento COPPA).</li>
-        <li style={s.li}>Los padres pueden solicitar acceso, correccion o eliminacion de los datos de su hijo en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
+        <li style={s.li}>Los usuarios menores de 16 anos tienen prohibido registrarse o usar la plataforma.</li>
         <li style={s.li}>El consentimiento parental para usuarios de 16 a 17 anos se obtiene por confirmacion por correo previo a la activacion de la cuenta.</li>
+        <li style={s.li}>Los padres o tutores pueden solicitar acceso, correccion o eliminacion de los datos de su hijo en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
       </ul>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Padres:</strong> Si su hijo menor de 13 anos se ha registrado en Bymyzai, contactenos en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> y eliminaremos la cuenta en 5 dias habiles.</div>
+      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Padres:</strong> Si su hijo menor de 16 anos se ha registrado en Bymyzai, contactenos en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> y eliminaremos la cuenta en 5 dias habiles.</div>
 
       <h2 style={s.h2}>4. Usuarios Internacionales y RGPD</h2>
       <p style={s.p}>Bymyzai es operado por Carlos Eduardo Gonzalez Fernandez, individuo con domicilio en Nueva Jersey, Estados Unidos, regido por las leyes del Estado de Nueva Jersey y la legislacion federal aplicable.</p>
