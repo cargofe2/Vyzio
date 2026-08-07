@@ -117,6 +117,7 @@ model Lesson {
   type        LessonType
   description String?
   content     Json?
+  content_en  Json?
   videoUrl    String?
   durationMin Int         @default(5)
   xpReward    Int         @default(75)
