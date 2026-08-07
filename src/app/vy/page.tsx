@@ -1,9 +1,9 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useUserLang } from "@/hooks/useUserLang";
 import Link from "next/link";
-
-const ALL_CHIPS = [
+const ALL_CHIPS_ES = [
   "¿Qué debo estudiar hoy?",
   "Explícame los transformers",
   "Dame un quiz de IA",
@@ -17,8 +17,38 @@ const ALL_CHIPS = [
   "¿Cómo empiezo a programar?",
   "¿Qué es embeddings?",
 ];
+const ALL_CHIPS_EN = [
+  "What should I study today?",
+  "Explain transformers to me",
+  "Give me an AI quiz",
+  "What is an LLM?",
+  "Recommend me a project",
+  "How does RAG work?",
+  "What is an AI agent?",
+  "Explain fine-tuning",
+  "What is overfitting?",
+  "Give me a prompting exercise",
+  "How do I start coding?",
+  "What are embeddings?",
+];
 
-function getRandomChips() {
+
+
+
+
+
+
+
+
+
+
+
+
+];
+
+function getRandomChips(lang: string) {
+  const chips = lang === "en" ? ALL_CHIPS_EN : ALL_CHIPS_ES;
+  const shuffled = [...chips].sort(() => Math.random() - 0.5);
   const shuffled = [...ALL_CHIPS].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, 4);
 }
@@ -45,7 +75,8 @@ function ZaiOrb({ size = 36 }: { size?: number }) {
 
 export default function VYPage() {
   const { user } = useUser();
-  const [chips] = useState(() => getRandomChips());
+  const { lang } = useUserLang();
+  const [chips] = useState(() => getRandomChips(lang));
   const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en Bymyzai. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
