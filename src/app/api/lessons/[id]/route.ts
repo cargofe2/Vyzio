@@ -43,9 +43,12 @@ export async function GET(
     }
 
     const userLang = (user as any)?.language ?? "es";
-    const { content_en, ...lessonBase } = lesson as any;
+    const { content_en, title_en, ...lessonBase } = lesson as any;
     const finalContent = userLang === "en" && content_en ? content_en : lessonBase.content;
-    return NextResponse.json({ lesson: { ...lessonBase, content: finalContent, progress } });
+    const finalTitle = userLang === "en" && title_en ? title_en : lessonBase.title;
+    const worldNameEn = (lessonBase.world as any)?.name_en;
+    const finalWorldName = userLang === "en" && worldNameEn ? worldNameEn : lessonBase.world?.name;
+    return NextResponse.json({ lesson: { ...lessonBase, title: finalTitle, content: finalContent, world: { ...lessonBase.world, name: finalWorldName }, progress } });
   } catch (error) {
     console.error("[api/lessons/[id]] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
