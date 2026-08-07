@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
-  description: "La academia para la era de la IA. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
+  title: "Bymyzai – Aprende IA. Construye el futuro.",
+  description: "La academia de IA para jóvenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
   openGraph: {
-  title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
-  description: "La academia para la era de la IA. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
+    title: "Bymyzai – Aprende IA. Construye el futuro.",
+    description: "La academia de IA para jóvenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
     url: "https://www.bymyzai.com",
     siteName: "Bymyzai",
     locale: "es_ES",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: "Bymyzai", description: "La academia para la era de la IA." },
+  twitter: { card: "summary_large_image", title: "Bymyzai", description: "La academia de IA para jóvenes." },
   alternates: { canonical: "https://www.bymyzai.com" },
 };
 import Link from "next/link";
@@ -47,11 +47,6 @@ const LEVELS = [
 export default async function HomePage() {
   const { userId } = await auth();
   if (userId) redirect("/dashboard");
-  const { headers } = await import("next/headers");
-  const headersList = await headers();
-  const acceptLang = headersList.get("accept-language") ?? "es";
-  const lang = acceptLang.toLowerCase().startsWith("en") ? "en" : "es";
-
 
   return (
     <main style={{ minHeight: "100vh", background: "#0F1420", color: "#F8FAFF", fontFamily: "'DM Sans', sans-serif" }}>
@@ -89,7 +84,7 @@ export default async function HomePage() {
             Entrar
           </Link>
           <Link href="/sign-up" style={{ fontSize: "13px", fontWeight: 700, color: "#fff", textDecoration: "none", padding: "10px 20px", borderRadius: "12px", background: "rgba(123,97,255,0.9)", border: "1px solid rgba(123,97,255,0.4)" }}>
-            {lang === "en" ? "Get started free" : "Empezar gratis"}
+            Empezar gratis
           </Link>
         </div>
       </nav>
@@ -101,24 +96,24 @@ export default async function HomePage() {
         <div className="hero-text" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "6px 14px", borderRadius: "100px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.25)", marginBottom: "24px" }}>
             <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#7B61FF", display: "inline-block" }}></span>
-            <span style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 600, letterSpacing: "0.5px" }}>La academia para la era de la IA</span>
+            <span style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 600, letterSpacing: "0.5px" }}>La academia de IA para jóvenes</span>
           </div>
 
           <h1 className="hero-h1" style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900, fontSize: "38px", lineHeight: 1.05, marginBottom: "20px", maxWidth: "340px" }}>
-            Construye el futuro.<br />
+            Aprende IA.<br />
             <span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Domina la era de la IA.
+              Construye el futuro.
             </span>
           </h1>
 
           <p className="hero-sub" style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.45)", marginBottom: "32px", maxWidth: "360px" }}>
             630+ lecciones · 84 mundos · Tutor IA personal · Certificados verificables.
-            La plataforma donde desarrollas capacidad real con IA.
+            La plataforma donde aprendes IA de verdad.
           </p>
 
           {/* Stats */}
           <div className="stats-row" style={{ display: "flex", gap: "32px", marginBottom: "36px", justifyContent: "center" }}>
-            {[["630+", lang === "en" ? "Lessons" : "Lecciones"],["84", lang === "en" ? "Worlds" : "Mundos"],["9", lang === "en" ? "Levels" : "Niveles"]].map(([n,l]) => (
+            {[["630+","Lecciones"],["84","Mundos"],["9","Niveles"]].map(([n,l]) => (
               <div key={l} style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{n}</div>
                 <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>{l}</div>
@@ -129,26 +124,17 @@ export default async function HomePage() {
           {/* CTAs */}
           <div className="cta-group" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "320px" }}>
             <Link href="/sign-up" className="cta-primary" style={{ display: "block", width: "100%", padding: "16px 24px", borderRadius: "14px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff" }}>
-              {lang === "en" ? "Get started free →" : "Empezar gratis →"}
+              Empezar gratis →
             </Link>
             <Link href="/sign-in" className="cta-secondary" style={{ display: "block", width: "100%", padding: "14px 24px", borderRadius: "14px", textAlign: "center", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(123,97,255,0.2)", color: "rgba(255,255,255,0.5)" }}>
-              {lang === "en" ? "I already have an account" : "Ya tengo cuenta"}
+              Ya tengo cuenta
             </Link>
           </div>
 
-          <div style={{ display: "flex", gap: "20px", marginTop: "28px", fontSize: "12px", color: "rgba(255,255,255,0.25)", alignItems: "center" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor" strokeWidth="1.8"/><path d="M6 12H10M8 10V14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg>
-              Gamificación
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" stroke="currentColor" strokeWidth="1.8"/><path d="M9 14.5C6.5 15.5 5 17.5 5 20H19C19 17.5 17.5 15.5 15 14.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 13V16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-              Tutor IA
-            </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8H21L16.5 12L18 18L12 15L6 18L7.5 12L3 8H9L12 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>
-              Certificados
-            </span>
+          <div style={{ display: "flex", gap: "20px", marginTop: "28px", fontSize: "12px", color: "rgba(255,255,255,0.25)" }}>
+            <span>🎮 Gamificación</span>
+            <span>🤖 Tutor IA</span>
+            <span>🎓 Certificados</span>
           </div>
         </div>
 
@@ -178,7 +164,7 @@ export default async function HomePage() {
       {/* WORLDS SECTION */}
       <section className="section-worlds" style={{ padding: "56px 24px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", textAlign: "center", marginBottom: "8px", color: "rgba(255,255,255,0.2)" }}>
-          {lang === "en" ? "9 levels · 84 learning worlds" : "9 niveles · 84 mundos de aprendizaje"}
+          9 niveles · 84 mundos de aprendizaje
         </p>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "24px", textAlign: "center", marginBottom: "32px", color: "#F8FAFF" }}>
           Un camino completo, desde cero
@@ -211,19 +197,19 @@ export default async function HomePage() {
       {/* FEATURES */}
       <section style={{ padding: "56px 24px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "24px", textAlign: "center", marginBottom: "32px" }}>
-          {lang === "en" ? "Why Bymyzai" : "Por qué Bymyzai"}
+          Por qué Bymyzai
         </h2>
         <div className="features-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px", maxWidth: "820px", margin: "0 auto" }}>
           {[
-            { color: "#7B61FF", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#7B61FF" strokeWidth="1.8"/><path d="M5 20C5 17.2 8.1 15 12 15C15.9 15 19 17.2 19 20" stroke="#7B61FF" strokeWidth="1.8" strokeLinecap="round"/><path d="M17 4.5C18.2 5.1 19 6.4 19 8" stroke="#7B61FF" strokeWidth="1.8" strokeLinecap="round"/><circle cx="19" cy="3.5" r="1" fill="#7B61FF"/></svg>, title: "ZAI, tu tutor IA", desc: "Un mentor personal que recuerda tu progreso, adapta las explicaciones y te guía en cada paso." },
-            { color: "#F2C04D", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="3" stroke="#F2C04D" strokeWidth="1.8"/><path d="M6 12.5H10M8 10.5V14.5" stroke="#F2C04D" strokeWidth="1.8" strokeLinecap="round"/><circle cx="16" cy="12.5" r="1.2" fill="#F2C04D"/><circle cx="19" cy="12.5" r="1.2" fill="#F2C04D"/></svg>, title: "Gamificación real", desc: "XP, VY Coins, avatares, Boss Battles. Aprender se siente como jugar." },
-            { color: "#36D399", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15 8H21L16.5 12.5L18.5 19L12 15.5L5.5 19L7.5 12.5L3 8H9L12 2Z" stroke="#36D399" strokeWidth="1.8" strokeLinejoin="round"/></svg>, title: "Certificados verificables", desc: "Cada nivel completado genera un certificado público con código único verificable." },
-            { color: "#468BFF", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#468BFF" strokeWidth="1.8"/><path d="M2 12H22" stroke="#468BFF" strokeWidth="1.8"/><path d="M12 2C9.5 5.5 8 8.5 8 12C8 15.5 9.5 18.5 12 22" stroke="#468BFF" strokeWidth="1.8"/><path d="M12 2C14.5 5.5 16 8.5 16 12C16 15.5 14.5 18.5 12 22" stroke="#468BFF" strokeWidth="1.8"/></svg>, title: "84 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
-            { color: "#FF7DAE", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 16.4 7.6 20.5 12 21C16.4 20.5 20 16.4 20 12V7L12 3Z" stroke="#FF7DAE" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="#FF7DAE" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: "Aprende creando", desc: "Proyectos reales, Boss Battles, portfolio de evidencia. No solo teoría." },
-            { color: "#26C6DA", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="10" rx="2" stroke="#26C6DA" strokeWidth="1.8"/><path d="M7 11V7C7 4.8 9.2 3 12 3C14.8 3 17 4.8 17 7V11" stroke="#26C6DA" strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="16" r="1.5" fill="#26C6DA"/></svg>, title: "Empieza gratis", desc: "Origins y Explorer accesibles sin tarjeta de crédito. Crece a tu ritmo." },
-          ].map(({ icon, color, title, desc }) => (
+            { icon: "🤖", title: "ZAI, tu tutor IA", desc: "Un mentor personal que recuerda tu progreso, adapta las explicaciones y te guía en cada paso." },
+            { icon: "🎮", title: "Gamificación real", desc: "XP, VY Coins, avatares, Boss Battles. Aprender se siente como jugar." },
+            { icon: "🎓", title: "Certificados verificables", desc: "Cada nivel completado genera un certificado público con código único verificable." },
+            { icon: "🌍", title: "84 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
+            { icon: "⚡", title: "Aprende creando", desc: "Proyectos reales, Boss Battles, portfolio de evidencia. No solo teoría." },
+            { icon: "🔓", title: "Empieza gratis", desc: "Origins y Explorer accesibles sin tarjeta de crédito. Crece a tu ritmo." },
+          ].map(({ icon, title, desc }) => (
             <div key={title} style={{ borderRadius: "16px", padding: "20px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>{icon}</div>
+              <span style={{ fontSize: "24px", display: "block", marginBottom: "10px" }}>{icon}</span>
               <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "14px", marginBottom: "6px", color: "#F8FAFF" }}>{title}</p>
               <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>{desc}</p>
             </div>
@@ -234,13 +220,13 @@ export default async function HomePage() {
       {/* CTA FINAL */}
       <section style={{ padding: "64px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", marginBottom: "16px" }}>
-          {lang === "en" ? "Your future starts today." : "Tu futuro empieza hoy."}
+          Tu futuro empieza hoy.
         </h2>
         <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.4)", marginBottom: "32px" }}>
           Gratis. Sin tarjeta. Sin excusas.
         </p>
         <Link href="/sign-up" style={{ display: "inline-block", padding: "18px 48px", borderRadius: "16px", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff" }}>
-          {lang === "en" ? "Get started free →" : "Empezar gratis →"}
+          Empezar gratis →
         </Link>
       </section>
 
