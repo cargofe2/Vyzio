@@ -44,12 +44,12 @@ const ALL_CHIPS_EN = [
 
 
 
-];
+
 
 function getRandomChips(lang: string) {
   const chips = lang === "en" ? ALL_CHIPS_EN : ALL_CHIPS_ES;
   const shuffled = [...chips].sort(() => Math.random() - 0.5);
-  const shuffled = [...ALL_CHIPS].sort(() => Math.random() - 0.5);
+
   return shuffled.slice(0, 4);
 }
 
