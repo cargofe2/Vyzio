@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
+import LangToggle from "@/components/LangToggle";
 import Link from "next/link";
 
 const LEVEL_ICON: Record<string, string> = {
@@ -190,6 +191,7 @@ export default function DashboardPage() {
             {RANK_LABELS[rank] ?? rank}
           </span>
         </div>
+        <LangToggle />
         <UserButton afterSignOutUrl="/" />
       </div>
 

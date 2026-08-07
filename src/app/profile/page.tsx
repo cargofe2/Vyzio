@@ -4,7 +4,7 @@ import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 import { isSoundEnabled, setSoundEnabled, playClick } from "@/lib/sounds";
-import { useUserLang } from "@/hooks/useUserLang";
+
 
 const LEVEL_ICON: Record<string, string> = {
   "level-1": "🌱", "level-new-1": "🧭", "level-new-2": "🧠", "level-new-3": "🎨",
@@ -75,7 +75,7 @@ export default function ProfilePage() {
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
   const [avatarSaving, setAvatarSaving] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
-  const { lang, setLang, saving: langSaving } = useUserLang();
+
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
