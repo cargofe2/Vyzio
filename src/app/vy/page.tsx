@@ -82,7 +82,7 @@ export default function VYPage() {
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => { setChips(getRandomChips(lang)); }, [lang]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
