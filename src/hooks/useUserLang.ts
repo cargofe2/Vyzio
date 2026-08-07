@@ -15,42 +15,24 @@ export function useUserLang() {
       if (!res.ok) return;
       const data = await res.json();
       const stored = data.user?.language as string | undefined;
-      const createdAt = data.user?.createdAt as string | undefined;
-      const isNewUser = createdAt && (Date.now() - new Date(createdAt).getTime()) < 60000;
-      if (stored === "en") {
-        setLangState("en");
-      } else if (isNewUser) {
-        const browserLang = (navigator.language ?? "es").toLowerCase();
-        const detected: "es" | "en" = browserLang.startsWith("en") ? "en" : "es";
-        setLangState(detected);
-        if (detected === "en") {
-          await saveLang(detected);
-        }
-      } else {
-        setLangState("es");
+      if (stored === "en") { setLangState("en"); setInitialized(true); return; }
+      const browserLang = (navigator.language ?? "es").toLowerCase();
+      const detected = browserLang.startsWith("en") ? "en" : "es";
+      if (detected === "en" && stored !== "en") {
+        await fetch("/api/user", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ language: "en" }) });
+        window.location.reload(); return;
       }
-      setInitialized(true);
+      setLangState("es"); setInitialized(true);
     }
     init();
   }, [isLoaded, user, initialized]);
 
-  async function saveLang(newLang: "es" | "en") {
+  async function updateLang(newLang: "es" | "en") {
     setSaving(true);
     try {
-      await fetch("/api/user", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ language: newLang }),
-      });
-    } finally {
-      setSaving(false);
-    }
+      await fetch("/api/user", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ language: newLang }) });
+      window.location.reload();
+    } finally { setSaving(false); }
   }
-
-  async function updateLang(newLang: "es" | "en") {
-    setLangState(newLang);
-    await saveLang(newLang);
-  }
-
   return { lang, setLang: updateLang, saving };
 }
