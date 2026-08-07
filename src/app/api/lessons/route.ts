@@ -9,6 +9,8 @@ export async function GET(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const userRecord = await prisma.user.findUnique({ where: { clerkId }, select: { language: true } });
+    const userLang = userRecord?.language ?? "es";
 
     const { searchParams } = new URL(req.url);
     const worldId = searchParams.get("worldId");
@@ -39,6 +41,8 @@ export async function GET(req: NextRequest) {
         worlds: worlds.map((w: any) => ({
           ...w,
           pctComplete: worldProgress[w.id] ?? 0,
+          lessonCount: w._count.lessons,
+          name: userLang === "en" && w.name_en ? w.name_en : w.name,
           lessonCount: w._count.lessons,
         })),
       });
@@ -75,6 +79,8 @@ export async function GET(req: NextRequest) {
         world,
         lessons: lessons.map((l: any) => ({
           ...l,
+          ...l,
+          title: userLang === "en" && l.title_en ? l.title_en : l.title,
           progress: lessonProgress[l.id] ?? null,
         })),
       });
