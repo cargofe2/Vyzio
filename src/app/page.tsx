@@ -47,6 +47,11 @@ const LEVELS = [
 export default async function HomePage() {
   const { userId } = await auth();
   if (userId) redirect("/dashboard");
+  const { headers } = await import("next/headers");
+  const headersList = await headers();
+  const acceptLang = headersList.get("accept-language") ?? "es";
+  const lang = acceptLang.toLowerCase().startsWith("en") ? "en" : "es";
+
 
   return (
     <main style={{ minHeight: "100vh", background: "#0F1420", color: "#F8FAFF", fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +89,7 @@ export default async function HomePage() {
             Entrar
           </Link>
           <Link href="/sign-up" style={{ fontSize: "13px", fontWeight: 700, color: "#fff", textDecoration: "none", padding: "10px 20px", borderRadius: "12px", background: "rgba(123,97,255,0.9)", border: "1px solid rgba(123,97,255,0.4)" }}>
-            Empezar gratis
+            {lang === "en" ? "Get started free" : "Empezar gratis"}
           </Link>
         </div>
       </nav>
@@ -113,7 +118,7 @@ export default async function HomePage() {
 
           {/* Stats */}
           <div className="stats-row" style={{ display: "flex", gap: "32px", marginBottom: "36px", justifyContent: "center" }}>
-            {[["630+","Lecciones"],["84","Mundos"],["9","Niveles"]].map(([n,l]) => (
+            {[["630+", lang === "en" ? "Lessons" : "Lecciones"],["84", lang === "en" ? "Worlds" : "Mundos"],["9", lang === "en" ? "Levels" : "Niveles"]].map(([n,l]) => (
               <div key={l} style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{n}</div>
                 <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>{l}</div>
@@ -124,10 +129,10 @@ export default async function HomePage() {
           {/* CTAs */}
           <div className="cta-group" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "320px" }}>
             <Link href="/sign-up" className="cta-primary" style={{ display: "block", width: "100%", padding: "16px 24px", borderRadius: "14px", textAlign: "center", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff" }}>
-              Empezar gratis →
+              {lang === "en" ? "Get started free →" : "Empezar gratis →"}
             </Link>
             <Link href="/sign-in" className="cta-secondary" style={{ display: "block", width: "100%", padding: "14px 24px", borderRadius: "14px", textAlign: "center", fontWeight: 700, fontSize: "13px", textDecoration: "none", border: "1px solid rgba(123,97,255,0.2)", color: "rgba(255,255,255,0.5)" }}>
-              Ya tengo cuenta
+              {lang === "en" ? "I already have an account" : "Ya tengo cuenta"}
             </Link>
           </div>
 
@@ -173,7 +178,7 @@ export default async function HomePage() {
       {/* WORLDS SECTION */}
       <section className="section-worlds" style={{ padding: "56px 24px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", textAlign: "center", marginBottom: "8px", color: "rgba(255,255,255,0.2)" }}>
-          9 niveles · 84 mundos de aprendizaje
+          {lang === "en" ? "9 levels · 84 learning worlds" : "9 niveles · 84 mundos de aprendizaje"}
         </p>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "24px", textAlign: "center", marginBottom: "32px", color: "#F8FAFF" }}>
           Un camino completo, desde cero
@@ -206,7 +211,7 @@ export default async function HomePage() {
       {/* FEATURES */}
       <section style={{ padding: "56px 24px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "24px", textAlign: "center", marginBottom: "32px" }}>
-          Por qué Bymyzai
+          {lang === "en" ? "Why Bymyzai" : "Por qué Bymyzai"}
         </h2>
         <div className="features-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px", maxWidth: "820px", margin: "0 auto" }}>
           {[
@@ -229,13 +234,13 @@ export default async function HomePage() {
       {/* CTA FINAL */}
       <section style={{ padding: "64px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "28px", marginBottom: "16px" }}>
-          Tu futuro empieza hoy.
+          {lang === "en" ? "Your future starts today." : "Tu futuro empieza hoy."}
         </h2>
         <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.4)", marginBottom: "32px" }}>
           Gratis. Sin tarjeta. Sin excusas.
         </p>
         <Link href="/sign-up" style={{ display: "inline-block", padding: "18px 48px", borderRadius: "16px", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", textDecoration: "none", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff" }}>
-          Empezar gratis →
+          {lang === "en" ? "Get started free →" : "Empezar gratis →"}
         </Link>
       </section>
 
