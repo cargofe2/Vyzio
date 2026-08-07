@@ -3,6 +3,7 @@ import LevelMap from "@/components/LevelMap";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useUserLang } from "@/hooks/useUserLang";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 import ZaiCompanion from "@/components/ZaiCompanion";
 import { useZai } from "@/lib/ZaiContext";
@@ -65,6 +66,7 @@ function LevelMapInteractive() {
 }export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const { lang } = useUserLang();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [phase, setPhase] = useState<"reading" | "quiz" | "done" | "diagnostic-result">("reading");
@@ -124,7 +126,7 @@ function LevelMapInteractive() {
       finally { setLoading(false); }
     }
     if (id) load();
-  }, [id]);
+  }, [id, lang]);
 
   async function askZaiToExpand() {
     if (!lesson) return;
