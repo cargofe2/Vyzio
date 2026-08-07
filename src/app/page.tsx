@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Bymyzai – Aprende IA. Construye el futuro.",
-  description: "La academia de IA para jóvenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
+  title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
+  description: "La academia para la era de la IA. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
   openGraph: {
-    title: "Bymyzai – Aprende IA. Construye el futuro.",
-    description: "La academia de IA para jóvenes. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
+  title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
+  description: "La academia para la era de la IA. 630+ lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
     url: "https://www.bymyzai.com",
     siteName: "Bymyzai",
     locale: "es_ES",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: "Bymyzai", description: "La academia de IA para jóvenes." },
+  twitter: { card: "summary_large_image", title: "Bymyzai", description: "La academia para la era de la IA." },
   alternates: { canonical: "https://www.bymyzai.com" },
 };
 import Link from "next/link";
@@ -96,19 +96,19 @@ export default async function HomePage() {
         <div className="hero-text" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "6px 14px", borderRadius: "100px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.25)", marginBottom: "24px" }}>
             <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#7B61FF", display: "inline-block" }}></span>
-            <span style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 600, letterSpacing: "0.5px" }}>La academia de IA para jóvenes</span>
+            <span style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 600, letterSpacing: "0.5px" }}>La academia para la era de la IA</span>
           </div>
 
           <h1 className="hero-h1" style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900, fontSize: "38px", lineHeight: 1.05, marginBottom: "20px", maxWidth: "340px" }}>
-            Aprende IA.<br />
+            Construye el futuro.<br />
             <span style={{ background: "linear-gradient(135deg,#818CF8,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Construye el futuro.
+              Domina la era de la IA.
             </span>
           </h1>
 
           <p className="hero-sub" style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.45)", marginBottom: "32px", maxWidth: "360px" }}>
             630+ lecciones · 84 mundos · Tutor IA personal · Certificados verificables.
-            La plataforma donde aprendes IA de verdad.
+            La plataforma donde desarrollas capacidad real con IA.
           </p>
 
           {/* Stats */}
