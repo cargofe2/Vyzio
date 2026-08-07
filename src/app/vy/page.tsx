@@ -76,13 +76,15 @@ function ZaiOrb({ size = 36 }: { size?: number }) {
 export default function VYPage() {
   const { user } = useUser();
   const { lang } = useUserLang();
-  const [chips] = useState(() => getRandomChips(lang));
+  const [chips, setChips] = useState(() => getRandomChips(lang));
   const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: "¡Hola! Soy **ZAI**, tu tutor de IA en Bymyzai. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => { setChips(getRandomChips(lang)); }, [lang]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
 
   useEffect(() => {
