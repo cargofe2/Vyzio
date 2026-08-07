@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
+import LangToggle from "@/components/LangToggle";
 import Link from "next/link";
+import { useUserLang } from "@/hooks/useUserLang";
 
 const LEVEL_ICON: Record<string, string> = {
   "level-1": "🌱", "level-new-1": "🧭", "level-new-2": "🧠", "level-new-3": "🎨",
@@ -29,10 +31,32 @@ const RANK_COLORS: Record<string, string> = {
   PIONEER: "#FB923C", MASTER: "#A78BFA", LEGEND: "#FF6B6B", AI_TITAN: "#F2C04D",
 };
 
+const RANK_LABELS: Record<string, string> = {
+  NOVICE: "Novato", EXPLORER: "Explorer", CREATOR: "Creator", BUILDER: "Builder",
+  INNOVATOR: "Innovator", VISIONARY: "Visionary", PIONEER: "Pioneer", MASTER: "Master",
+  LEGEND: "Legend", AI_TITAN: "AI Titan",
+};
+
 const RANK_NEXT_XP: Record<string, number> = {
   NOVICE: 500, EXPLORER: 2000, CREATOR: 6000, BUILDER: 15000,
   INNOVATOR: 30000, VISIONARY: 55000, PIONEER: 90000, MASTER: 140000,
   LEGEND: 200000, AI_TITAN: 999999,
+};
+
+const T = {
+  loading:   { es: "Cargando...",                    en: "Loading..." },
+  hello:     { es: "Hola,",                          en: "Hey," },
+  student:   { es: "Estudiante",                     en: "Student" },
+  nivel:     { es: "Nivel",                          en: "Level" },
+  continuar: { es: "Continuar",                      en: "Continue" },
+  zaiPrompt: { es: "¿En qué quieres trabajar hoy?", en: "What do you want to work on today?" },
+  zaiBtn:    { es: "Hablar con ZAI",                 en: "Talk to ZAI" },
+  progress:  { es: "Tu progreso",                    en: "Your progress" },
+  viewMore:  { es: "Ver más ›",                      en: "View more ›" },
+  lessons:   { es: "lecciones",                      en: "lessons" },
+  xpNext:    { es: "XP para el siguiente nivel",     en: "XP to next level" },
+  yourPath:  { es: "Tu camino",                      en: "Your path" },
+  proTitle:  { es: "Disponible en el plan Pro",      en: "Available on Pro plan" },
 };
 
 const WORLD_ICONS: Record<string, ReactElement> = {
@@ -54,6 +78,7 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🔬": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 3.5v6L6.3 16.8A2.3 2.3 0 0 0 8.3 20.2h7.4a2.3 2.3 0 0 0 2-3.4L14 9.5v-6"/><path d="M8.7 3.5h6.6M7.5 15h9"/></svg>,
   "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
 };
+
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
   if (icon) return icon;
@@ -78,23 +103,24 @@ function getV(order: number) {
   return LEVEL_1_PALETTE[((order - 1) % (LEVEL_1_PALETTE.length - 1)) + 1];
 }
 
-function NavBar({ active }: { active: string }) {
+function NavBar({ active, lang }: { active: string; lang: "es" | "en" }) {
   const ACCENT = "#7B61FF";
   const items = [
-    { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-    { href: "/worlds", label: "Mundos", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
-    { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
-    { href: "/community", label: "Liga", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
-    { href: "/profile", label: "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
+    { href: "/dashboard", label: { es: "Inicio",  en: "Home"    }, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+    { href: "/worlds",    label: { es: "Niveles", en: "Levels"  }, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
+    { href: "/vy",        label: { es: "ZAI",     en: "ZAI"     }, icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
+    { href: "/community", label: { es: "Liga",    en: "League"  }, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
+    { href: "/profile",   label: { es: "Perfil",  en: "Profile" }, icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
   return (
     <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, icon }) => {
         const isActive = href === active;
+        const labelText = label[lang];
         return (
           <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
             <div style={{ width: "40px", height: "40px", background: isActive ? `${ACCENT}20` : "transparent", border: isActive ? `1px solid ${ACCENT}40` : "1px solid transparent", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center", color: isActive ? ACCENT : "#7E8798" }}>{icon}</div>
-            <span style={{ fontSize: "8px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? label.toUpperCase() : label}</span>
+            <span style={{ fontSize: "10px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? labelText.toUpperCase() : labelText}</span>
           </Link>
         );
       })}
@@ -104,10 +130,16 @@ function NavBar({ active }: { active: string }) {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
+  const { lang } = useUserLang();
+  const t = (key: keyof typeof T) => T[key][lang];
+
   const [gamification, setGamification] = useState<Gamification | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [plan, setPlan] = useState<string>("STARTER");
-  const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string } | null>(null);
+  const [levels, setLevels] = useState<any[]>([]);
+  const [dbName, setDbName] = useState("");
+  const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string; name_en?: string } | null>(null);
+  const [levelPct, setLevelPct] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -122,7 +154,10 @@ export default function DashboardPage() {
         }
         if (userRes.ok) {
           const { user: u } = await userRes.json();
+          if (u?.displayName) setDbName(u.displayName);
           setPlan(u?.subscription?.plan ?? "STARTER");
+          const lvlRes = await fetch('/api/lessons');
+          if (lvlRes.ok) { const { levels: lvls } = await lvlRes.json(); if (lvls) setLevels(lvls); }
         }
         const gamRes = await fetch("/api/gamification");
         if (gamRes.ok) {
@@ -130,7 +165,17 @@ export default function DashboardPage() {
           setGamification(g);
           setMissions(m ?? []);
           const lvl = recentLessons?.[0]?.lesson?.world?.level;
-          setCurrentLevel(lvl ? { id: lvl.id, name: lvl.name } : { id: "level-1", name: "Origins" });
+          const resolvedLevel = lvl ? { id: lvl.id, name: lvl.name, name_en: lvl.name_en } : { id: "level-1", name: "Origins", name_en: "Origins" };
+          setCurrentLevel(resolvedLevel);
+
+          const worldsRes = await fetch(`/api/lessons?levelId=${resolvedLevel.id}`);
+          if (worldsRes.ok) {
+            const { worlds: lvlWorlds } = await worldsRes.json();
+            if (lvlWorlds && lvlWorlds.length > 0) {
+              const avgPct = lvlWorlds.reduce((sum: number, w: { pctComplete?: number }) => sum + (w.pctComplete ?? 0), 0) / lvlWorlds.length;
+              setLevelPct(Math.round(avgPct * 100));
+            }
+          }
         }
       } catch (err) {
         console.error("Dashboard load error:", err);
@@ -144,7 +189,7 @@ export default function DashboardPage() {
   if (!isLoaded || loading) {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando...</p>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("loading")}</p>
       </div>
     );
   }
@@ -155,29 +200,31 @@ export default function DashboardPage() {
   const prevXP = Object.values(RANK_NEXT_XP).filter(v => v <= xp).pop() ?? 0;
   const rankProgress = nextXP > prevXP ? ((xp - prevXP) / (nextXP - prevXP)) * 100 : 100;
   const rankColor = RANK_COLORS[rank] ?? "#7B61FF";
+  const levelName = lang === "en" ? (currentLevel?.name_en ?? currentLevel?.name ?? "Origins") : (currentLevel?.name ?? "Origins");
+  const LEVEL_ORDER = ["level-1","level-new-1","level-new-2","level-new-3","level-new-4","level-new-5","level-new-6","level-new-7","level-new-8"];
+  const levelNumber = Math.max(0, LEVEL_ORDER.indexOf(currentLevel?.id ?? "level-1"));
 
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* TopBar */}
-      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(0,119,253,0.15)", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img src="/logo.png" alt="Bymyzai" width={32} height={32} style={{ borderRadius: "50%", flexShrink: 0 }} />
           <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "15px", letterSpacing: "0.5px" }}>Bymyzai</span>
           <span style={{ fontSize: "10px", padding: "2px 8px", borderRadius: "10px", fontWeight: 700, background: `${rankColor}22`, color: rankColor, fontFamily: "'DM Sans',sans-serif" }}>
-            {rank}
+            {RANK_LABELS[rank] ?? rank}
           </span>
         </div>
+        <LangToggle />
         <UserButton afterSignOutUrl="/" />
       </div>
 
       {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
-        <p style={{ color: "#7E8798", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>
-          Hola, {user?.firstName ?? "Estudiante"} 👋
-        </p>
-        <p style={{ color: "#F8FAFF", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>
-          Continúa tu misión actual
+        <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "5px" }}>
+          {t("hello")} {dbName || user?.firstName || t("student")}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 13.5l-2-3.5a1.3 1.3 0 0 1 2.2-1.3l1.6 2.3"/><path d="M10.3 11L7.5 6.2a1.3 1.3 0 0 1 2.2-1.3l3.3 5.1"/><path d="M9.7 4.9a1.3 1.3 0 0 1 2.4-.9l3 5.4"/><path d="M12.2 4.6a1.3 1.3 0 0 1 2.4-.8l2.6 4.9"/><path d="M6.5 12l-1.2-.7a1.3 1.3 0 0 0-1.7 1.9l3.2 4.4a6 6 0 0 0 6.9 2.1l1.5-.5a5 5 0 0 0 3.1-2.9l1.6-4a1.4 1.4 0 0 0-2.5-1.2"/></svg>
         </p>
       </div>
 
@@ -186,35 +233,29 @@ export default function DashboardPage() {
         {(() => {
           const activeMission = missions[0];
           const missionHref = `/worlds?levelId=${currentLevel?.id ?? "level-1"}`;
-          const LEVEL_ORDER = ["level-1", "level-new-1", "level-new-2", "level-new-3", "level-new-4", "level-new-5", "level-new-6", "level-new-7", "level-new-8"];
-          const levelNumber = Math.max(0, LEVEL_ORDER.indexOf(currentLevel?.id ?? "level-1"));
-          const heroPct = activeMission ? Math.min(Math.round((activeMission.progress.current / activeMission.targetValue) * 100), 100) : Math.round(rankProgress);
           return (
             <Link href={missionHref} style={{ textDecoration: "none" }}>
-              <div style={{ background: "linear-gradient(160deg, #002A96, #00165F 60%, #0F1420)", border: "1px solid rgba(0,119,253,0.4)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
-                <span style={{ display: "inline-block", fontSize: "9px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", color: "#B5D4F4", background: "rgba(0,119,253,0.25)", padding: "4px 10px", borderRadius: "999px", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-                  Misión actual
-                </span>
-                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15 }}>
-                  {currentLevel?.name ?? "Origins"}
+              <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", position: "relative", overflow: "hidden" }}>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "22px", lineHeight: 1.15, marginTop: "4px" }}>
+                  {levelName}
                 </p>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.5)", fontSize: "13px", marginBottom: "14px" }}>
-                  Nivel {levelNumber} {activeMission ? `· ${activeMission.name}` : ""}
+                  {t("nivel")} {levelNumber} {activeMission ? `· ${activeMission.name}` : ""}
                 </p>
 
-                <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "26px" }}>
-                  {LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}
+                <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor }}>
+                  {renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 28)}
                 </div>
 
                 <div style={{ display: "flex", alignItems: "baseline", gap: "6px", marginBottom: "6px" }}>
-                  <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", color: "#F8FAFF" }}>{heroPct}%</span>
+                  <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", color: "#F8FAFF" }}>{levelPct}%</span>
                 </div>
                 <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", marginBottom: "16px" }}>
-                  <div style={{ height: "100%", width: `${heroPct}%`, background: "linear-gradient(90deg,#0053EB,#0077FD)", borderRadius: "4px" }} />
+                  <div style={{ height: "100%", width: `${levelPct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
                 </div>
 
-                <div style={{ padding: "13px", background: "linear-gradient(135deg,#0053EB,#0077FD)", color: "#fff", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                  <span style={{ fontSize: "11px" }}>▶</span> Continuar
+                <div style={{ padding: "13px", background: "linear-gradient(135deg,#8B75FF,#468BFF)", color: "#0B0E16", borderRadius: "13px", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                  <span style={{ fontSize: "11px" }}>▶</span> {t("continuar")}
                 </div>
               </div>
             </Link>
@@ -225,117 +266,94 @@ export default function DashboardPage() {
       {/* ZAI — estilo prompt */}
       <div style={{ padding: "10px 16px 0" }}>
         <Link href="/vy" style={{ textDecoration: "none" }}>
-          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", display: "flex", alignItems: "center", gap: "12px" }}>
-            <div style={{ position: "relative", width: "36px", height: "36px", flexShrink: 0 }}>
+          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", display: "flex", alignItems: "center", gap: "14px" }}>
+            <div style={{ position: "relative", width: "44px", height: "44px", flexShrink: 0 }}>
               <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
               <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
               <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width={36 * 0.45} height={36 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
+                <svg width={44 * 0.45} height={44 * 0.45} viewBox="0 0 256 256"><g transform="rotate(-12 128 128)"><path d="M78 88H178L82 168H178" stroke="#FFFFFF" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none"/></g></svg>
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>ZAI</p>
-              <p style={{ fontSize: "13px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>¿En qué quieres trabajar hoy?</p>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "3px" }}>ZAI</p>
+              <p style={{ fontSize: "14px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>{t("zaiPrompt")}</p>
             </div>
-            <span style={{ flexShrink: 0, padding: "8px 14px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "11px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
-              Hablar con ZAI
+            <span style={{ flexShrink: 0, padding: "9px 15px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "12px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+              {t("zaiBtn")}
             </span>
           </div>
         </Link>
       </div>
 
-      {/* Tu progreso general */}
+      {/* Tu progreso */}
       <div style={{ padding: "10px 16px 0" }}>
-        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-            <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>Tu progreso general</p>
-            <Link href="/profile" style={{ fontSize: "11px", color: "#0077FD", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", textDecoration: "none" }}>Ver más ›</Link>
+        <Link href="/profile" style={{ textDecoration: "none" }}>
+        <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+            <p style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{t("progress")}</p>
+            <span style={{ fontSize: "12px", color: "#8B75FF", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>{t("viewMore")}</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, fontSize: "15px", flexShrink: 0 }}>{LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱"}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: "13px", background: rankColor + "22", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor, flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 22)}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{rank}</p>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
+              <p style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFF", fontFamily: "'DM Sans',sans-serif" }}>{RANK_LABELS[rank] ?? rank}</p>
+              <p style={{ fontSize: "11px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif" }}>{xp.toLocaleString()} XP</p>
             </div>
             <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
-              <span style={{ fontSize: "10px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "3px 8px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} lecciones</span>
-              <span style={{ fontSize: "10px", color: "#F472B6", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(244,114,182,0.1)", padding: "3px 8px", borderRadius: "8px" }}>🔥 {gamification?.streakDays ?? 0}</span>
+              <span style={{ fontSize: "11px", color: "#26C6DA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(38,198,218,0.1)", padding: "4px 9px", borderRadius: "8px" }}>{gamification?.lessonsCompleted ?? 0} {t("lessons")}</span>
+              <span style={{ fontSize: "11px", color: "#F472B6", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: "rgba(244,114,182,0.1)", padding: "4px 9px", borderRadius: "8px" }}>🔥 {gamification?.streakDays ?? 0}</span>
             </div>
           </div>
-          <div style={{ height: "5px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#0077FD)`, borderRadius: "3px", transition: "width 0.5s ease" }} />
+          <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "4px", transition: "width 0.5s ease" }} />
           </div>
-          <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginTop: "4px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} XP para el siguiente nivel</p>
+          <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "6px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} {t("xpNext")}</p>
         </div>
+        </Link>
       </div>
-
-      {/* ----- Debajo del primer viewport: info secundaria ----- */}
 
       <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "16px" }}>
 
         {/* Niveles */}
         <section>
-          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-            Tu camino
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#8B94A8", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
+            {t("yourPath")}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            {[
-              { id: "level-1", label: "Origins", icon: "🌱", free: true },
-              { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
-              { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
-              { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
-              { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
-              { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
-              { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
-              { id: "level-new-7", label: "Researcher", icon: "🔬", free: false },
-              { id: "level-new-8", label: "Residency", icon: "🎓", free: false },
-            ].map((lvl, i) => {
+            {(levels.length > 0 ? levels.map((l: any) => ({ id: l.id, label: lang === "en" ? (l.name_en ?? l.name) : l.name, icon: LEVEL_ICON[l.id] ?? l.id, free: l.free || l.hasFreeLessons })) : [
+              { id: "level-1",     label: "Origins",    icon: "🌱",  free: true },
+              { id: "level-new-1", label: "Explorer",   icon: "🧭",  free: false },
+              { id: "level-new-2", label: "Thinker",    icon: "🧠",  free: false },
+              { id: "level-new-3", label: "Creator",    icon: "🎨",  free: false },
+              { id: "level-new-4", label: "Builder",    icon: "🛠️", free: false },
+              { id: "level-new-5", label: "Architect",  icon: "🏗️", free: false },
+              { id: "level-new-6", label: "Founder",    icon: "🚀",  free: false },
+              { id: "level-new-7", label: "Researcher", icon: "🔬",  free: false },
+              { id: "level-new-8", label: "Residency",  icon: "🎓",  free: false },
+            ]).map((lvl: any, i: number) => {
               const locked = !lvl.free && plan === "STARTER";
               const active = lvl.id === currentLevel?.id;
               const lv = getV(i === 0 ? 0 : i);
               const content = (
                 <div style={{ background: "#1E2533", border: locked ? "1px solid #324055" : active ? `1px solid ${lv.border}` : "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden", boxShadow: "0 4px 14px rgba(0,0,0,0.18)", opacity: locked ? 0.65 : 1 }}>
                   <div style={{ width: "38px", height: "38px", borderRadius: "12px", background: locked ? "rgba(255,255,255,0.04)" : lv.bg, border: locked ? "1px solid rgba(255,255,255,0.08)" : `1px solid ${lv.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: locked ? "rgba(255,255,255,0.3)" : lv.color, marginBottom: "10px", fontSize: "17px" }}>
-                    {locked ? "🔒" : renderWorldIcon(lvl.icon, 18)}
+                    {locked ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/><circle cx="12" cy="15.2" r="1.3" fill="currentColor" stroke="none"/></svg> : renderWorldIcon(lvl.icon, 18)}
                   </div>
                   <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: locked ? "rgba(255,255,255,0.4)" : "#F8FAFF", lineHeight: 1.3 }}>
-                    {lvl.label}{locked && <span style={{ fontSize: "9px", fontWeight: 700, color: "#85B7EB", marginLeft: "6px" }}>Pro</span>}
+                    {lvl.label}{locked && <span style={{ fontSize: "9px", fontWeight: 700, color: "#A78BFA", marginLeft: "6px" }}>Pro</span>}
                   </p>
                 </div>
               );
               return locked
-                ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title="Disponible en el plan Pro">{content}</Link>
+                ? <Link key={lvl.id} href="/pricing" style={{ textDecoration: "none" }} title={t("proTitle")}>{content}</Link>
                 : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
             })}
           </div>
         </section>
 
-        {/* Misiones (restantes, sin repetir la promovida arriba) */}
-        {missions.length > 1 && (
-          <section>
-            <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>
-              Otras misiones activas
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-              {missions.slice(1).map(m => (
-                <div key={m.id} style={{ background: "#1E2533", borderRadius: "16px", padding: "14px", border: "1px solid #324055", boxShadow: "0 4px 14px rgba(0,0,0,0.18)" }}>
-                  <span style={{ fontSize: "9px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: m.type === "DAILY" ? "rgba(52,211,153,0.12)" : "rgba(0,119,253,0.12)", color: m.type === "DAILY" ? "#36D399" : "#0077FD", fontFamily: "'DM Sans',sans-serif" }}>
-                    {m.type === "DAILY" ? "Diaria" : "Semanal"}
-                  </span>
-                  <p style={{ fontSize: "12px", fontWeight: 600, color: "#F8FAFF", margin: "8px 0 6px", lineHeight: 1.3, fontFamily: "'DM Sans',sans-serif" }}>{m.name}</p>
-                  <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px", marginBottom: "4px" }}>
-                    <div style={{ height: "100%", width: `${Math.min((m.progress.current / m.targetValue) * 100, 100)}%`, background: "#0077FD", borderRadius: "2px" }} />
-                  </div>
-                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{m.progress.current}/{m.targetValue} · +{m.xpReward} XP</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
       </div>
 
-      <NavBar active="/dashboard" />
+      <NavBar active="/dashboard" lang={lang} />
     </div>
   );
 }
