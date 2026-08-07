@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
           pctComplete: worldProgress[w.id] ?? 0,
           lessonCount: w._count.lessons,
           name: userLang === "en" && w.name_en ? w.name_en : w.name,
-          lessonCount: w._count.lessons,
+
         })),
       });
     }
