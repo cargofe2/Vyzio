@@ -16,7 +16,7 @@ interface Gamification {
   lessonsCompleted: number;
 }
 interface Mission {
-  id: string; name: string; type: string; xpReward: number;
+  id: string; name: string; name_en?: string; type: string; xpReward: number;
   targetValue: number;
   progress: { current: number; completed: boolean };
 }
