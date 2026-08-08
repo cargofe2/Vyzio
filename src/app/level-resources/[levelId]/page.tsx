@@ -9,9 +9,9 @@ interface Resource {
 }
 
 const LEVEL_NAMES: Record<string, string> = {
-  "level-1": "Nivel 0 â€” Origins", "level-new-1": "Nivel 1 â€” Explorer", "level-new-2": "Nivel 2 â€” Thinker",
-  "level-new-3": "Nivel 3 â€” Creator", "level-new-4": "Nivel 4 â€” Builder", "level-new-5": "Nivel 5 â€” Architect",
-  "level-new-6": "Nivel 6 â€” Founder", "level-new-7": "Nivel 7 â€” Researcher", "level-new-8": "Nivel 8 â€” Residency",
+  "level-1": "Nivel 0 Ã¢â‚¬â€ Origins", "level-new-1": "Nivel 1 Ã¢â‚¬â€ Explorer", "level-new-2": "Nivel 2 Ã¢â‚¬â€ Thinker",
+  "level-new-3": "Nivel 3 Ã¢â‚¬â€ Creator", "level-new-4": "Nivel 4 Ã¢â‚¬â€ Builder", "level-new-5": "Nivel 5 Ã¢â‚¬â€ Architect",
+  "level-new-6": "Nivel 6 Ã¢â‚¬â€ Founder", "level-new-7": "Nivel 7 Ã¢â‚¬â€ Researcher", "level-new-8": "Nivel 8 Ã¢â‚¬â€ Residency",
 };
 
 function ytEmbedId(url: string): string | null {
@@ -38,9 +38,9 @@ export default function LevelResourcesPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "40px" }}>
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
-        <Link href={`/worlds?levelId=${levelId}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>â†</Link>
+        <Link href={`/worlds?levelId=${levelId}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>←</Link>
         <div>
-          <p style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>ðŸ“š PROFUNDIZA MÃS</p>
+          <p style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>📚 PROFUNDIZA MÁS</p>
           <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "17px" }}>{LEVEL_NAMES[levelId] ?? levelId}</h1>
         </div>
       </div>
@@ -48,12 +48,12 @@ export default function LevelResourcesPage() {
       <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "24px" }}>
         {loading && <p style={{ color: "#7E8798", fontSize: "15px", fontFamily: "'DM Sans',sans-serif" }}>Cargando recursos...</p>}
         {!loading && resources.length === 0 && (
-          <p style={{ color: "#7E8798", fontSize: "15px", fontFamily: "'DM Sans',sans-serif" }}>AÃºn no hay recursos adicionales para este nivel. Vuelve pronto.</p>
+          <p style={{ color: "#7E8798", fontSize: "15px", fontFamily: "'DM Sans',sans-serif" }}>AÃƒÂºn no hay recursos adicionales para este nivel. Vuelve pronto.</p>
         )}
 
         {diagrams.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>ðŸ—ºï¸ Mapas conceptuales</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸â€”ÂºÃ¯Â¸Â Mapas conceptuales</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {diagrams.map(d => (
                 <div key={d.id} style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "14px", padding: "16px" }}>
@@ -80,7 +80,7 @@ export default function LevelResourcesPage() {
 
         {videos.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>ðŸŽ¥ Videos recomendados</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸Å½Â¥ Videos recomendados</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {videos.map(v => {
                 const yid = v.url ? ytEmbedId(v.url) : null;
@@ -97,7 +97,7 @@ export default function LevelResourcesPage() {
                       </div>
                     ) : (
                       <a href={v.url ?? "#"} target="_blank" rel="noopener noreferrer" style={{ display: "block", padding: "14px", textDecoration: "none" }}>
-                        <p style={{ color: "#468BFF", fontSize: "14px" }}>ðŸ”— Ver video externo</p>
+                        <p style={{ color: "#468BFF", fontSize: "14px" }}>Ã°Å¸â€â€” Ver video externo</p>
                       </a>
                     )}
                     <div style={{ padding: "12px 14px" }}>
@@ -113,7 +113,7 @@ export default function LevelResourcesPage() {
 
         {articles.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>ðŸ“„ Lecturas recomendadas</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸â€œâ€ž Lecturas recomendadas</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {articles.map(a => (
                 <a key={a.id} href={a.url ?? "#"} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
