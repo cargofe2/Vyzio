@@ -9,9 +9,9 @@ interface Resource {
 }
 
 const LEVEL_NAMES: Record<string, string> = {
-  "level-1": "Nivel 0 Ã¢â‚¬â€ Origins", "level-new-1": "Nivel 1 Ã¢â‚¬â€ Explorer", "level-new-2": "Nivel 2 Ã¢â‚¬â€ Thinker",
-  "level-new-3": "Nivel 3 Ã¢â‚¬â€ Creator", "level-new-4": "Nivel 4 Ã¢â‚¬â€ Builder", "level-new-5": "Nivel 5 Ã¢â‚¬â€ Architect",
-  "level-new-6": "Nivel 6 Ã¢â‚¬â€ Founder", "level-new-7": "Nivel 7 Ã¢â‚¬â€ Researcher", "level-new-8": "Nivel 8 Ã¢â‚¬â€ Residency",
+  "level-1": "Nivel 0 — Origins", "level-new-1": "Nivel 1 — Explorer", "level-new-2": "Nivel 2 — Thinker",
+  "level-new-3": "Nivel 3 — Creator", "level-new-4": "Nivel 4 — Builder", "level-new-5": "Nivel 5 — Architect",
+  "level-new-6": "Nivel 6 — Founder", "level-new-7": "Nivel 7 — Researcher", "level-new-8": "Nivel 8 — Residency",
 };
 
 function ytEmbedId(url: string): string | null {
@@ -53,7 +53,7 @@ export default function LevelResourcesPage() {
 
         {diagrams.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸â€”ÂºÃ¯Â¸Â Mapas conceptuales</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>🗺️ Mapas conceptuales</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {diagrams.map(d => (
                 <div key={d.id} style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "14px", padding: "16px" }}>
@@ -80,7 +80,7 @@ export default function LevelResourcesPage() {
 
         {videos.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸Å½Â¥ Videos recomendados</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>🎥 Videos recomendados</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {videos.map(v => {
                 const yid = v.url ? ytEmbedId(v.url) : null;
@@ -113,7 +113,7 @@ export default function LevelResourcesPage() {
 
         {articles.length > 0 && (
           <section>
-            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>Ã°Å¸â€œâ€ž Lecturas recomendadas</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>📄 Lecturas recomendadas</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {articles.map(a => (
                 <a key={a.id} href={a.url ?? "#"} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
