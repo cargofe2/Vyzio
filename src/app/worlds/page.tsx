@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useUserLang } from "@/hooks/useUserLang";
 
-interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
+interface World { id: string; name: string; name_en?: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
 interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
 
 const LEVEL_NAMES: Record<string, string> = {
