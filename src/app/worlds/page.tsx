@@ -468,7 +468,7 @@ function WorldsContent() {
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", lineHeight: 1.15, marginBottom: "4px" }}>{levelNames[levelId] || "Origins"}</p>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "8px" }}>{lang === "en" ? (LEVEL_DESC_EN[levelId] ?? currentLevelInfo.desc) : currentLevelInfo.desc}</p>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "8px" }}>{currentLevelInfo.desc}</p>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
                 <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
