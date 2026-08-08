@@ -130,7 +130,7 @@ function LevelMapInteractive() {
 
   async function askZaiToExpand() {
     if (!lesson) return;
-    const prompt = `Estoy estudiando "${lesson.title}" en ${lesson.world.name}. Dame un ejemplo practico y concreto en maximo 3 oraciones.`;
+    const prompt = lang === "en" ? `I am studying "${lesson.title}" in ${lesson.world.name}. Give me a practical and concrete example in maximum 3 sentences.` : `Estoy estudiando "${lesson.title}" en ${lesson.world.name}. Dame un ejemplo practico y concreto en maximo 3 oraciones.`;
 
 
 

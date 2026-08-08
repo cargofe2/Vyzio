@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 200,
-      system: VY_SYSTEM,
+      system: user.language === "en" ? VY_SYSTEM_EN : VY_SYSTEM,
       messages: [
         ...history.reverse().map((m: any) => ({ role: m.role as "user" | "assistant", content: m.content })),
         { role: "user", content: message },
