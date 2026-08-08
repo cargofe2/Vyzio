@@ -351,7 +351,7 @@ function WorldsContent() {
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "15px", fontWeight: 600, color: done ? "#34D399" : "#fff", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <span style={{ fontSize: "11px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: typeCfg.bg, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label}</span>
+                      <span style={{ fontSize: "11px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px", background: typeCfg.bg, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Eval":"Eval","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label}</span>
                       <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{lesson.durationMin} min</span>
                     </div>
                   </div>
