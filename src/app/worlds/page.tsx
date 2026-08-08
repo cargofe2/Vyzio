@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense, ReactElement } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useUserLang } from "@/hooks/useUserLang";
 
 interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
 interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
@@ -229,6 +230,7 @@ function WorldsContent() {
   const levelIdParam = searchParams.get("levelId");
   const levelId = levelIdParam || "level-1";
   const showJourney = !worldId && !levelIdParam;
+  const { lang } = useUserLang();
   const levelNames: Record<string, string> = {
     "level-1": "Nivel 0 — Origins",
     "level-new-1": "Nivel 1 — AI Explorer",
@@ -508,7 +510,7 @@ function WorldsContent() {
                 <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "10px" }}>{renderWorldIcon(w.emoji, 20)}</div>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: pctW > 0 ? "8px" : 0 }}>
-                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
+                  <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} {lang === "en" ? "lessons" : "lecciones"}</p>
                   {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
                 </div>
                 {pctW > 0 && (
@@ -524,8 +526,8 @@ function WorldsContent() {
         <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none" }}>
           <div style={{ background: "rgba(123,97,255,0.08)", border: "1px dashed rgba(123,97,255,0.35)", borderRadius: "18px", padding: "14px", display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", minHeight: "116px" }}>
             <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA", marginBottom: "10px", fontSize: "18px" }}>📚</div>
-            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "4px" }}>Profundiza</p>
-            <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Recursos extra de este nivel</p>
+            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "4px" }}>{lang === "en" ? "Go deeper" : "Profundiza"}</p>
+            <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Extra resources for this level" : "Recursos extra de este nivel"}</p>
           </div>
         </Link>
       </div>
