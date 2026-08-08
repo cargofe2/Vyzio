@@ -119,7 +119,7 @@ export default function VYPage() {
         {msgs.map((m, i) => (
           <div key={i} style={{ display: "flex", justifyContent: m.role === "user" ? "flex-end" : "flex-start", alignItems: "flex-end", gap: "8px" }}>
             {m.role === "assistant" && <ZaiOrb size={26} />}
-            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(123,97,255,0.08)", border: m.role === "assistant" ? "1px solid rgba(123,97,255,0.12)" : "none", fontSize: "13px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
+            <div style={{ maxWidth: "82%", padding: "10px 14px", borderRadius: m.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", background: m.role === "user" ? "linear-gradient(135deg,#7B61FF,#8B5CF6)" : "rgba(123,97,255,0.08)", border: m.role === "assistant" ? "1px solid rgba(123,97,255,0.12)" : "none", fontSize: "15px", color: "#fff", lineHeight: 1.6, fontFamily: "'DM Sans',sans-serif" }}
               dangerouslySetInnerHTML={{ __html: renderMsg(m.content) }} />
           </div>
         ))}
@@ -134,7 +134,7 @@ export default function VYPage() {
         {used >= 10 && (
           <div style={{ textAlign: "center", padding: "12px", background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: "14px" }}>
             <p style={{ fontSize: "12px", color: "#F87171", fontFamily: "'DM Sans',sans-serif", marginBottom: "6px" }}>{lang === "en" ? "Daily limit reached." : "Limite diario alcanzado."}</p>
-            <Link href="/pricing" style={{ fontSize: "11px", color: "#818CF8", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Upgrade to Pro →" : "Actualiza a Pro →"}</Link>
+            <Link href="/pricing" style={{ fontSize: "11px", color: "#818CF8", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Upgrade to Pro Ã¢â€ â€™" : "Actualiza a Pro Ã¢â€ â€™"}</Link>
           </div>
         )}
         <div ref={bottomRef} />
@@ -150,7 +150,7 @@ export default function VYPage() {
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
           placeholder={lang === "en" ? "Ask ZAI something..." : "Preguntale algo a ZAI..."}
           disabled={used >= 10}
-          style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
+          style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "15px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
           style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>&#8594;</button>
       </div>
