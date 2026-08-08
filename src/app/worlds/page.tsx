@@ -204,7 +204,7 @@ function NavBar({ active }: { active: string }) {
   const ACCENT = "#7B61FF";
   const items = [
     { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-    { href: "/worlds", label: "Niveles", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
+    { href: "/worlds", label: lang === "en" ? "Levels" : "Niveles", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
     { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
     { href: "/community", label: "Liga", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
     { href: "/profile", label: "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
@@ -357,7 +357,7 @@ function WorldsContent() {
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <p style={{ fontSize: "13px", fontWeight: 800, color: done ? "rgba(255,255,255,0.3)" : "#FB923C", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
-                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{done ? lang === "en" ? "done" : "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
+                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{done ? lang === "en" ? "done" : "listo" : isNext ? lang === "en" ? "▶ Next" : "▶ Siguiente" : "XP"}</p>
                   </div>
                 </div>
               </Link>
@@ -372,11 +372,11 @@ function WorldsContent() {
   // Vista Journey — solo Levels, sin Worlds
   if (showJourney) {
     const LEVELS = [
-      { id: "level-1", label: "Origins", icon: "🌱", desc: "Descubre qué es la IA y aprende a aprender con ella.", free: true },
-      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: true },
-      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: true },
-      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: true },
-      { id: "level-new-4", label: "Builder", icon: "🛠️", desc: "Construye sistemas de IA listos para producción.", free: false },
+      { id: "level-1", label: "Origins", icon: "🌱", desc: lang === "en" ? "Discover what AI is and learn how to learn with it." : "Descubre qué es la IA y aprende a aprender con ella.", free: true },
+      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: lang === "en" ? "Master everyday AI tools and workflows." : "Domina las herramientas de IA del día a día.", free: true },
+      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: lang === "en" ? "Develop critical thinking and decision-making." : "Desarrolla pensamiento crítico y toma de decisiones.", free: true },
+      { id: "level-new-3", label: "Creator", icon: "🎨", desc: lang === "en" ? "Turn ideas into real products." : "Convierte ideas en productos reales.", free: true },
+      { id: "level-new-4", label: "Builder", icon: "🛠️", desc: lang === "en" ? "Build production-ready AI systems." : "Construye sistemas de IA listos para producción.", free: false },
       { id: "level-new-5", label: "Architect", icon: "🏗️", desc: "Diseña arquitecturas de IA a gran escala.", free: false },
       { id: "level-new-6", label: "Founder", icon: "🚀", desc: "Crea y escala tu propia organización.", free: false },
       { id: "level-new-7", label: "Researcher", icon: "🔬", desc: "Investiga con rigor científico en IA.", free: false },
@@ -425,11 +425,11 @@ function WorldsContent() {
 
   // Vista de mundos con iconos coloridos (Level Screen)
   const LEVEL_DESC: Record<string, { desc: string; icon: string; free: boolean }> = {
-    "level-1": { desc: "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
-    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: true },
-    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: true },
-    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: true },
-    "level-new-4": { desc: "Construye sistemas de IA listos para producción.", icon: "🛠️", free: false },
+    "level-1": { desc: lang === "en" ? "Discover what AI is and learn how to learn with it." : "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
+    "level-new-1": { desc: lang === "en" ? "Master everyday AI tools and workflows." : "Domina las herramientas de IA del día a día.", icon: "🧭", free: true },
+    "level-new-2": { desc: lang === "en" ? "Develop critical thinking and decision-making." : "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: true },
+    "level-new-3": { desc: lang === "en" ? "Turn ideas into real products." : "Convierte ideas en productos reales.", icon: "🎨", free: true },
+    "level-new-4": { desc: lang === "en" ? "Build production-ready AI systems." : "Construye sistemas de IA listos para producción.", icon: "🛠️", free: false },
     "level-new-5": { desc: "Diseña arquitecturas de IA a gran escala.", icon: "🏗️", free: false },
     "level-new-6": { desc: "Crea y escala tu propia organización.", icon: "🚀", free: false },
     "level-new-7": { desc: "Investiga con rigor científico en IA.", icon: "🔬", free: false },
@@ -461,7 +461,7 @@ function WorldsContent() {
                 <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
               </div>
               <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
-                {worldsDoneCount}/{worlds.length} mundos{currentLevelInfo.free ? " · Gratis" : ""}
+                {worldsDoneCount}/{worlds.length} {lang === "en" ? "worlds" : "mundos"}{currentLevelInfo.free ? (lang === "en" ? " · Free" : " · Gratis") : ""}
               </span>
             </div>
           </div>
