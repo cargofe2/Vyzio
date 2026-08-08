@@ -4,18 +4,18 @@ import { useUser } from "@clerk/nextjs";
 import { useUserLang } from "@/hooks/useUserLang";
 import Link from "next/link";
 const ALL_CHIPS_ES = [
-  "Â¿QuÃ© debo estudiar hoy?",
-  "ExplÃ­came los transformers",
+  "Que debo estudiar hoy?",
+  "Explicame los transformers",
   "Dame un quiz de IA",
-  "Â¿QuÃ© es un LLM?",
-  "RecomiÃ©ndame un proyecto",
-  "Â¿CÃ³mo funciona RAG?",
-  "Â¿QuÃ© es un agente de IA?",
-  "ExplÃ­came fine-tuning",
-  "Â¿QuÃ© es el overfitting?",
+  "Que es un LLM?",
+  "Recomiendame un proyecto",
+  "Como funciona RAG?",
+  "Que es un agente de IA?",
+  "Explicame fine-tuning",
+  "Que es el overfitting?",
   "Dame un ejercicio de prompting",
-  "Â¿CÃ³mo empiezo a programar?",
-  "Â¿QuÃ© es embeddings?",
+  "Como empiezo a programar?",
+  "Que es embeddings?",
 ];
 const ALL_CHIPS_EN = [
   "What should I study today?",
@@ -32,24 +32,9 @@ const ALL_CHIPS_EN = [
   "What are embeddings?",
 ];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function getRandomChips(lang: string) {
   const chips = lang === "en" ? ALL_CHIPS_EN : ALL_CHIPS_ES;
   const shuffled = [...chips].sort(() => Math.random() - 0.5);
-
   return shuffled.slice(0, 4);
 }
 
@@ -73,18 +58,23 @@ function ZaiOrb({ size = 36 }: { size?: number }) {
   );
 }
 
+const WELCOME_ES = "Hola! Soy **ZAI**, tu tutor de IA en Bymyzai. Estoy aqui para ayudarte a aprender IA de forma practica. Que quieres saber hoy?";
+const WELCOME_EN = "Hi! I'm **ZAI**, your AI tutor at Bymyzai. I'm here to help you learn AI in a practical way. What do you want to know today?";
+
 export default function VYPage() {
   const { user } = useUser();
   const { lang } = useUserLang();
   const [chips, setChips] = useState(() => getRandomChips(lang));
-  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: lang === "en" ? "Hi! I'm **ZAI**, your AI tutor at Bymyzai. I'm here to help you learn AI in a practical way. What do you want to know today? 🤖" : "¡Hola! Soy **ZAI**, tu tutor de IA en Bymyzai. Estoy aquí para ayudarte a aprender IA de forma práctica. ¿Qué quieres saber hoy? 🤖" }]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: WELCOME_ES }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [used, setUsed] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => { setChips(getRandomChips(lang)); }, [lang]);
+  useEffect(() => {
+    setMsgs([{ role: "assistant", content: lang === "en" ? WELCOME_EN : WELCOME_ES }]);
+  }, [lang]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
 
   useEffect(() => {
@@ -103,8 +93,8 @@ export default function VYPage() {
     try {
       const res = await fetch("/api/vy", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
       const data = await res.json();
-      setMsgs(p => [...p, { role: "assistant", content: data.message ?? "Error. Intenta de nuevo." }]);
-    } catch { setMsgs(p => [...p, { role: "assistant", content: "Error de conexiÃ³n." }]); }
+      setMsgs(p => [...p, { role: "assistant", content: data.message ?? "Error. Try again." }]);
+    } catch { setMsgs(p => [...p, { role: "assistant", content: "Connection error." }]); }
     setLoading(false);
   }
 
@@ -113,16 +103,16 @@ export default function VYPage() {
       <style>{`@keyframes bounce{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-4px);opacity:1}} @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
 
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
-        <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>â†</Link>
+        <Link href="/dashboard" style={{ color: "rgba(255,255,255,0.4)", fontSize: "18px", textDecoration: "none" }}>&larr;</Link>
         <ZaiOrb size={36} />
         <div style={{ flex: 1 }}>
           <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px" }}>ZAI</p>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#34D399" }} />
-            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>en lÃ­nea</p>
+            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "online" : "en linea"}</p>
           </div>
         </div>
-        <span style={{ fontSize: "10px", color: used >= 10 ? "#F87171" : "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{used}/10 hoy</span>
+        <span style={{ fontSize: "10px", color: used >= 10 ? "#F87171" : "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{used}/10 {lang === "en" ? "today" : "hoy"}</span>
       </div>
 
       <div style={{ flex: 1, padding: "14px 16px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -143,8 +133,8 @@ export default function VYPage() {
         )}
         {used >= 10 && (
           <div style={{ textAlign: "center", padding: "12px", background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: "14px" }}>
-            <p style={{ fontSize: "12px", color: "#F87171", fontFamily: "'DM Sans',sans-serif", marginBottom: "6px" }}>LÃ­mite diario alcanzado.</p>
-            <Link href="/pricing" style={{ fontSize: "11px", color: "#818CF8", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Actualiza a Pro â†’</Link>
+            <p style={{ fontSize: "12px", color: "#F87171", fontFamily: "'DM Sans',sans-serif", marginBottom: "6px" }}>{lang === "en" ? "Daily limit reached." : "Limite diario alcanzado."}</p>
+            <Link href="/pricing" style={{ fontSize: "11px", color: "#818CF8", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Upgrade to Pro →" : "Actualiza a Pro →"}</Link>
           </div>
         )}
         <div ref={bottomRef} />
@@ -158,10 +148,11 @@ export default function VYPage() {
 
       <div style={{ padding: "10px 16px 14px", background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)", display: "flex", gap: "8px" }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
-          placeholder="PregÃºntale algo a ZAI..." disabled={used >= 10}
+          placeholder={lang === "en" ? "Ask ZAI something..." : "Preguntale algo a ZAI..."}
+          disabled={used >= 10}
           style={{ flex: 1, height: "42px", padding: "0 14px", borderRadius: "14px", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.12)", color: "#fff", fontSize: "13px", outline: "none", fontFamily: "'DM Sans',sans-serif" }} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading || used >= 10}
-          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>â†’</button>
+          style={{ width: "42px", height: "42px", borderRadius: "14px", background: !input.trim() || loading || used >= 10 ? "rgba(123,97,255,0.2)" : "linear-gradient(135deg,#7B61FF,#8B5CF6)", border: "none", color: "#fff", fontSize: "16px", cursor: !input.trim() || loading ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>&#8594;</button>
       </div>
     </div>
   );
