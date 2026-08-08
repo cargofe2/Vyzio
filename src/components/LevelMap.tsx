@@ -1,33 +1,43 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useUserLang } from "@/hooks/useUserLang";
 
 const LEVELS = [
   { n:0, name:"Origins", color:"#26C6DA", intensity:1, worlds:11, lessons:155,
     desc:"Entiendes que es la IA, como funciona y por que esta cambiando el mundo. Cubres historia, aplicaciones reales en salud, transporte y sostenibilidad, primeros prompts con ChatGPT y Claude, y etica. No necesitas experiencia previa.",
+    desc_en:"You understand what AI is, how it works, and why it is changing the world. You cover history, real applications in health, transportation and sustainability, your first prompts with ChatGPT and Claude, and ethics. No prior experience needed.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21V11"/><path d="M12 12c0-3.5-2.5-6-7-6.5C5.3 10 7.5 12.3 12 12Z"/><path d="M12 9c0-2.8 2-4.8 5.5-5.2C17.8 7.3 16 9.3 12 9Z"/></svg>`},
   { n:1, name:"Explorer", color:"#468BFF", intensity:2, worlds:11, lessons:165,
     desc:"Aprendes a usar IA para estudiar, escribir, investigar, crear imagenes, producir audio y automatizar flujos de trabajo. Trabajas prompt engineering avanzado y fundamentos de LLMs y agentes. El resultado depende de cuanto practiques.",
+    desc_en:"You learn to use AI to study, write, research, create images, produce audio and automate workflows. You work on advanced prompt engineering and the fundamentals of LLMs and agents. Results depend on how much you practice.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.2 8.8l-1.7 5.1-5.1 1.7 1.7-5.1 5.1-1.7Z"/></svg>`},
   { n:2, name:"Thinker", color:"#A78BFA", intensity:3, worlds:10, lessons:150,
     desc:"Trabajas logica, pensamiento critico, sistemas, decisiones bajo incertidumbre, sesgos cognitivos humanos y de IA, datos, etica y argumentacion. Habilidades que no dependen de que modelo de IA exista manana.",
+    desc_en:"You work on logic, critical thinking, systems, decisions under uncertainty, human and AI cognitive biases, data, ethics and argumentation. Skills that do not depend on which AI model exists tomorrow.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 4.5c-2 0-3.5 1.5-3.5 3.5-1.3.4-2 1.6-2 3s.7 2.7 2 3.1c0 2.1 1.5 3.9 3.5 3.9M8.5 4.5c1.3 0 2.4.7 3 1.7M8.5 4.5v13.5M15.5 4.5c2 0 3.5 1.5 3.5 3.5 1.3.4 2 1.6 2 3s-.7 2.7-2 3.1c0 2.1-1.5 3.9-3.5 3.9M15.5 4.5c-1.3 0-2.4.7-3 1.7M15.5 4.5v13.5"/></svg>`},
   { n:3, name:"Creator", color:"#36D399", intensity:4, worlds:10, lessons:145,
     desc:"Aprendes design thinking, herramientas sin codigo, UX/UI, validacion con usuarios, tu primer MVP, codigo asistido por IA, storytelling y lanzamiento. No necesitas saber programar para completar este nivel.",
+    desc_en:"You learn design thinking, no-code tools, UX/UI, user validation, your first MVP, AI-assisted coding, storytelling and launch. You do not need to know how to program to complete this level.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3.5C7.3 3.5 3.5 7.3 3.5 12c0 4.4 3.6 8.5 8.5 8.5.9 0 1.3-.5 1.3-1.1 0-.4-.1-.7-.4-.9-.2-.3-.4-.6-.4-.9 0-.6.5-1.1 1.1-1.1h1.4c3 0 5.5-2.5 5.5-5.5 0-4.1-3.6-7.5-8.5-7.5Z"/></svg>`},
   { n:4, name:"Builder", color:"#7B61FF", intensity:6, worlds:10, lessons:150,
     desc:"Construyes aplicaciones reales con IA. Cubres arquitectura, bases de datos vectoriales, RAG en produccion, fine-tuning, testing, observabilidad, costos, seguridad y DevOps. Es el nivel mas tecnico del programa. Requiere disposicion para trabajar con codigo.",
+    desc_en:"You build real applications with AI. You cover architecture, vector databases, RAG in production, fine-tuning, testing, observability, costs, security and DevOps. This is the most technical level of the program. Requires willingness to work with code.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 14l2 2 4-4"/></svg>`},
   { n:5, name:"Architect", color:"#00D4FF", intensity:7, worlds:10, lessons:146,
     desc:"Disenias sistemas a escala. Cubres sistemas distribuidos, multi-agente, APIs de IA, infraestructura cloud, escalabilidad, gobernanza de datos, integracion con sistemas existentes, seguridad y documentacion tecnica.",
+    desc_en:"You design systems at scale. You cover distributed systems, multi-agent, AI APIs, cloud infrastructure, scalability, data governance, integration with existing systems, security and technical documentation.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20V10l5-2.5V20M9 20V4.5L14 2v18M14 20V9l5-1.5V20"/><path d="M3 20h18"/></svg>`},
   { n:6, name:"Founder", color:"#FB923C", intensity:7, worlds:10, lessons:144,
     desc:"Cubres validacion de negocio, pitch, unit economics, contratacion, estrategia de producto, go-to-market, estructura legal y metricas. Es el nivel mas cercano a lo que enfrenta alguien que quiere crear una organizacion real.",
+    desc_en:"You cover business validation, pitch, unit economics, hiring, product strategy, go-to-market, legal structure and metrics. This is the level closest to what someone faces when building a real organization.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5c2.8 1.6 4.5 4.9 4.5 8.3 0 1.9-.6 3.6-1.6 5L12 19l-2.9-3.2c-1-1.4-1.6-3.1-1.6-5 0-3.4 1.7-6.7 4.5-8.3Z"/><circle cx="12" cy="10.5" r="1.5"/></svg>`},
   { n:7, name:"Researcher", color:"#4ADE80", intensity:8, worlds:10, lessons:145,
     desc:"Te introduces al trabajo cientifico aplicado a la IA. Aprendes a leer papers, disenar experimentos, reproducirlos, escribir y publicar investigacion, hacer peer review y colaborar en proyectos cientificos. Para quienes quieren contribuir al campo, no solo usarlo.",
+    desc_en:"You are introduced to scientific work applied to AI. You learn to read papers, design and reproduce experiments, write and publish research, conduct peer review and collaborate on scientific projects. For those who want to contribute to the field, not just use it.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 3.5v6L6.3 16.8A2.3 2.3 0 0 0 8.3 20.2h7.4a2.3 2.3 0 0 0 2-3.4L14 9.5v-6"/><path d="M8.7 3.5h6.6M7.5 15h9"/></svg>`},
   { n:8, name:"Residency", color:"#F472B6", intensity:9, worlds:2, lessons:27,
     desc:"Aplicas todo lo acumulado en un proyecto real. Primero te preparas, luego enfrentas el Grand Challenge: identificar un problema, disenar una solucion, construirla, conseguir usuarios reales y presentar evidencia de impacto. El resultado depende de lo que pongas.",
+    desc_en:"You apply everything accumulated in a real project. First you prepare, then you face the Grand Challenge: identify a problem, design a solution, build it, get real users and present evidence of impact. The result depends on what you put in.",
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>`},
 ];
 
@@ -35,6 +45,14 @@ export default function LevelMap() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(true);
   const sel = LEVELS[active];
+  const { lang } = useUserLang();
+
+  const t = {
+    nivel:    lang === "en" ? "LEVEL"     : "NIVEL",
+    worlds:   lang === "en" ? "worlds"    : "mundos",
+    lessons:  lang === "en" ? "lessons"   : "lecciones",
+    intensity:lang === "en" ? "INTENSITY" : "INTENSIDAD",
+  };
 
   useEffect(() => {
     setVisible(false);
@@ -77,15 +95,15 @@ export default function LevelMap() {
             <span dangerouslySetInnerHTML={{ __html: sel.svg }} />
           </div>
           <div>
-            <p style={{ fontSize:"9px", fontWeight:700, color:sel.color, fontFamily:"'Syne',sans-serif", letterSpacing:"1.5px", marginBottom:"3px" }}>NIVEL {sel.n}</p>
+            <p style={{ fontSize:"9px", fontWeight:700, color:sel.color, fontFamily:"'Syne',sans-serif", letterSpacing:"1.5px", marginBottom:"3px" }}>{t.nivel} {sel.n}</p>
             <p style={{ fontFamily:"'Syne',sans-serif", fontWeight:900, fontSize:"20px", color:"#F8FAFF", lineHeight:1 }}>{sel.name}</p>
           </div>
         </div>
-        <p style={{ fontSize:"10px", color:"#7E8798", marginBottom:"10px", fontWeight:600, letterSpacing:"0.3px" }}>{sel.worlds} mundos · {sel.lessons} lecciones</p>
-        <p style={{ fontSize:"13px", lineHeight:1.7, color:"#B3BDD1", marginBottom:"16px" }}>{sel.desc}</p>
+        <p style={{ fontSize:"10px", color:"#7E8798", marginBottom:"10px", fontWeight:600, letterSpacing:"0.3px" }}>{sel.worlds} {t.worlds} · {sel.lessons} {t.lessons}</p>
+        <p style={{ fontSize:"13px", lineHeight:1.7, color:"#B3BDD1", marginBottom:"16px" }}>{lang === "en" ? sel.desc_en : sel.desc}</p>
         <div>
           <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"6px" }}>
-            <span style={{ fontSize:"9px", color:"#7E8798", fontWeight:600, letterSpacing:"0.5px" }}>INTENSIDAD</span>
+            <span style={{ fontSize:"9px", color:"#7E8798", fontWeight:600, letterSpacing:"0.5px" }}>{t.intensity}</span>
             <span style={{ fontSize:"9px", fontWeight:700, color:sel.color }}>{sel.intensity}/9</span>
           </div>
           <div style={{ height:"4px", background:"rgba(255,255,255,0.08)", borderRadius:"4px", overflow:"hidden" }}>
