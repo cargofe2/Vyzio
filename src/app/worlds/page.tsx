@@ -309,7 +309,7 @@ function WorldsContent() {
             <span style={{ width: "56px", height: "56px", borderRadius: "18px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, flexShrink: 0 }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 26)}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
-              <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: "6px" }}>{selectedWorld?.name ?? "Mundo"}</p>
+              <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: "6px" }}>{lang === "en" ? (selectedWorld?.name_en ?? selectedWorld?.name ?? "World") : (selectedWorld?.name ?? "Mundo")}</p>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
                   <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px", transition: "width 0.8s ease" }} />
