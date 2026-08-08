@@ -18,17 +18,17 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 const WORLDS = [
-  { name: { es: "Fundamentos de IA", en: "AI Fundamentals" }, color: "#818CF8", bg: "rgba(123,97,255,0.08)", border: "rgba(123,97,255,0.18)",
+  { name: { es: "Pensamiento Crítico", en: "Critical Thinking" }, color: "#818CF8", bg: "rgba(123,97,255,0.08)", border: "rgba(123,97,255,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C8.7 3 6 5.7 6 9V10H5C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14H6C6 16.2 7.4 18 9.3 18.8V20C9.3 20.6 9.7 21 10.3 21H13.7C14.3 21 14.7 20.6 14.7 20V18.8C16.6 18 18 16.2 18 14H19C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10H18V9C18 5.7 15.3 3 12 3Z" stroke="#818CF8" strokeWidth="1.8"/></svg> },
-  { name: { es: "Historia de la IA", en: "History of AI" }, color: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.18)",
+  { name: { es: "Lógica y Problemas", en: "Logic & Problem Solving" }, color: "#FB923C", bg: "rgba(251,146,60,0.08)", border: "rgba(251,146,60,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FB923C" strokeWidth="1.8"/><path d="M12 7V12L15 15" stroke="#FB923C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-  { name: { es: "IA en tu Vida", en: "AI in Your Life" }, color: "#00D4FF", bg: "rgba(0,212,255,0.08)", border: "rgba(0,212,255,0.18)",
+  { name: { es: "Decisiones Inteligentes", en: "Smart Decisions" }, color: "#00D4FF", bg: "rgba(0,212,255,0.08)", border: "rgba(0,212,255,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.7 2 6 4.7 6 8C6 10.4 7.4 12.5 9.5 13.5V16H14.5V13.5C16.6 12.5 18 10.4 18 8C18 4.7 15.3 2 12 2Z" stroke="#00D4FF" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-  { name: { es: "Ética de la IA", en: "AI Ethics" }, color: "#36D399", bg: "rgba(54,211,153,0.08)", border: "rgba(54,211,153,0.18)",
+  { name: { es: "Creatividad Estructurada", en: "Structured Creativity" }, color: "#36D399", bg: "rgba(54,211,153,0.08)", border: "rgba(54,211,153,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 7V12C4 16.4 7.6 20.5 12 21C16.4 20.5 20 16.4 20 12V7L12 3Z" stroke="#36D399" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 12L11 14L15 10" stroke="#36D399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-  { name: { es: "Creatividad con IA", en: "Creativity with AI" }, color: "#FF7DAE", bg: "rgba(255,125,174,0.08)", border: "rgba(255,125,174,0.18)",
+  { name: { es: "Design Thinking", en: "Design Thinking" }, color: "#FF7DAE", bg: "rgba(255,125,174,0.08)", border: "rgba(255,125,174,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21L12 17.77L5.82 21L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#FF7DAE" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-  { name: { es: "Programación IA", en: "AI Programming" }, color: "#36D399", bg: "rgba(54,211,153,0.08)", border: "rgba(54,211,153,0.18)",
+  { name: { es: "Valida tu Idea", en: "Validate Your Idea" }, color: "#36D399", bg: "rgba(54,211,153,0.08)", border: "rgba(54,211,153,0.18)",
     icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="16 18 22 12 16 6" stroke="#36D399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#36D399" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
 ];
 
