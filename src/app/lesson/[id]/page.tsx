@@ -297,7 +297,7 @@ function LevelMapInteractive() {
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <img src="/logo.png" alt="Bymyzai" width={36} height={36} style={{ borderRadius: "50%", flexShrink: 0 }} />
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>Cargando lección...</p>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Loading lesson..." : "Cargando lección..."}</p>
       </div>
     </div>
   );
@@ -370,7 +370,7 @@ function LevelMapInteractive() {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px" }}>
         <div style={{ marginBottom: "16px" }}><ZaiCompanion mood="celebrate" size={80} /></div>
-        <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>¡Lección completada!</h2>
+        <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "22px", marginBottom: "6px", textAlign: "center" }}>{lang === "en" ? "Lesson complete!" : "¡Lección completada!"}</h2>
         <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "13px", marginBottom: "22px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
         {xpEarned > 0 && (
           <div style={{ background: "rgba(251,146,60,0.1)", border: "1px solid rgba(251,146,60,0.25)", borderRadius: "14px", padding: "12px 28px", marginBottom: "24px" }}>
@@ -379,7 +379,7 @@ function LevelMapInteractive() {
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", maxWidth: "300px" }}>
           <Link href={nextUrl} style={{ display: "block", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.25)" }}>
-            {nextUrl.startsWith("/lesson") ? "Siguiente leccion →" : nextUrl === "/worlds" ? "Ver niveles →" : "Siguiente mundo →"}
+            {nextUrl.startsWith("/lesson") ? lang === "en" ? "Next lesson →" : "Siguiente lección →" : nextUrl === "/worlds" ? lang === "en" ? "View levels →" : "Ver niveles →" : lang === "en" ? "Next world →" : "Siguiente mundo →"}
           </Link>
           <Link href="/dashboard" style={{ display: "block", padding: "12px", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)", borderRadius: "14px", fontWeight: 600, fontSize: "13px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
             Ir al Dashboard
@@ -458,12 +458,12 @@ function LevelMapInteractive() {
         <Link href={`/worlds?id=${lesson.world.id}`} style={{ color: "rgba(255,255,255,0.4)", fontSize: "20px", textDecoration: "none" }}>←</Link>
         <div style={{ marginTop: "12px", marginBottom: "12px" }}>
           <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>
-            {lesson.world.emoji} {lesson.world.name} · Lección {lesson.number}
+            {lesson.world.emoji} {lesson.world.name} · {lang === "en" ? "Lesson" : "Lección"} {lesson.number}
           </p>
           <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "19px", lineHeight: 1.3 }}>{lesson.title}</h1>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
-          <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{typeCfg.label} · {lesson.durationMin} min</span>
+          <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label} · {lesson.durationMin} min</span>
           <span style={{ fontSize: "10px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
@@ -579,7 +579,7 @@ function LevelMapInteractive() {
               );
               if (block.type === "glossary") return (
                 <div key={i} style={{ padding: "16px", borderRadius: "14px", background: "#161C27", border: "1px solid #324055", marginBottom: "16px", marginTop: "8px" }}>
-                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>📖 Glosario de esta lección</p>
+                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#7E8798", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{lang === "en" ? "📖 Glossary" : "📖 Glosario de esta lección"}</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     {(block.terms ?? []).map((t, ti) => (
                       <div key={ti}>
@@ -600,7 +600,7 @@ function LevelMapInteractive() {
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: "16px", background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid rgba(123,97,255,0.1)" }}>
         {lesson.progress?.completed ? (
           <div style={{ textAlign: "center" }}>
-            <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>✅ Lección completada</p>
+            <p style={{ fontSize: "12px", color: "#34D399", fontWeight: 700, marginBottom: "8px", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "✅ Lesson complete" : "✅ Lección completada"}</p>
             <Link href={`/worlds?id=${lesson.world.id}`} style={{ display: "block", padding: "12px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", borderRadius: "14px", fontWeight: 800, fontSize: "14px", textDecoration: "none", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>
               Siguiente lección →
             </Link>
@@ -610,7 +610,7 @@ function LevelMapInteractive() {
             onClick={lesson.type === "PROJECT" ? submitBossBattle : IS_PROFILE_SETUP(id) ? saveProfileAndComplete : completeReading}
             disabled={(lesson.type === "PROJECT" && (!battleSubmission.trim() || battleLoading)) || (IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim() || profileSaving))}
             style={{ width: "100%", padding: "14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "14px", fontWeight: 800, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 0 12px rgba(123,97,255,0.2)", opacity: (lesson.type === "PROJECT" && !battleSubmission.trim()) || (IS_PROFILE_SETUP(id) && (!profileName.trim() || !profileAge.trim())) ? 0.5 : 1 }}>
-            {lesson.type === "PROJECT" ? (battleLoading ? "ZAI está evaluando..." : "⚔️ Enviar al Boss") : IS_PROFILE_SETUP(id) ? (profileSaving ? "Guardando..." : "Guardar y continuar →") : (lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : "Completar lección →")}
+            {lesson.type === "PROJECT" ? (battleLoading ? "ZAI está evaluando..." : "⚔️ Enviar al Boss") : IS_PROFILE_SETUP(id) ? (profileSaving ? "Guardando..." : "Guardar y continuar →") : (lesson.quizQuestions.length > 0 ? `Quiz (${lesson.quizQuestions.length} preguntas) →` : lang === "en" ? "Complete lesson →" : "Completar lección →")}
           </button>
         )}
       </div>
