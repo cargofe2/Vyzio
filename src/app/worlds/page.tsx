@@ -183,9 +183,6 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🌍": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.3 2.2 3.7 5 3.7 8s-1.4 5.8-3.7 8c-2.3-2.2-3.7-5-3.7-8s1.4-5.8 3.7-8Z"/></svg>,
   "🏗️": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20V10l5-2.5V20M9 20V4.5L14 2v18M14 20V9l5-1.5V20"/><path d="M3 20h18"/></svg>,
   "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
-  "▶": <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>,
-  "📖": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6.5C10.3 5 8 4.2 5.5 4.2A1.3 1.3 0 0 0 4.2 5.5v11.8c2.3 0 4.6.7 6.3 2M12 6.5c1.7-1.5 4-2.3 6.5-2.3a1.3 1.3 0 0 1 1.3 1.3v11.8c-2.3 0-4.6.7-6.3 2M12 6.5v13"/></svg>,
-  "💪": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="9.5" width="3" height="6" rx="1"/><rect x="18.5" y="9.5" width="3" height="6" rx="1"/><path d="M5.5 10v5M18.5 10v5"/><rect x="8" y="10.5" width="8" height="4" rx="0.8"/></svg>,
 };
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
@@ -203,7 +200,7 @@ function NavBar({ active }: { active: string }) {
   const ACCENT = "#7B61FF";
   const items = [
     { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-    { href: "/worlds", label: "Niveles", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
+    { href: "/worlds", label: "Mundos", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
     { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
     { href: "/community", label: "Liga", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
     { href: "/profile", label: "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
@@ -215,7 +212,7 @@ function NavBar({ active }: { active: string }) {
         return (
           <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
             <div style={{ width: "40px", height: "40px", background: isActive ? `${ACCENT}20` : "transparent", border: isActive ? `1px solid ${ACCENT}40` : "1px solid transparent", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center", color: isActive ? ACCENT : "#7E8798" }}>{icon}</div>
-            <span style={{ fontSize: "10px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? label.toUpperCase() : label}</span>
+            <span style={{ fontSize: "8px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? label.toUpperCase() : label}</span>
           </Link>
         );
       })}
@@ -298,23 +295,25 @@ function WorldsContent() {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "11px 16px" }}>
-          <Link href={`/worlds?levelId=${selectedWorld?.levelId ?? levelId}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
-        </div>
-
-        {/* Tarjeta del mundo — misma tarjeta morada que Dashboard y Level Screen */}
-        <div style={{ padding: "18px 16px 4px" }}>
-          <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", display: "flex", alignItems: "center", gap: "14px" }}>
-            <span style={{ width: "56px", height: "56px", borderRadius: "18px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, flexShrink: 0 }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 26)}</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "2px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
-              <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: "6px" }}>{selectedWorld?.name ?? "Mundo"}</p>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
-                  <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px", transition: "width 0.8s ease" }} />
-                </div>
-                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>{lessons.length} lecciones · {Math.round(pct)}%</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <Link href={`/worlds?levelId=${selectedWorld?.levelId ?? levelId}`} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+              <span style={{ width: "48px", height: "48px", borderRadius: "16px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, flexShrink: 0 }}>{renderWorldIcon(selectedWorld?.emoji ?? "🌍", 26)}</span>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ fontSize: "10px", color: v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", marginBottom: "1px" }}>{LEVEL_NAMES[selectedWorld?.levelId ?? levelId] ?? ""}</p>
+                <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: v.color, fontSize: "16px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{selectedWorld?.name ?? "Mundo"}</p>
+                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans',sans-serif" }}>{lessons.length} lecciones · {Math.round(pct)}% completado</p>
               </div>
             </div>
+            <Link href={`/level-resources/${selectedWorld?.levelId ?? levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
+                <span style={{ fontSize: "16px" }}>📚</span>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
+              </div>
+            </Link>
+          </div>
+          <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
+            <div style={{ height: "100%", width: `${pct}%`, background: v.grad, borderRadius: "2px", transition: "width 0.8s ease" }} />
           </div>
         </div>
 
@@ -344,7 +343,7 @@ function WorldsContent() {
               <Link key={lesson.id} href={`/lesson/${lesson.id}`} style={{ textDecoration: "none" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", borderRadius: "18px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)" }}>
                   <div style={{ width: "36px", height: "36px", borderRadius: "11px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "rgba(52,211,153,0.12)" : typeCfg.bg, border: `1px solid ${done ? "rgba(52,211,153,0.2)" : typeCfg.color + "30"}`, fontFamily: "'Syne',sans-serif", fontSize: done ? "14px" : "16px", fontWeight: 800, color: done ? "#34D399" : typeCfg.color }}>
-                    {done ? "✓" : renderWorldIcon(typeCfg.icon, 16)}
+                    {done ? "✓" : typeCfg.icon}
                   </div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "15px", fontWeight: 600, color: done ? "#34D399" : "#fff", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{lesson.title}</p>
@@ -371,9 +370,9 @@ function WorldsContent() {
   if (showJourney) {
     const LEVELS = [
       { id: "level-1", label: "Origins", icon: "🌱", desc: "Descubre qué es la IA y aprende a aprender con ella.", free: true },
-      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: true },
-      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: true },
-      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: true },
+      { id: "level-new-1", label: "Explorer", icon: "🧭", desc: "Domina las herramientas de IA del día a día.", free: false },
+      { id: "level-new-2", label: "Thinker", icon: "🧠", desc: "Desarrolla pensamiento crítico y toma de decisiones.", free: false },
+      { id: "level-new-3", label: "Creator", icon: "🎨", desc: "Convierte ideas en productos reales.", free: false },
       { id: "level-new-4", label: "Builder", icon: "🛠️", desc: "Construye sistemas de IA listos para producción.", free: false },
       { id: "level-new-5", label: "Architect", icon: "🏗️", desc: "Diseña arquitecturas de IA a gran escala.", free: false },
       { id: "level-new-6", label: "Founder", icon: "🚀", desc: "Crea y escala tu propia organización.", free: false },
@@ -424,9 +423,9 @@ function WorldsContent() {
   // Vista de mundos con iconos coloridos (Level Screen)
   const LEVEL_DESC: Record<string, { desc: string; icon: string; free: boolean }> = {
     "level-1": { desc: "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
-    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: true },
-    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: true },
-    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: true },
+    "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: false },
+    "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: false },
+    "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: false },
     "level-new-4": { desc: "Construye sistemas de IA listos para producción.", icon: "🛠️", free: false },
     "level-new-5": { desc: "Diseña arquitecturas de IA a gran escala.", icon: "🏗️", free: false },
     "level-new-6": { desc: "Crea y escala tu propia organización.", icon: "🚀", free: false },
@@ -440,28 +439,34 @@ function WorldsContent() {
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
       {evalMode && <div style={{ position: "fixed", top: "8px", right: "8px", zIndex: 100, background: "rgba(251,146,60,0.15)", border: "1px solid rgba(251,146,60,0.4)", color: "#FB923C", fontSize: "10px", fontWeight: 700, padding: "3px 8px", borderRadius: "8px", fontFamily: "'DM Sans',sans-serif" }}>Founder Review Mode</div>}
       <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(15,20,32,0.93)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "14px 16px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Link href="/worlds" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
+            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "16px" }}>{levelNames[levelId] || "Nivel 0 — Origins"}</h1>
+          </div>
+          <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none", flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)" }}>
+              <span style={{ fontSize: "16px" }}>📚</span>
+              <span style={{ fontSize: "13px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>Profundiza</span>
+            </div>
+          </Link>
         </div>
       </div>
 
-      {/* Ilustración + descripción + progreso del nivel — misma tarjeta que Dashboard */}
-      <div style={{ padding: "18px 16px 4px" }}>
-        <div style={{ background: "linear-gradient(160deg, #2A1F5C, #1A1440 60%, #0F1420)", border: "1px solid rgba(123,97,255,0.35)", borderRadius: "22px", padding: "18px", display: "flex", alignItems: "center", gap: "14px" }}>
-          <div style={{ width: "56px", height: "56px", borderRadius: "18px", background: levelV.bg, border: `1px solid ${levelV.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: levelV.color, flexShrink: 0, fontSize: "26px" }}>
-            {renderWorldIcon(currentLevelInfo.icon, 28)}
-          </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "18px", lineHeight: 1.15, marginBottom: "4px" }}>{levelNames[levelId] || "Origins"}</p>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "8px" }}>{currentLevelInfo.desc}</p>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
-                <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
-              </div>
-              <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
-                {worldsDoneCount}/{worlds.length} mundos{currentLevelInfo.free ? " · Gratis" : ""}
-              </span>
+      {/* Ilustración + descripción + progreso del nivel */}
+      <div style={{ padding: "18px 16px 4px", display: "flex", alignItems: "center", gap: "14px" }}>
+        <div style={{ width: "64px", height: "64px", borderRadius: "20px", background: levelV.bg, border: `1px solid ${levelV.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: levelV.color, flexShrink: 0, fontSize: "30px" }}>
+          {renderWorldIcon(currentLevelInfo.icon, 32)}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", lineHeight: 1.4, marginBottom: "6px" }}>{currentLevelInfo.desc}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ flex: 1, height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "3px", overflow: "hidden", maxWidth: "160px" }}>
+              <div style={{ height: "100%", width: worlds.length > 0 ? `${(worldsDoneCount / worlds.length) * 100}%` : "0%", background: levelV.grad, borderRadius: "3px" }} />
             </div>
+            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+              {worldsDoneCount}/{worlds.length} mundos{currentLevelInfo.free ? " · Gratis" : ""}
+            </span>
           </div>
         </div>
       </div>
@@ -469,9 +474,9 @@ function WorldsContent() {
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", padding: "12px 16px 0" }}>
         {[
           { id: "level-1", label: "Origins", icon: "🌱", free: true },
-          { id: "level-new-1", label: "Explorer", icon: "🧭", free: true },
-          { id: "level-new-2", label: "Thinker", icon: "🧠", free: true },
-          { id: "level-new-3", label: "Creator", icon: "🎨", free: true },
+          { id: "level-new-1", label: "Explorer", icon: "🧭", free: false },
+          { id: "level-new-2", label: "Thinker", icon: "🧠", free: false },
+          { id: "level-new-3", label: "Creator", icon: "🎨", free: false },
           { id: "level-new-4", label: "Builder", icon: "🛠️", free: false },
           { id: "level-new-5", label: "Architect", icon: "🏗️", free: false },
           { id: "level-new-6", label: "Founder", icon: "🚀", free: false },
@@ -504,30 +509,18 @@ function WorldsContent() {
           return (
             <Link key={w.id} href={`/worlds?id=${w.id}`} style={{ textDecoration: "none" }}>
               <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "14px", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, width: done ? "100%" : `${pctW}%`, height: "3px", background: v.grad, opacity: pctW > 0 ? 1 : 0 }} />
                 {done && <div style={{ position: "absolute", top: "8px", right: "8px", width: "20px", height: "20px", background: "rgba(52,211,153,0.15)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#34D399" }}>✓</div>}
                 <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: v.bg, border: `1px solid ${v.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: v.color, marginBottom: "10px" }}>{renderWorldIcon(w.emoji, 20)}</div>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "8px", lineHeight: 1.3 }}>{w.name}</p>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: pctW > 0 ? "8px" : 0 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>{w.lessonCount} lecciones</p>
                   {pctW > 0 && <span style={{ fontSize: "10px", color: done ? "#34D399" : v.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif", background: done ? "rgba(52,211,153,0.15)" : v.bg, padding: "1px 7px", borderRadius: "20px" }}>{pctW}%</span>}
                 </div>
-                {pctW > 0 && (
-                  <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${pctW}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px" }} />
-                  </div>
-                )}
               </div>
             </Link>
           );
         })}
-
-        <Link href={`/level-resources/${levelId}`} style={{ textDecoration: "none" }}>
-          <div style={{ background: "rgba(123,97,255,0.08)", border: "1px dashed rgba(123,97,255,0.35)", borderRadius: "18px", padding: "14px", display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", minHeight: "116px" }}>
-            <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA", marginBottom: "10px", fontSize: "18px" }}>📚</div>
-            <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: "#F8FAFF", marginBottom: "4px" }}>Profundiza</p>
-            <p style={{ fontSize: "9px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Recursos extra de este nivel</p>
-          </div>
-        </Link>
       </div>
       <NavBar active="/worlds" />
     </div>
