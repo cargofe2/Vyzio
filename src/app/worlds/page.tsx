@@ -200,7 +200,7 @@ function getV(order: number, levelIdForColor?: string) {
   return palette[((order - 1) % (palette.length - 1)) + 1];
 }
 
-function NavBar({ active }: { active: string }) {
+function NavBar({ active, lang }: { active: string; lang: "es" | "en" }) {
   const ACCENT = "#7B61FF";
   const items = [
     { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
@@ -364,7 +364,7 @@ function WorldsContent() {
             );
           })}
         </div>
-        <NavBar active="/worlds" />
+        <NavBar active="/worlds" lang={lang} />
       </div>
     );
   }
@@ -418,7 +418,7 @@ function WorldsContent() {
               : <Link key={lvl.id} href={`/worlds?levelId=${lvl.id}`} style={{ textDecoration: "none" }}>{content}</Link>;
           })}
         </div>
-        <NavBar active="/worlds" />
+        <NavBar active="/worlds" lang={lang} />
       </div>
     );
   }
@@ -531,7 +531,7 @@ function WorldsContent() {
           </div>
         </Link>
       </div>
-      <NavBar active="/worlds" />
+      <NavBar active="/worlds" lang={lang} />
     </div>
   );
 }
