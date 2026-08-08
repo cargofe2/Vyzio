@@ -2,19 +2,6 @@
 import { useEffect, useState, Suspense, ReactElement } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useUserLang } from "@/hooks/useUserLang";
-const LEVEL_DESC_EN: Record<string, string> = {
-  "level-1": "Discover what AI is and learn how to learn with it.",
-  "level-new-1": "Master everyday AI tools and workflows.",
-  "level-new-2": "Develop critical thinking and decision-making.",
-  "level-new-3": "Turn ideas into real products.",
-  "level-new-4": "Build production-ready AI systems.",
-  "level-new-5": "Design large-scale AI architectures.",
-  "level-new-6": "Create and scale your own organization.",
-  "level-new-7": "Research AI with scientific rigor.",
-  "level-new-8": "Apply everything in a real environment with real impact.",
-};
-import { useUserLang } from "@/hooks/useUserLang";
 
 interface World { id: string; name: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; }
 interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
@@ -253,8 +240,6 @@ function WorldsContent() {
     "level-new-7": "Nivel 7 — AI Researcher",
     "level-new-8": "Nivel 8 — AI Residency",
   };
-  const { lang } = useUserLang();
-  const { lang } = useUserLang();
   const [worlds, setWorlds] = useState<World[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
@@ -438,7 +423,7 @@ function WorldsContent() {
 
   // Vista de mundos con iconos coloridos (Level Screen)
   const LEVEL_DESC: Record<string, { desc: string; icon: string; free: boolean }> = {
-    "level-1": { desc: lang === "en" ? "Discover what AI is and learn how to learn with it." : "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
+    "level-1": { desc: "Descubre qué es la IA y aprende a aprender con ella.", icon: "🌱", free: true },
     "level-new-1": { desc: "Domina las herramientas de IA del día a día.", icon: "🧭", free: true },
     "level-new-2": { desc: "Desarrolla pensamiento crítico y toma de decisiones.", icon: "🧠", free: true },
     "level-new-3": { desc: "Convierte ideas en productos reales.", icon: "🎨", free: true },
