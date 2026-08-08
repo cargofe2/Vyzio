@@ -240,7 +240,7 @@ export default function DashboardPage() {
                   {levelName}
                 </p>
                 <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, color: "rgba(255,255,255,0.5)", fontSize: "13px", marginBottom: "14px" }}>
-                  {t("nivel")} {levelNumber} {activeMission ? `· ${lang === "en" ? (activeMission.name_en ?? activeMission.name) : activeMission.name}` : ""}
+                  {t("nivel")} {levelNumber} 
                 </p>
 
                 <div style={{ position: "absolute", top: "16px", right: "16px", width: "56px", height: "56px", borderRadius: "18px", background: rankColor + "26", border: `1px solid ${rankColor}55`, display: "flex", alignItems: "center", justifyContent: "center", color: rankColor }}>
