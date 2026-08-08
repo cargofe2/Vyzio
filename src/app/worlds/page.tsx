@@ -314,7 +314,7 @@ function WorldsContent() {
                 <div style={{ flex: 1, height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden", maxWidth: "160px" }}>
                   <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg,#8B75FF,#468BFF)", borderRadius: "4px", transition: "width 0.8s ease" }} />
                 </div>
-                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>{lessons.length} lecciones · {Math.round(pct)}%</span>
+                <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>{lessons.length} {lang === "en" ? "lessons" : "lecciones"} · {Math.round(pct)}%</span>
               </div>
             </div>
           </div>
@@ -357,7 +357,7 @@ function WorldsContent() {
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <p style={{ fontSize: "13px", fontWeight: 800, color: done ? "rgba(255,255,255,0.3)" : "#FB923C", fontFamily: "'Syne',sans-serif" }}>{done ? "✓" : `+${lesson.xpReward}`}</p>
-                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{done ? "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
+                    <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{done ? lang === "en" ? "done" : "listo" : isNext ? "▶ Siguiente" : "XP"}</p>
                   </div>
                 </div>
               </Link>
@@ -389,8 +389,8 @@ function WorldsContent() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Link href="/dashboard" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0, background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontSize: "18px", textDecoration: "none" }}>←</Link>
             <div>
-              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>Tu camino en Bymyzai</h1>
-              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>9 niveles</p>
+              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "18px" }}>{lang === "en" ? "Your path in Bymyzai" : "Tu camino en Bymyzai"}</h1>
+              <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "9 levels" : "9 niveles"}</p>
             </div>
           </div>
         </div>
