@@ -15,7 +15,7 @@ export function useUserLang() {
       if (!res.ok) return;
       const data = await res.json();
       const stored = data.user?.language as string | undefined;
-      if (stored === "en") { setLangState("en"); setInitialized(true); return; }
+      if (stored === "en" || stored === "es") { setLangState(stored as "es" | "en"); setInitialized(true); return; }
       const browserLang = (navigator.language ?? "es").toLowerCase();
       const detected = browserLang.startsWith("en") ? "en" : "es";
       if (detected === "en" && stored !== "en") {
