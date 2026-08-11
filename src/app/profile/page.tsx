@@ -5,7 +5,6 @@ import Link from "next/link";
 import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/AvatarIcon";
 import { isSoundEnabled, setSoundEnabled, playClick } from "@/lib/sounds";
 
-
 const LEVEL_ICON: Record<string, string> = {
   "level-1": "🌱", "level-new-1": "🧭", "level-new-2": "🧠", "level-new-3": "🎨",
   "level-new-4": "🛠️", "level-new-5": "🏗️", "level-new-6": "🚀", "level-new-7": "🔬", "level-new-8": "🎓",
@@ -21,7 +20,6 @@ const WORLD_ICONS: Record<string, ReactElement> = {
   "🚀": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5c2.8 1.6 4.5 4.9 4.5 8.3 0 1.9-.6 3.6-1.6 5L12 19l-2.9-3.2c-1-1.4-1.6-3.1-1.6-5 0-3.4 1.7-6.7 4.5-8.3Z"/><circle cx="12" cy="10.5" r="1.5"/><path d="M8.8 16.2L6.5 20.5l3-1.3M15.2 16.2l2.3 4.3-3-1.3"/></svg>,
   "🔬": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 3.5v6L6.3 16.8A2.3 2.3 0 0 0 8.3 20.2h7.4a2.3 2.3 0 0 0 2-3.4L14 9.5v-6"/><path d="M8.7 3.5h6.6M7.5 15h9"/><circle cx="12" cy="17.3" r="0.6" fill="currentColor" stroke="none"/></svg>,
   "🎓": <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>,
-  "🏆": <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg>,
 };
 function renderWorldIcon(emoji: string, size = 20) {
   const icon = WORLD_ICONS[emoji];
@@ -33,18 +31,18 @@ interface Gamification { xpTotal: number; rank: string; rankLevel: number; strea
 interface Achievement { achievement: { emoji: string; name: string; description: string; rarity: string }; earnedAt: string; }
 
 const RANK_CONFIG: Record<string, { color: string; label: string }> = {
-  NOVICE: { color: "#7E8798", label: "Novato" }, EXPLORER: { color: "#7B61FF", label: "Explorer" },
-  CREATOR: { color: "#26C6DA", label: "Creator" }, BUILDER: { color: "#36D399", label: "Builder" },
-  INNOVATOR: { color: "#F2C04D", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
-  PIONEER: { color: "#FB923C", label: "Pioneer" }, MASTER: { color: "#A78BFA", label: "Master" },
-  LEGEND: { color: "#FF6B6B", label: "Legend" }, AI_TITAN: { color: "#F2C04D", label: "AI Titan" },
+  NOVICE: { color: "#94A3B8", label: "Novato" }, EXPLORER: { color: "#818CF8", label: "Explorer" },
+  CREATOR: { color: "#34D399", label: "Creator" }, BUILDER: { color: "#38BDF8", label: "Builder" },
+  INNOVATOR: { color: "#FB923C", label: "Innovator" }, VISIONARY: { color: "#F472B6", label: "Visionary" },
+  PIONEER: { color: "#FB923C", label: "Pioneer" }, MASTER: { color: "#C084FC", label: "Master" },
+  LEGEND: { color: "#F87171", label: "Legend" }, AI_TITAN: { color: "#FB923C", label: "AI Titan" },
 };
 
 function NavBar() {
   const ACCENT = "#7B61FF";
   const items = [
     { href: "/dashboard", label: "Inicio", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10.5L12 3L21 10.5V20C21 20.6 20.6 21 20 21H15V15H9V21H4C3.4 21 3 20.6 3 20V10.5Z" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-    { href: "/worlds", label: "Niveles", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
+    { href: "/worlds", label: "Mundos", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.5" strokeWidth="1.8"/><ellipse cx="12" cy="12" rx="3.5" ry="8.5" strokeWidth="1.5"/><path d="M4 9.5H20M4 14.5H20" strokeWidth="1.3" strokeLinecap="round"/></svg> },
     { href: "/vy", label: "ZAI", icon: <svg width="18" height="18" viewBox="0 0 24 24"><defs><radialGradient id="zaiOrbNav" cx="35%" cy="30%" r="75%"><stop offset="0%" stopColor="#C4B5FD"/><stop offset="50%" stopColor="#7B61FF"/><stop offset="100%" stopColor="#4C3AA8"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#zaiOrbNav)"/><path d="M8.5 8.2H15.5L8.5 15.8H15.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> },
     { href: "/community", label: "Liga", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="10" width="6" height="12" rx="1" strokeWidth="1.8"/><rect x="2" y="14" width="6" height="8" rx="1" strokeWidth="1.5"/><rect x="16" y="16" width="6" height="6" rx="1" strokeWidth="1.5"/></svg> },
     { href: "/profile", label: "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
@@ -56,7 +54,7 @@ function NavBar() {
         return (
           <Link key={href} href={href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", textDecoration: "none", padding: "4px 0" }}>
             <div style={{ width: "40px", height: "40px", background: isActive ? `${ACCENT}20` : "transparent", border: isActive ? `1px solid ${ACCENT}40` : "1px solid transparent", borderRadius: "13px", display: "flex", alignItems: "center", justifyContent: "center", color: isActive ? ACCENT : "#7E8798" }}>{icon}</div>
-            <span style={{ fontSize: "10px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? label.toUpperCase() : label}</span>
+            <span style={{ fontSize: "8px", fontFamily: isActive ? "'Syne',sans-serif" : "'DM Sans',sans-serif", fontWeight: isActive ? 800 : 500, color: isActive ? ACCENT : "#7E8798", letterSpacing: isActive ? "0.5px" : "0" }}>{isActive ? label.toUpperCase() : label}</span>
           </Link>
         );
       })}
@@ -75,12 +73,8 @@ export default function ProfilePage() {
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
   const [avatarSaving, setAvatarSaving] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
-
   const [loading, setLoading] = useState(true);
-  const [displayName, setDisplayName] = useState<string>("");
   const [certMsg, setCertMsg] = useState<Record<string, string>>({});
-  const [editingName, setEditingName] = useState(false);
-  const [nameInput, setNameInput] = useState("");
   const [certLoading, setCertLoading] = useState<string | null>(null);
 
   const LEVELS = [
@@ -94,12 +88,6 @@ export default function ProfilePage() {
     { id: "level-new-7", label: "Nivel 7 — Researcher" },
     { id: "level-new-8", label: "Nivel 8 — Residency" },
   ];
-  async function saveName() {
-    if (!nameInput.trim()) return;
-    await fetch('/api/user', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ displayName: nameInput.trim() }) });
-    setDisplayName(nameInput.trim());
-    setEditingName(false);
-  }
 
   async function selectAvatar(id: string, price = 0) {
     if (price > 0 && !unlockedAvatars.includes(id)) {
@@ -149,7 +137,6 @@ export default function ProfilePage() {
           if (d.user?.avatarEmoji) setAvatarId(d.user.avatarEmoji);
           if (d.user?.unlockedAvatars) setUnlockedAvatars(d.user.unlockedAvatars);
           setPlan(d.user?.subscription?.plan ?? "STARTER");
-          if (d.user?.displayName) setDisplayName(d.user.displayName);
         }
       } catch (err) { console.error(err); } finally { setLoading(false); }
     }
@@ -173,14 +160,12 @@ export default function ProfilePage() {
             <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
           </button>
           <div style={{ flex: 1 }}>
-            <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}><h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || "Estudiante"}</h1><button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>✎</button></div>
-
-            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
+            <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "17px", color: "#fff", marginBottom: "2px" }}>{user?.fullName ?? "Estudiante"}</h1>
             <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
-            <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: rankCfg.color + "18", color: rankCfg.color, border: "1px solid " + rankCfg.color + "33", fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
-            {editingName && (<div style={{ display:"flex",gap:"6px",marginTop:"6px" }}><input value={nameInput} onChange={e => setNameInput(e.target.value)} autoFocus style={{ flex:1,background:"#0F1420",border:"1px solid #7B61FF",borderRadius:"8px",padding:"4px 8px",color:"#F8FAFF",fontSize:"14px",fontFamily:"DM Sans,sans-serif" }} /><button onClick={saveName} style={{ padding:"4px 10px",background:"#7B61FF",color:"#fff",borderRadius:"7px",fontSize:"11px",fontWeight:700,border:"none",cursor:"pointer" }}>OK</button><button onClick={() => setEditingName(false)} style={{ padding:"4px 8px",background:"#324055",color:"#fff",borderRadius:"7px",fontSize:"11px",border:"none",cursor:"pointer" }}>X</button></div>)}
+            <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: `${rankCfg.color}18`, color: rankCfg.color, border: `1px solid ${rankCfg.color}33`, fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
           </div>
           <button
+            onClick={() => { const next = !soundOn; setSoundOn(next); setSoundEnabled(next); if (next) playClick(); }}
             style={{ width: "32px", height: "32px", borderRadius: "50%", border: "1px solid #324055", background: "#1E2533", color: soundOn ? "#F8FAFF" : "#7E8798", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
             aria-label={soundOn ? "Silenciar sonidos" : "Activar sonidos"}
           >
@@ -228,7 +213,7 @@ export default function ProfilePage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {LEVELS.map(lvl => (
               <div key={lvl.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}><div style={{ width: "32px", height: "32px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[lvl.id] ?? "\uD83C\uDF31", 16)}</div><p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label}</p></div>
+                <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label}</p>
                 {certMsg[lvl.id] ? (
                   <p style={{ fontSize: "10px", color: certMsg[lvl.id].startsWith("✓") ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>{certMsg[lvl.id]}</p>
                 ) : (
@@ -258,7 +243,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
-              <div style={{ width: "44px", height: "44px", margin: "0 auto 10px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA" }}>{renderWorldIcon("🏆", 24)}</div>
+              <p style={{ fontSize: "28px", marginBottom: "8px" }}>🏆</p>
               <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>Sin logros aún</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>Completa lecciones para desbloquear logros</p>
             </div>
@@ -270,8 +255,6 @@ export default function ProfilePage() {
             <Link href="/terms" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Términos de Servicio</Link>
             <span style={{ color: "#324055" }}>·</span>
             <Link href="/privacy" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Privacidad</Link>
-            <span style={{ color: "#324055" }}>·</span>
-            <Link href="/disclaimer" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>Disclaimer</Link>
           </div>
         </section>
       </div>
