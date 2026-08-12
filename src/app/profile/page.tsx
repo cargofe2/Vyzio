@@ -18,7 +18,7 @@ const T = {
   currentLevel: { es: "Nivel",                                   en: "Level" },
   continueNow:  { es: "Donde vas ahora — toca para continuar",   en: "Where you are now — tap to continue" },
   certificates: { es: "Certificados",                            en: "Certificates" },
-  certDesc:     { es: "Completa un nivel para obtener tu certificado", en: "Complete a level to earn your certificate" },
+  certDesc:     { es: "Completa todos los mundos obligatorios del nivel. Los mundos marcados Opc. son opcionales.", en: "Complete all required worlds in the level. Worlds marked Opt. are optional." },
   goArrow:      { es: "Ir →",                                    en: "Go →" },
   claim:        { es: "Reclamar",                                en: "Claim" },
   achievements: { es: "Logros",                                  en: "Achievements" },
