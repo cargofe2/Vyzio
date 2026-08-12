@@ -26,11 +26,13 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.findUnique({ where: { clerkId } });
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
+    // Solo cuenta lecciones de mundos NO optativos
     const totalLessons = await prisma.lesson.count({
-      where: { isPublished: true, world: { levelId } },
+      where: { isPublished: true, world: { levelId, isOptional: false } },
     });
+
     const completedLessons = await prisma.lessonProgress.count({
-      where: { userId: user.id, completed: true, lesson: { world: { levelId } } },
+      where: { userId: user.id, completed: true, lesson: { world: { levelId, isOptional: false } } },
     });
 
     if (totalLessons === 0 || completedLessons < totalLessons) {
