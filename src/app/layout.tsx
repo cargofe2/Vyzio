@@ -6,7 +6,16 @@ import ZaiFloatingCompanion from "@/components/ZaiFloatingCompanion";
 
 export const metadata: Metadata = {
   title: { default: "Bymyzai", template: "%s · Bymyzai" },
-  description: "La plataforma donde la nueva generación aprende Inteligencia Artificial.",
+  description: "Build the future. Master the AI era. 1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates.",
+  keywords: ["AI", "artificial intelligence", "learn AI", "inteligencia artificial", "aprender IA"],
+  openGraph: {
+    title: "Bymyzai – Build the future. Master the AI era.",
+    description: "1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
+    url: "https://www.bymyzai.com",
+    siteName: "Bymyzai",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
