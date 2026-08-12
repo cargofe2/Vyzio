@@ -91,6 +91,7 @@ model World {
   number      Int
   name        String
   name_en     String?
+  isOptional  Boolean @default(false)
   slug        String @unique
   description String
   emoji       String @default("🌍")
