@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { ZaiProvider } from "@/lib/ZaiContext";
 import ZaiFloatingCompanion from "@/components/ZaiFloatingCompanion";
+import FeedbackButton from "@/components/FeedbackButton";
 
 export const metadata: Metadata = {
   title: { default: "Bymyzai", template: "%s · Bymyzai" },
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ZaiProvider>
             {children}
             <ZaiFloatingCompanion />
+            <FeedbackButton />
           </ZaiProvider>
         </body>
       </html>
