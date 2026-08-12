@@ -503,6 +503,7 @@ model LevelCertificate {
   verificationCode  String   @unique @default(cuid())
   levelId           String
   levelName         String
+  levelNameEn       String?
   studentName       String
   issuedAt          DateTime @default(now())
   userId            String
