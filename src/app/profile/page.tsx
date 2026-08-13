@@ -90,7 +90,7 @@ function NavBar({ lang }: { lang: "es" | "en" }) {
     { href: "/profile", label: lang === "en" ? "Profile" : "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#0F1420", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -198,9 +198,7 @@ export default function ProfilePage() {
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* HEADER */}
-      <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
-        <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "10px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "12px", color: "#A78BFA" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg></Link>
-
+      <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "20px 16px 16px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", marginBottom: "16px" }}>
 
           {/* Avatar */}
@@ -262,12 +260,12 @@ export default function ProfilePage() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", overflow: "hidden" }}>
           {[
-            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "book" },
-            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "zap" },
-            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "flame" },
+            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "📖" },
+            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "⚡" },
+            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "🔥" },
           ].map(({ value, label, icon }, i) => (
             <div key={label} style={{ padding: "12px 8px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
-              <div style={{ marginBottom: "2px", display: "flex", justifyContent: "center", color: "#7B61FF" }}>{icon === "book" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> : icon === "zap" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 3L5.5 13H10l-1 8L18 11h-4.5l-.5-8Z"/></svg> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c0 6-6 8-6 13a6 6 0 0 0 12 0c0-5-6-7-6-13Z"/><path d="M12 2c0 4 3 5.5 3 9a3 3 0 0 1-6 0c0-3.5 3-5 3-9Z"/></svg>}</div>
+              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{icon}</div>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#fff" }}>{value}</div>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{label}</div>
             </div>
@@ -280,73 +278,35 @@ export default function ProfilePage() {
         {/* MAPA DE NIVELES */}
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("myPath")}</h2>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            {LEVELS.map((level, index) => {
-              const isCompleted = index < currentLevelIndex;
-              const isCurrent = index === currentLevelIndex;
-              const isLocked = index > currentLevelIndex;
-              const hasCertMsg = certMsg[level.id];
-
-              return (
-                <div key={level.id} style={{ position: "relative" }}>
-                  {/* Connector line */}
-                  {index < LEVELS.length - 1 && (
-                    <div style={{ position: "absolute", left: "23px", top: "52px", width: "2px", height: "12px", background: isCompleted ? level.color : "#2A3445", zIndex: 0 }} />
-                  )}
-
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: "12px",
-                    background: isCurrent ? `${level.color}10` : "rgba(30,37,51,0.6)",
-                    border: isCurrent ? `1px solid ${level.color}40` : "1px solid rgba(50,64,85,0.5)",
-                    borderRadius: "14px", padding: "12px", position: "relative", zIndex: 1
-                  }}>
-                    {/* Icon */}
-                    <div style={{
-                      width: "44px", height: "44px", borderRadius: "12px", flexShrink: 0,
-                      background: isLocked ? "#1E2533" : `${level.color}18`,
-                      border: `1.5px solid ${isLocked ? "#2A3445" : level.color + "50"}`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "20px", opacity: isLocked ? 0.4 : 1
-                    }}>
-                      {isLocked ? (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7E8798" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                      ) : (
-                        renderLevelIcon(level.id)
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: isLocked ? "#7E8798" : "#fff", margin: 0 }}>
-                          Nivel {level.number} — {level.name[lang]}
-                        </p>
-                        {isCurrent && <span style={{ fontSize: "9px", padding: "1px 6px", borderRadius: "6px", background: `${level.color}20`, color: level.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>{t("current")}</span>}
-                        {isCompleted && <span style={{ fontSize: "14px" }}>✅</span>}
-                      </div>
-                      {hasCertMsg && (
-                        <p style={{ fontSize: "10px", color: hasCertMsg.startsWith("✓") ? "#36D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif", margin: "2px 0 0" }}>{hasCertMsg}</p>
-                      )}
-                    </div>
-
-                    {/* Action */}
-                    {!isLocked && !hasCertMsg && (
-                      <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
-                        <Link href={`/worlds?levelId=${level.id}`} style={{ padding: "6px 10px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "8px", color: "#A78BFA", fontSize: "11px", fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
-                          →
-                        </Link>
-                        {(isCompleted || isCurrent) && (
-                          <button onClick={() => claimCertificate(level.id)} disabled={certLoading === level.id} style={{ padding: "6px 10px", background: `${level.color}15`, border: `1px solid ${level.color}40`, borderRadius: "8px", color: level.color, fontSize: "10px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
-                            {certLoading === level.id ? "..." : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>}
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+          <LevelMap />
+          {/* Claim certificado nivel actual */}
+          <div style={{ marginTop: "12px", padding: "12px 14px", background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", fontFamily: "'DM Sans',sans-serif", margin: 0 }}>
+                {lang === "en" ? "Claim your certificate" : "Reclama tu certificado"}
+              </p>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", margin: "2px 0 0" }}>
+                {lang === "en" ? "Complete the level to earn it" : "Completa el nivel para obtenerlo"}
+              </p>
+              {certMsg[currentLevelId] && (
+                <p style={{ fontSize: "10px", color: certMsg[currentLevelId].startsWith("✓") ? "#36D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif", margin: "4px 0 0" }}>
+                  {certMsg[currentLevelId]}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={() => claimCertificate(currentLevelId)}
+              disabled={certLoading === currentLevelId}
+              style={{ padding: "8px 14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif", flexShrink: 0, opacity: certLoading === currentLevelId ? 0.6 : 1 }}
+            >
+              {certLoading === currentLevelId ? "..." : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/>
+                  <path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/>
+                  <path d="M21.5 9v6"/>
+                </svg>
+              )}
+            </button>
           </div>
         </section>
 
@@ -365,7 +325,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", color: "#A78BFA" }}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg></div>
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>🏆</div>
               <p style={{ fontSize: "13px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
               <Link href="/worlds" style={{ display: "inline-block", marginTop: "12px", padding: "8px 16px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "10px", color: "#A78BFA", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
