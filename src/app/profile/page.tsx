@@ -281,34 +281,7 @@ export default function ProfilePage() {
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("myPath")}</h2>
           <LevelMap initialLevel={currentLevelIndex} />
-          {/* Claim certificado nivel actual */}
-          <div style={{ marginTop: "12px", padding: "12px 14px", background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-            <div>
-              <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", fontFamily: "'DM Sans',sans-serif", margin: 0 }}>
-                {lang === "en" ? "Claim your certificate" : "Reclama tu certificado"}
-              </p>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", margin: "2px 0 0" }}>
-                {lang === "en" ? "Complete the level to earn it" : "Completa el nivel para obtenerlo"}
-              </p>
-              {certMsg[currentLevelId] && (
-                <p style={{ fontSize: "10px", color: certMsg[currentLevelId].startsWith("✓") ? "#36D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif", margin: "4px 0 0" }}>
-                  {certMsg[currentLevelId]}
-                </p>
-              )}
-            </div>
-            <button
-              onClick={() => claimCertificate(currentLevelId)}
-              disabled={certLoading === currentLevelId}
-              style={{ padding: "8px 14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif", flexShrink: 0, opacity: certLoading === currentLevelId ? 0.6 : 1 }}
-            >
-              {certLoading === currentLevelId ? "..." : (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/>
-                  <path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/>
-                  <path d="M21.5 9v6"/>
-                </svg>
-              )}
-            </button>
+{LEVELS.slice(0, currentLevelIndex + 1).map((level, idx) => (<div key={level.id} style={{ marginTop: idx===0?"12px":"6px", padding: "10px 14px", background: level.color+"08", border: "1px solid "+level.color+"25", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}><div style={{ display:"flex", alignItems:"center", gap:"8px" }}><div style={{ width:"32px", height:"32px", borderRadius:"9px", background:level.color+"18", border:"1px solid "+level.color+"30", display:"flex", alignItems:"center", justifyContent:"center", color:level.color, flexShrink:0 }}>{renderLevelIcon(level.id)}</div><div><p style={{ fontSize:"12px", fontWeight:700, color:"#fff", margin:0, fontFamily:"DM Sans,sans-serif" }}>{lang==="en"?"Level":"Nivel"} {level.number}</p><p style={{ fontSize:"10px", color:level.color, margin:0, fontFamily:"DM Sans,sans-serif" }}>{level.name[lang]}</p></div></div><button onClick={()=>claimCertificate(level.id)} disabled={certLoading===level.id} style={{ padding:"6px 12px", background:level.color+"18", border:"1px solid "+level.color+"40", color:level.color, borderRadius:"8px", fontSize:"11px", fontWeight:700, cursor:"pointer", flexShrink:0, opacity:certLoading===level.id?0.6:1 }}>{certLoading===level.id?"...":<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>}{certMsg[level.id]&&<span style={{fontSize:"9px",marginLeft:"4px"}}>{certMsg[level.id].startsWith("OK")?":":"!"}</span>}</button></div>))}
           </div>
         </section>
 
