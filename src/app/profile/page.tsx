@@ -90,7 +90,7 @@ function NavBar({ lang }: { lang: "es" | "en" }) {
     { href: "/profile", label: lang === "en" ? "Profile" : "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#0F1420", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -195,7 +195,7 @@ export default function ProfilePage() {
   const currentLevelIndex = LEVELS.findIndex(l => l.id === currentLevelId);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "100px" }}>
 
       {/* HEADER */}
       <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
