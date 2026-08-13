@@ -6,7 +6,6 @@ import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/Av
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useUserLang } from "@/hooks/useUserLang";
 import LangToggle from "@/components/LangToggle";
-import LevelMap from "@/components/LevelMap";
 
 const T = {
   student:      { es: "Estudiante",                              en: "Student" },
@@ -91,7 +90,7 @@ function NavBar({ lang }: { lang: "es" | "en" }) {
     { href: "/profile", label: lang === "en" ? "Profile" : "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#0F1420", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -171,8 +170,7 @@ export default function ProfilePage() {
           const d = await gamRes.json();
           setGamification(d.gamification);
           setAchievements(d.achievements ?? []);
-          const LEVEL_ORDER_P = ["level-1","level-new-1","level-new-2","level-new-3","level-new-4","level-new-5","level-new-6","level-new-7","level-new-8"];
-          const lvl = d.recentLessons?.reduce((best: any, rl: any) => { const lvlId = rl?.lesson?.world?.level?.id; const bestIdx = LEVEL_ORDER_P.indexOf(best?.id ?? ""); const currIdx = LEVEL_ORDER_P.indexOf(lvlId ?? ""); return currIdx > bestIdx ? rl.lesson.world.level : best; }, null) ?? d.recentLessons?.[0]?.lesson?.world?.level;
+          const lvl = d.recentLessons?.[0]?.lesson?.world?.level;
           if (lvl) setCurrentLevelId(lvl.id);
         }
         if (userRes.ok) {
@@ -200,7 +198,9 @@ export default function ProfilePage() {
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* HEADER */}
-      <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "20px 16px 16px" }}>
+      <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
+        <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "10px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "12px", color: "#A78BFA" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg></Link>
+
         <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", marginBottom: "16px" }}>
 
           {/* Avatar */}
@@ -267,7 +267,7 @@ export default function ProfilePage() {
             { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "flame" },
           ].map(({ value, label, icon }, i) => (
             <div key={label} style={{ padding: "12px 8px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
-              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{icon}</div>
+              <div style={{ marginBottom: "2px", display: "flex", justifyContent: "center", color: "#7B61FF" }}>{icon === "book" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> : icon === "zap" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 3L5.5 13H10l-1 8L18 11h-4.5l-.5-8Z"/></svg> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c0 6-6 8-6 13a6 6 0 0 0 12 0c0-5-6-7-6-13Z"/><path d="M12 2c0 4 3 5.5 3 9a3 3 0 0 1-6 0c0-3.5 3-5 3-9Z"/></svg>}</div>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#fff" }}>{value}</div>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{label}</div>
             </div>
@@ -280,8 +280,73 @@ export default function ProfilePage() {
         {/* MAPA DE NIVELES */}
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("myPath")}</h2>
-          <LevelMap initialLevel={currentLevelIndex} />
-{LEVELS.slice(0, currentLevelIndex + 1).map((level, idx) => (<div key={level.id} style={{ marginTop: idx===0?"12px":"6px", padding: "10px 14px", background: level.color+"08", border: "1px solid "+level.color+"25", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}><div style={{ display:"flex", alignItems:"center", gap:"8px" }}><div style={{ width:"32px", height:"32px", borderRadius:"9px", background:level.color+"18", border:"1px solid "+level.color+"30", display:"flex", alignItems:"center", justifyContent:"center", color:level.color, flexShrink:0 }}>{renderLevelIcon(level.id)}</div><div><p style={{ fontSize:"12px", fontWeight:700, color:"#fff", margin:0, fontFamily:"DM Sans,sans-serif" }}>{lang==="en"?"Level":"Nivel"} {level.number}</p><p style={{ fontSize:"10px", color:level.color, margin:0, fontFamily:"DM Sans,sans-serif" }}>{level.name[lang]}</p></div></div><button onClick={()=>claimCertificate(level.id)} disabled={certLoading===level.id} style={{ padding:"6px 12px", background:level.color+"18", border:"1px solid "+level.color+"40", color:level.color, borderRadius:"8px", fontSize:"11px", fontWeight:700, cursor:"pointer", flexShrink:0, opacity:certLoading===level.id?0.6:1 }}>{certLoading===level.id?"...":<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>}{certMsg[level.id]&&<span style={{fontSize:"9px",marginLeft:"4px"}}>{certMsg[level.id].startsWith("OK")?":":"!"}</span>}</button></div>))}
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {LEVELS.map((level, index) => {
+              const isCompleted = index < currentLevelIndex;
+              const isCurrent = index === currentLevelIndex;
+              const isLocked = index > currentLevelIndex;
+              const hasCertMsg = certMsg[level.id];
+
+              return (
+                <div key={level.id} style={{ position: "relative" }}>
+                  {/* Connector line */}
+                  {index < LEVELS.length - 1 && (
+                    <div style={{ position: "absolute", left: "23px", top: "52px", width: "2px", height: "12px", background: isCompleted ? level.color : "#2A3445", zIndex: 0 }} />
+                  )}
+
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: "12px",
+                    background: isCurrent ? `${level.color}10` : "rgba(30,37,51,0.6)",
+                    border: isCurrent ? `1px solid ${level.color}40` : "1px solid rgba(50,64,85,0.5)",
+                    borderRadius: "14px", padding: "12px", position: "relative", zIndex: 1
+                  }}>
+                    {/* Icon */}
+                    <div style={{
+                      width: "44px", height: "44px", borderRadius: "12px", flexShrink: 0,
+                      background: isLocked ? "#1E2533" : `${level.color}18`,
+                      border: `1.5px solid ${isLocked ? "#2A3445" : level.color + "50"}`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "20px", opacity: isLocked ? 0.4 : 1
+                    }}>
+                      {isLocked ? (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7E8798" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      ) : (
+                        renderLevelIcon(level.id)
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "13px", color: isLocked ? "#7E8798" : "#fff", margin: 0 }}>
+                          Nivel {level.number} — {level.name[lang]}
+                        </p>
+                        {isCurrent && <span style={{ fontSize: "9px", padding: "1px 6px", borderRadius: "6px", background: `${level.color}20`, color: level.color, fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>{t("current")}</span>}
+                        {isCompleted && <span style={{ fontSize: "14px" }}>✅</span>}
+                      </div>
+                      {hasCertMsg && (
+                        <p style={{ fontSize: "10px", color: hasCertMsg.startsWith("✓") ? "#36D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif", margin: "2px 0 0" }}>{hasCertMsg}</p>
+                      )}
+                    </div>
+
+                    {/* Action */}
+                    {!isLocked && !hasCertMsg && (
+                      <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
+                        <Link href={`/worlds?levelId=${level.id}`} style={{ padding: "6px 10px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "8px", color: "#A78BFA", fontSize: "11px", fontWeight: 600, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
+                          →
+                        </Link>
+                        {(isCompleted || isCurrent) && (
+                          <button onClick={() => claimCertificate(level.id)} disabled={certLoading === level.id} style={{ padding: "6px 10px", background: `${level.color}15`, border: `1px solid ${level.color}40`, borderRadius: "8px", color: level.color, fontSize: "10px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                            {certLoading === level.id ? "..." : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>}
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
