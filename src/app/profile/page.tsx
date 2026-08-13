@@ -6,6 +6,7 @@ import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/Av
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useUserLang } from "@/hooks/useUserLang";
 import LangToggle from "@/components/LangToggle";
+import LevelMap from "@/components/LevelMap";
 
 const T = {
   student:      { es: "Estudiante",                              en: "Student" },
@@ -325,7 +326,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
-              <div style={{ fontSize: "32px", marginBottom: "8px" }}>🏆</div>
+              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", color: "#A78BFA" }}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg></div>
               <p style={{ fontSize: "13px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
               <Link href="/worlds" style={{ display: "inline-block", marginTop: "12px", padding: "8px 16px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "10px", color: "#A78BFA", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
