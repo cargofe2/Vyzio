@@ -1,6 +1,19 @@
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { z } from "zod";
+
+const PostSchema = z.object({
+  lessonId: z.string().min(1).max(100),
+  score: z.number().min(0).max(100).optional(),
+  timeSpentSec: z.number().min(0).max(86400).optional(),
+});
+
+const PutSchema = z.object({
+  questionId: z.string().min(1).max(100),
+  selectedIndex: z.number().int().min(0).max(10),
+  timeSpentSec: z.number().min(0).max(86400).optional(),
+});
 
 export const dynamic = "force-dynamic";
 
@@ -49,9 +62,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { lessonId, score, timeSpentSec = 0 } = body;
-
-    if (!lessonId) return NextResponse.json({ error: "lessonId required" }, { status: 400 });
+    const parsed = PostSchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten() }, { status: 400 });
+    const { lessonId, score, timeSpentSec = 0 } = parsed.data;
 
     const user = await prisma.user.findUnique({
       where: { clerkId },
@@ -156,7 +169,9 @@ export async function PUT(req: NextRequest) {
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { questionId, selectedIndex, timeSpentSec = 0 } = body;
+    const parsed = PutSchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten() }, { status: 400 });
+    const { questionId, selectedIndex, timeSpentSec = 0 } = parsed.data;
 
     const user = await prisma.user.findUnique({ where: { clerkId } });
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
