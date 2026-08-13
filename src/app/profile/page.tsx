@@ -198,7 +198,7 @@ export default function ProfilePage() {
     <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* HEADER */}
-      <div style={{ background: "#0F1420", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
+      <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
         <Link href="/dashboard" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "32px", height: "32px", borderRadius: "10px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "12px", color: "#A78BFA" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg></Link>
 
         <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", marginBottom: "16px" }}>
