@@ -90,7 +90,7 @@ function NavBar({ lang }: { lang: "es" | "en" }) {
     { href: "/profile", label: lang === "en" ? "Profile" : "Perfil", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L20.5 7V17L12 22L3.5 17V7L12 2Z" strokeWidth="1.8" strokeLinejoin="round"/><circle cx="12" cy="9.5" r="2.5" strokeWidth="1.5"/></svg> },
   ];
   return (
-    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "rgba(15,20,32,0.96)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
+    <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: "#0F1420", borderTop: "1px solid #2A3445", display: "flex", padding: "6px 0" }}>
       {items.map(({ href, label, icon }) => {
         const isActive = href === "/profile";
         return (
@@ -195,7 +195,7 @@ export default function ProfilePage() {
   const currentLevelIndex = LEVELS.findIndex(l => l.id === currentLevelId);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "100px" }}>
+    <div style={{ minHeight: "100vh", background: "#0F1420", paddingBottom: "88px" }}>
 
       {/* HEADER */}
       <div style={{ background: "rgba(15,20,32,0.95)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(123,97,255,0.1)", padding: "12px 16px 16px" }}>
@@ -262,12 +262,12 @@ export default function ProfilePage() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", overflow: "hidden" }}>
           {[
-            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "book" },
-            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "zap" },
-            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "flame" },
+            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "📖" },
+            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "⚡" },
+            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "🔥" },
           ].map(({ value, label, icon }, i) => (
             <div key={label} style={{ padding: "12px 8px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
-              <div style={{ marginBottom: "2px", display: "flex", justifyContent: "center", color: "#7B61FF" }}>{icon === "book" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> : icon === "zap" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 3L5.5 13H10l-1 8L18 11h-4.5l-.5-8Z"/></svg> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c0 6-6 8-6 13a6 6 0 0 0 12 0c0-5-6-7-6-13Z"/><path d="M12 2c0 4 3 5.5 3 9a3 3 0 0 1-6 0c0-3.5 3-5 3-9Z"/></svg>}</div>
+              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{icon}</div>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#fff" }}>{value}</div>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{label}</div>
             </div>
@@ -365,7 +365,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
-              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", color: "#A78BFA" }}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg></div>
+              <div style={{ fontSize: "32px", marginBottom: "8px" }}>🏆</div>
               <p style={{ fontSize: "13px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
               <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
               <Link href="/worlds" style={{ display: "inline-block", marginTop: "12px", padding: "8px 16px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "10px", color: "#A78BFA", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
@@ -422,7 +422,6 @@ export default function ProfilePage() {
         </div>
       )}
 
-      <div style={{ position: "fixed", bottom: "56px", left: 0, right: 0, height: "40px", background: "linear-gradient(to top, #0F1420, transparent)", pointerEvents: "none", zIndex: 89 }} />
       <NavBar lang={lang} />
     </div>
   );
