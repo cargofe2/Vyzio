@@ -6,7 +6,6 @@ import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/Av
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useUserLang } from "@/hooks/useUserLang";
 import LangToggle from "@/components/LangToggle";
-import LevelMap from "@/components/LevelMap";
 
 const T = {
   student:      { es: "Estudiante",                              en: "Student" },
