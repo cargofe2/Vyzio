@@ -167,7 +167,13 @@ export default function DashboardPage() {
           const { gamification: g, missions: m, recentLessons } = await gamRes.json();
           setGamification(g);
           setMissions(m ?? []);
-          const lvl = recentLessons?.[0]?.lesson?.world?.level;
+          const LEVEL_ORDER_LOCAL = ["level-1","level-new-1","level-new-2","level-new-3","level-new-4","level-new-5","level-new-6","level-new-7","level-new-8"];
+          const lvl = recentLessons?.reduce((best: any, rl: any) => {
+            const lvlId = rl?.lesson?.world?.level?.id;
+            const bestIdx = LEVEL_ORDER_LOCAL.indexOf(best?.id ?? "");
+            const currIdx = LEVEL_ORDER_LOCAL.indexOf(lvlId ?? "");
+            return currIdx > bestIdx ? rl.lesson.world.level : best;
+          }, null) ?? recentLessons?.[0]?.lesson?.world?.level;
           const resolvedLevel = lvl ? { id: lvl.id, name: lvl.name, name_en: lvl.name_en } : { id: "level-1", name: "Origins", name_en: "Origins" };
           setCurrentLevel(resolvedLevel);
 
