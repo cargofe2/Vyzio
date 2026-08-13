@@ -171,7 +171,8 @@ export default function ProfilePage() {
           const d = await gamRes.json();
           setGamification(d.gamification);
           setAchievements(d.achievements ?? []);
-          const lvl = d.recentLessons?.[0]?.lesson?.world?.level;
+          const LEVEL_ORDER_P = ["level-1","level-new-1","level-new-2","level-new-3","level-new-4","level-new-5","level-new-6","level-new-7","level-new-8"];
+          const lvl = d.recentLessons?.reduce((best: any, rl: any) => { const lvlId = rl?.lesson?.world?.level?.id; const bestIdx = LEVEL_ORDER_P.indexOf(best?.id ?? ""); const currIdx = LEVEL_ORDER_P.indexOf(lvlId ?? ""); return currIdx > bestIdx ? rl.lesson.world.level : best; }, null) ?? d.recentLessons?.[0]?.lesson?.world?.level;
           if (lvl) setCurrentLevelId(lvl.id);
         }
         if (userRes.ok) {
