@@ -1,5 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+const ratelimit = new Ratelimit({ redis: Redis.fromEnv(), limiter: Ratelimit.slidingWindow(5, "1 m"), prefix: "cert" });
 const CertSchema = z.object({ levelId: z.string().min(1).max(50) });
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -21,6 +24,9 @@ export async function POST(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const { success: rateLimitOk } = await ratelimit.limit(clerkId);
+    if (!rateLimitOk) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
     const body = await req.json();
     const parsed = CertSchema.safeParse(body);

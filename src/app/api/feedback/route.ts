@@ -1,5 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+const ratelimit = new Ratelimit({ redis: Redis.fromEnv(), limiter: Ratelimit.slidingWindow(10, "1 m"), prefix: "feedback" });
 const FeedbackSchema = z.object({
   category: z.enum(["bug", "suggestion", "content", "other"]),
   rating: z.number().int().min(1).max(5).optional(),
@@ -14,6 +17,8 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const { userId: clerkId } = await auth();
   if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { success: rateLimitOk } = await ratelimit.limit(clerkId);
+  if (!rateLimitOk) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
   const body = await req.json();
   const parsed = FeedbackSchema.safeParse(body);
