@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import LangToggle from "@/components/LangToggle";
 import Link from "next/link";
 import { useUserLang } from "@/hooks/useUserLang";
@@ -130,6 +131,7 @@ function NavBar({ active, lang }: { active: string; lang: "es" | "en" }) {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
+  const router = useRouter();
   const { lang } = useUserLang();
   const t = (key: keyof typeof T) => T[key][lang];
 
@@ -155,6 +157,7 @@ export default function DashboardPage() {
         if (userRes.ok) {
           const { user: u } = await userRes.json();
           if (u?.displayName) setDbName(u.displayName);
+          if (u?.age === null || u?.age === undefined) { router.replace("/onboarding"); return; }
           setPlan(u?.subscription?.plan ?? "STARTER");
           const lvlRes = await fetch('/api/lessons');
           if (lvlRes.ok) { const { levels: lvls } = await lvlRes.json(); if (lvls) setLevels(lvls); }

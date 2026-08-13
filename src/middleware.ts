@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher([
   "/",
   "/pricing",
+  "/onboarding",
+  "/excluido",
   "/verify/(.*)",
   "/api/webhooks/(.*)",
   "/sign-in(.*)",
@@ -20,6 +22,7 @@ export default clerkMiddleware(async (auth, req) => {
   if (userId && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
+
 });
 
 export const config = {
