@@ -61,7 +61,7 @@ export async function PATCH(req: Request) {
   try {
     const { userId: clerkId } = await auth();
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+    const body = await req.json();
     const parsed = PatchUserSchema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten() }, { status: 400 });
     const { displayName, bio, avatarEmoji, language, age, goal } = parsed.data;
