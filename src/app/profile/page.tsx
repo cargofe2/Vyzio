@@ -280,7 +280,64 @@ export default function ProfilePage() {
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("myPath")}</h2>
           <LevelMap initialLevel={currentLevelIndex} />
-          {currentLevelIndex > 0 && (<div style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>{LEVELS.slice(0, currentLevelIndex + 1).map((level) => (<div key={level.id} style={{ padding: "12px 14px", background: level.color + "08", border: "1px solid " + level.color + "25", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}><div><p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", margin: 0 }}>{lang === "en" ? "Level" : "Nivel"} {level.number} {level.name[lang]}</p>{certMsg[level.id] && (<p style={{ fontSize: "10px", color: "#FB923C", margin: "4px 0 0" }}>{certMsg[level.id]}</p>)}</div><button onClick={() => claimCertificate(level.id)} disabled={certLoading === level.id} style={{ padding: "8px 12px", background: level.color + "18", border: "1px solid " + level.color + "40", color: level.color, borderRadius: "10px", fontSize: "11px", fontWeight: 700, cursor: "pointer", flexShrink: 0, opacity: certLoading === level.id ? 0.6 : 1 }}>{certLoading === level.id ? "..." : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>}</button></div>))}</div>)}
+          {/* Claim certificado nivel actual */}
+          <div style={{ marginTop: "12px", padding: "12px 14px", background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+            <div>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", fontFamily: "'DM Sans',sans-serif", margin: 0 }}>
+                {lang === "en" ? "Claim your certificate" : "Reclama tu certificado"}
+              </p>
+              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", margin: "2px 0 0" }}>
+                {lang === "en" ? "Complete the level to earn it" : "Completa el nivel para obtenerlo"}
+              </p>
+              {certMsg[currentLevelId] && (
+                <p style={{ fontSize: "10px", color: certMsg[currentLevelId].startsWith("✓") ? "#36D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif", margin: "4px 0 0" }}>
+                  {certMsg[currentLevelId]}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={() => claimCertificate(currentLevelId)}
+              disabled={certLoading === currentLevelId}
+              style={{ padding: "8px 14px", background: "linear-gradient(135deg,#7B61FF,#8B5CF6)", color: "#fff", border: "none", borderRadius: "10px", fontSize: "12px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif", flexShrink: 0, opacity: certLoading === currentLevelId ? 0.6 : 1 }}
+            >
+              {certLoading === currentLevelId ? "..." : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/>
+                  <path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/>
+                  <path d="M21.5 9v6"/>
+                </svg>
+              )}
+            </button>
+          </div>
+        </section>
+
+        {/* LOGROS */}
+        <section>
+          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("achievements")}</h2>
+          {achievements.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              {achievements.map((a, i) => (
+                <div key={i} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px" }}>
+                  <div style={{ fontSize: "24px", marginBottom: "6px" }}>{a.achievement.emoji}</div>
+                  <p style={{ fontWeight: 700, fontSize: "11px", color: "#fff", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.name}</p>
+                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.description}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
+              <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px", color: "#A78BFA" }}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4.5h10v4.5a5 5 0 0 1-10 0V4.5Z"/><path d="M7 6H4.8A1.3 1.3 0 0 0 3.5 7.3v.4a3.2 3.2 0 0 0 3.2 3.2H7M17 6h2.2a1.3 1.3 0 0 1 1.3 1.3v.4a3.2 3.2 0 0 1-3.2 3.2H17"/><path d="M12 13.5v3M9.2 19.5h5.6c-.1-1.5-.5-2.3-1-2.7h-3.6c-.5.4-.9 1.2-1 2.7Z"/></svg></div>
+              <p style={{ fontSize: "13px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
+              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
+              <Link href="/worlds" style={{ display: "inline-block", marginTop: "12px", padding: "8px 16px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "10px", color: "#A78BFA", fontSize: "12px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>
+                {lang === "en" ? "Start learning →" : "Empezar →"}
+              </Link>
+            </div>
+          )}
+        </section>
+
+        {/* LEGAL */}
+        <div style={{ display: "flex", gap: "8px", padding: "0 4px" }}>
           <Link href="/terms" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("terms")}</Link>
           <span style={{ color: "#324055" }}>·</span>
           <Link href="/privacy" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("privacy")}</Link>
