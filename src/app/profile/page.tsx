@@ -422,6 +422,7 @@ export default function ProfilePage() {
         </div>
       )}
 
+      <div style={{ position: "fixed", bottom: "56px", left: 0, right: 0, height: "40px", background: "linear-gradient(to top, #0F1420, transparent)", pointerEvents: "none", zIndex: 89 }} />
       <NavBar lang={lang} />
     </div>
   );
