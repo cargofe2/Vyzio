@@ -6,7 +6,6 @@ import AvatarIcon, { FREE_AVATAR_IDS, PREMIUM_AVATAR_IDS } from "@/components/Av
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sounds";
 import { useUserLang } from "@/hooks/useUserLang";
 import LangToggle from "@/components/LangToggle";
-import LevelMap from "@/components/LevelMap";
 
 const T = {
   student:      { es: "Estudiante",                              en: "Student" },
@@ -261,9 +260,9 @@ export default function ProfilePage() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", overflow: "hidden" }}>
           {[
-            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "📖" },
-            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "⚡" },
-            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "🔥" },
+            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "book" },
+            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "zap" },
+            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "flame" },
           ].map(({ value, label, icon }, i) => (
             <div key={label} style={{ padding: "12px 8px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
               <div style={{ fontSize: "16px", marginBottom: "2px" }}>{icon}</div>
