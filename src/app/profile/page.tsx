@@ -262,12 +262,12 @@ export default function ProfilePage() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "rgba(123,97,255,0.06)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", overflow: "hidden" }}>
           {[
-            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "📖" },
-            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "⚡" },
-            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "🔥" },
+            { value: String(gamification?.lessonsCompleted ?? 0), label: t("lessons"), icon: "book" },
+            { value: xp.toLocaleString(), label: t("xpTotal"), icon: "zap" },
+            { value: `${gamification?.streakDays ?? 0}`, label: t("streak"), icon: "flame" },
           ].map(({ value, label, icon }, i) => (
             <div key={label} style={{ padding: "12px 8px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
-              <div style={{ fontSize: "16px", marginBottom: "2px" }}>{icon}</div>
+              <div style={{ marginBottom: "2px", display: "flex", justifyContent: "center", color: "#7B61FF" }}>{icon === "book" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> : icon === "zap" ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 3L5.5 13H10l-1 8L18 11h-4.5l-.5-8Z"/></svg> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c0 6-6 8-6 13a6 6 0 0 0 12 0c0-5-6-7-6-13Z"/><path d="M12 2c0 4 3 5.5 3 9a3 3 0 0 1-6 0c0-3.5 3-5 3-9Z"/></svg>}</div>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "16px", color: "#fff" }}>{value}</div>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{label}</div>
             </div>
