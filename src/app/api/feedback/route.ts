@@ -1,4 +1,11 @@
 import { NextResponse, NextRequest } from "next/server";
+import { z } from "zod";
+const FeedbackSchema = z.object({
+  category: z.enum(["bug", "suggestion", "content", "other"]),
+  rating: z.number().int().min(1).max(5).optional(),
+  message: z.string().min(1).max(1000),
+  page: z.string().max(200).optional(),
+});
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
@@ -9,7 +16,9 @@ export async function POST(req: NextRequest) {
   if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const { category, rating, message, page } = body;
+  const parsed = FeedbackSchema.safeParse(body);
+  if (!parsed.success) return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten() }, { status: 400 });
+  const { category, rating, message, page } = parsed.data;
   if (!message || !message.trim()) {
     return NextResponse.json({ error: "El mensaje no puede estar vacío" }, { status: 400 });
   }

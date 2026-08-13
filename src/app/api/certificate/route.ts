@@ -1,4 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
+import { z } from "zod";
+const CertSchema = z.object({ levelId: z.string().min(1).max(50) });
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
@@ -20,7 +22,10 @@ export async function POST(req: NextRequest) {
     const { userId: clerkId } = await auth();
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { levelId } = await req.json();
+    const body = await req.json();
+    const parsed = CertSchema.safeParse(body);
+    if (!parsed.success) return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+    const { levelId } = parsed.data;
     if (!levelId || !LEVEL_NAMES[levelId]) return NextResponse.json({ error: "levelId invalid" }, { status: 400 });
 
     const user = await prisma.user.findUnique({ where: { clerkId } });
