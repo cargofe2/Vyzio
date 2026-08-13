@@ -279,7 +279,7 @@ export default function ProfilePage() {
         {/* MAPA DE NIVELES */}
         <section>
           <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "12px", fontFamily: "'DM Sans',sans-serif" }}>{t("myPath")}</h2>
-          <LevelMap />
+          <LevelMap initialLevel={currentLevelIndex} />
           {/* Claim certificado nivel actual */}
           <div style={{ marginTop: "12px", padding: "12px 14px", background: "rgba(123,97,255,0.07)", border: "1px solid rgba(123,97,255,0.15)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
             <div>

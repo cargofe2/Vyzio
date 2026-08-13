@@ -41,8 +41,8 @@ const LEVELS = [
     svg:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5 2.5 9Z"/><path d="M6.5 11v5c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-5"/><path d="M21.5 9v6"/></svg>`},
 ];
 
-export default function LevelMap() {
-  const [active, setActive] = useState(0);
+export default function LevelMap({ initialLevel = 0 }: { initialLevel?: number }) {
+  const [active, setActive] = useState(initialLevel);
   const [visible, setVisible] = useState(true);
   const sel = LEVELS[active];
   const { lang } = useUserLang();
