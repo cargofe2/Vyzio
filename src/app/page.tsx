@@ -53,7 +53,7 @@ const T = {
     en: "1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
   },
   statsLabels: { es: ["Lecciones", "Mundos", "Niveles"], en: ["Lessons", "Worlds", "Levels"] },
-  ctaPrimary: { es: "Empezar gratis", en: "Get started" },
+  ctaPrimary: { es: "Empezar gratis →", en: "Get started free →" },
   ctaSecondary: { es: "Ya tengo cuenta", en: "I already have an account" },
   badgeGamif: { es: "Gamificación", en: "Gamification" },
   badgeTutor: { es: "Tutor IA", en: "AI Tutor" },
@@ -151,11 +151,11 @@ export default async function HomePage() {
           <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900, fontSize: "20px", letterSpacing: "3px" }}>Bymyzai</span>
         </div>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <Link href="/sign-in" style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", textDecoration: "none", padding: "8px 16px", whiteSpace: "nowrap" as const }}>
+          <Link href="/sign-in" style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", textDecoration: "none", padding: "8px 16px" }}>
             {t("navSignIn")}
           </Link>
           <Link href="/sign-up" style={{ fontSize: "13px", fontWeight: 700, color: "#fff", textDecoration: "none", padding: "10px 20px", borderRadius: "12px", background: "rgba(123,97,255,0.9)", border: "1px solid rgba(123,97,255,0.4)" }}>
-          <Link href="/sign-up" style={{ fontSize: "13px", fontWeight: 700, color: "#fff", textDecoration: "none", padding: "10px 16px", borderRadius: "12px", background: "rgba(123,97,255,0.9)", border: "1px solid rgba(123,97,255,0.4)", whiteSpace: "nowrap" as const }}>
+            {t("ctaPrimary")}
           </Link>
         </div>
       </nav>
