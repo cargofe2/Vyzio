@@ -145,12 +145,12 @@ export default async function HomePage() {
       `}</style>
 
       {/* NAV */}
-      <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexWrap: "wrap" as const, gap: "8px" }}>
+      <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexWrap: "wrap" as const, gap: "4px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <img src="/logo.png" alt="Bymyzai" width={36} height={36} style={{ borderRadius: "50%" }} />
           <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 900, fontSize: "20px", letterSpacing: "3px" }}>Bymyzai</span>
         </div>
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", justifyContent: "flex-end", flex: 1 }}>
           <Link href="/sign-in" style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", textDecoration: "none", padding: "8px 16px" }}>
             {t("navSignIn")}
           </Link>
