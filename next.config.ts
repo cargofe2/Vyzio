@@ -1,7 +1,7 @@
 // next.config.ts
 import type { NextConfig } from "next";
 
-const ALLOWED_ORIGIN = process.env.NEXT_PUBLIC_APP_URL || "https://bymyzai.com";
+const ALLOWED_ORIGIN = process.env.NEXT_PUBLIC_APP_URL || "https://www.bymyzai.com";
 
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
