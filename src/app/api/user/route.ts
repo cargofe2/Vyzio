@@ -15,26 +15,8 @@ export async function GET() {
       where: { clerkId },
       include: { gamification: true, subscription: true },
     });
-
     if (!user) {
-      const username = `user_${clerkId.slice(-8)}`;
-      user = await prisma.user.create({
-        data: {
-          clerkId,
-          email: `${clerkId}@bymyzai.app`,
-          username,
-          displayName: "Estudiante",
-          gamification: {
-            create: {
-              xpTotal: 0, xpWeekly: 0, gems: 0, vyCoins: 0,
-              energy: 100, rank: "NOVICE", rankLevel: 1,
-              streakDays: 0, streakMax: 0,
-            },
-          },
-          subscription: { create: { plan: "STARTER", status: "ACTIVE" } },
-        },
-        include: { gamification: true, subscription: true },
-      });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     if (user.isBanned) {
