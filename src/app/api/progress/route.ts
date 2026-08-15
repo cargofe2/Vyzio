@@ -118,6 +118,7 @@ export async function POST(req: NextRequest) {
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
 
+      const isNewDay = !lastStudyDay || lastStudyDay.getTime() !== today.getTime();
       let newStreak = user.gamification.streakDays;
       if (!lastStudyDay || lastStudyDay.getTime() < yesterday.getTime()) {
         newStreak = 1;
@@ -125,10 +126,21 @@ export async function POST(req: NextRequest) {
         newStreak += 1;
       }
 
+      let streakBonus = 0;
+      if (isNewDay) {
+        if (newStreak === 3) streakBonus = 50;
+        else if (newStreak === 7) streakBonus = 150;
+        else if (newStreak === 14) streakBonus = 300;
+        else if (newStreak === 30) streakBonus = 750;
+        else if (newStreak > 30 && newStreak % 30 === 0) streakBonus = 1000;
+      }
+      xpAwarded += streakBonus;
+      const newXPWithBonus = user.gamification.xpTotal + xpAwarded;
+
       await prisma.gamification.update({
         where: { userId: user.id },
         data: {
-          xpTotal: newXP,
+          xpTotal: newXPWithBonus,
           xpWeekly: { increment: xpAwarded },
           vyCoins: { increment: Math.round(xpAwarded / 10) },
           rank: newRank as any,
@@ -194,8 +206,7 @@ export async function PUT(req: NextRequest) {
     if (isCorrect && !alreadyAnsweredCorrectly) {
       const gamification = await prisma.gamification.findUnique({ where: { userId: user.id } });
       if (gamification) {
-        xpAwarded = isPerfect ? 100 : 60;
-        await prisma.gamification.update({
+      await prisma.gamification.update({
           where: { userId: user.id },
           data: {
             xpTotal: { increment: xpAwarded },
