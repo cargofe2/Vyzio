@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
-  description: "La academia para la era de la IA. 1,284 lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
+  description: "La academia para la era de la IA. 1,301 lecciones, 85 mundos, tutor IA personal ZAI y certificados verificables. Empieza gratis.",
   openGraph: {
     title: "Bymyzai – Construye el futuro. Domina la era de la IA.",
-    description: "La academia para la era de la IA. 1,284 lecciones, 84 mundos, tutor IA personal ZAI y certificados verificables.",
+    description: "La academia para la era de la IA. 1,301 lecciones, 85 mundos, tutor IA personal ZAI y certificados verificables.",
     url: "https://www.bymyzai.com",
     siteName: "Bymyzai",
     locale: "es_ES",
@@ -49,8 +49,8 @@ const T = {
   h1a: { es: "Construye el futuro.", en: "Build the future." },
   h1b: { es: "Domina la era de la IA.", en: "Master the AI era." },
   sub: {
-    es: "1,284 lecciones · 84 mundos · Tutor IA personal · Certificados verificables. La plataforma donde desarrollas capacidad real con IA.",
-    en: "1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
+    es: "1,301 lecciones · 85 mundos · Tutor IA personal · Certificados verificables. La plataforma donde desarrollas capacidad real con IA.",
+    en: "1,301 lessons · 85 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
   },
   statsLabels: { es: ["Lecciones", "Mundos", "Niveles"], en: ["Lessons", "Worlds", "Levels"] },
   ctaPrimary: { es: "Empezar gratis →", en: "Get started free →" },
@@ -58,7 +58,7 @@ const T = {
   badgeGamif: { es: "Gamificación", en: "Gamification" },
   badgeTutor: { es: "Tutor IA", en: "AI Tutor" },
   badgeCert: { es: "Certificados", en: "Certificates" },
-  worldsEyebrow: { es: "9 niveles · 84 mundos de aprendizaje", en: "9 levels · 84 learning worlds" },
+  worldsEyebrow: { es: "9 niveles · 85 mundos de aprendizaje", en: "9 levels · 85 learning worlds" },
   worldsH2: { es: "Un camino completo, desde cero.", en: "A complete path, from zero." },
   levelsEyebrow: { es: "Progresión", en: "Progression" },
   levelsH2: { es: "De Origins a Residency", en: "From Origins to Residency" },
@@ -68,7 +68,7 @@ const T = {
       { title: "ZAI, tu tutor IA", desc: "Un mentor personal que recuerda tu progreso, adapta las explicaciones y te guía en cada paso." },
       { title: "Gamificación real", desc: "XP, VY Coins, avatares, Boss Battles. Aprender se siente como jugar." },
       { title: "Certificados verificables", desc: "Cada nivel completado genera un certificado público con código único verificable." },
-      { title: "84 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
+      { title: "85 mundos de contenido", desc: "Desde fundamentos hasta investigación. Un recorrido completo y progresivo." },
       { title: "Aprende creando", desc: "Proyectos reales, Boss Battles, portfolio de evidencia. No solo teoría." },
       { title: "Empieza gratis", desc: "Origins y Explorer accesibles sin tarjeta de crédito. Crece a tu ritmo." },
     ],
@@ -76,7 +76,7 @@ const T = {
       { title: "ZAI, your AI tutor", desc: "A personal mentor that remembers your progress, adapts explanations, and guides you at every step." },
       { title: "Real gamification", desc: "XP, VY Coins, avatars, Boss Battles. Learning feels like playing." },
       { title: "Verifiable certificates", desc: "Every completed level generates a public certificate with a unique verifiable code." },
-      { title: "84 worlds of content", desc: "From fundamentals to research. A complete and progressive journey." },
+      { title: "85 worlds of content", desc: "From fundamentals to research. A complete and progressive journey." },
       { title: "Learn by building", desc: "Real projects, Boss Battles, evidence portfolio. Not just theory." },
       { title: "Start for free", desc: "Origins and Explorer accessible without a credit card. Grow at your own pace." },
     ],
@@ -183,7 +183,7 @@ export default async function HomePage() {
 
           {/* Stats */}
           <div className="stats-row" style={{ display: "flex", gap: "32px", marginBottom: "36px", justifyContent: "center" }}>
-            {(["1,284", "84", "9"] as const).map((n, i) => (
+            {(["1,301", "85", "9"] as const).map((n, i) => (
               <div key={i} style={{ textAlign: "center" }}>
                 <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "26px", background: "linear-gradient(135deg,#C7D2FE,#818CF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{n}</div>
                 <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginTop: "2px" }}>

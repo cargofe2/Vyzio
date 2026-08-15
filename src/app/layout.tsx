@@ -7,11 +7,11 @@ import FeedbackButton from "@/components/FeedbackButton";
 
 export const metadata: Metadata = {
   title: { default: "Bymyzai", template: "%s · Bymyzai" },
-  description: "Build the future. Master the AI era. 1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates.",
+  description: "Build the future. Master the AI era. 1,301 lessons · 85 worlds · Personal AI tutor · Verifiable certificates.",
   keywords: ["AI", "artificial intelligence", "learn AI", "inteligencia artificial", "aprender IA"],
   openGraph: {
     title: "Bymyzai – Build the future. Master the AI era.",
-    description: "1,284 lessons · 84 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
+    description: "1,301 lessons · 85 worlds · Personal AI tutor · Verifiable certificates. The platform where you build real capability with AI.",
     url: "https://www.bymyzai.com",
     siteName: "Bymyzai",
     locale: "en_US",
