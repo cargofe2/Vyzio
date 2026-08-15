@@ -18,16 +18,6 @@ const PutSchema = z.object({
 export const dynamic = "force-dynamic";
 
 // Rate limiting: 60 req/min per user
-const rateMap = new Map<string, { count: number; resetAt: number }>();
-function checkRateLimit(clerkId: string): boolean {
-  const now = Date.now();
-  const entry = rateMap.get(clerkId);
-  if (!entry || now > entry.resetAt) {
-    rateMap.set(clerkId, { count: 1, resetAt: now + 60000 });
-    return true;
-  }
-  if (entry.count >= 60) return false;
-  entry.count++;
   return true;
 }
 
@@ -56,10 +46,6 @@ export async function POST(req: NextRequest) {
   try {
     const { userId: clerkId } = await auth();
     if (!clerkId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    if (!checkRateLimit(clerkId)) {
-      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
-    }
 
     const body = await req.json();
     const parsed = PostSchema.safeParse(body);
