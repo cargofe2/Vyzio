@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       isUnlimited: false,
     });
   } catch (error) {
-    console.error("[api/vy] error:", error);
+    console.error("[api/vy] error:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
     return NextResponse.json({ error: "Error al conectar con ZAI." }, { status: 500 });
   }
 }
