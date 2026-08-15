@@ -49,6 +49,27 @@ export async function POST(req: NextRequest) {
         console.log(`✅ Created user: ${email}`);
       }
     }
+    if (event.type === "user.updated") {
+      const data = event.data;
+      const clerkId = data.id as string;
+      const emails = data.email_addresses as Array<{ email_address: string }>;
+      const email = emails?.[0]?.email_address;
+      const firstName = (data.first_name as string) ?? "";
+      const lastName = (data.last_name as string) ?? "";
+      const avatarUrl = data.image_url as string | undefined;
+      await prisma.user.updateMany({
+        where: { clerkId },
+        data: {
+          ...(email ? { email } : {}),
+          displayName: `${firstName} ${lastName}`.trim() || undefined,
+          ...(avatarUrl ? { avatarUrl } : {}),
+        },
+      });
+    }
+    if (event.type === "user.deleted") {
+      const clerkId = event.data.id as string;
+      await prisma.user.deleteMany({ where: { clerkId } });
+    }
 
     return NextResponse.json({ received: true });
   } catch (error) {
