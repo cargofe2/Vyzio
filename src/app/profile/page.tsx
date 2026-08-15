@@ -355,7 +355,8 @@ export default function ProfilePage() {
             <button onClick={() => setAvatarPickerOpen(false)} style={{ padding: "10px", background: "#324055", color: "#fff", border: "none", borderRadius: "10px", fontSize: "13px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>{t("close")}</button>
           </div>
         </div>
-      </div>
+      )}
+
       <NavBar lang={lang} />
     </div>
   );
