@@ -2,14 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import Anthropic from "@anthropic-ai/sdk";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
 
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(20, "1 m"),
-  prefix: "vy",
-});
 
 export const dynamic = "force-dynamic";
 
@@ -62,8 +55,6 @@ export async function POST(req: NextRequest) {
     const { message } = await req.json();
     if (!message?.trim()) return NextResponse.json({ error: "Message required" }, { status: 400 });
 
-    const { success } = await ratelimit.limit(clerkId);
-    if (!success) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
     // Get user and check limits
     const user = await prisma.user.findUnique({
