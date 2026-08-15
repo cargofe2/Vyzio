@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
       message: assistantMessage,
       messagesUsedToday: todayCount + 1,
       messagesLimit: limit,
-      isUnlimited: plan !== "STARTER",
+      isUnlimited: false,
     });
   } catch (error) {
     console.error("[api/vy] error:", error);
@@ -161,7 +161,7 @@ export async function GET() {
       messages,
       messagesUsedToday: todayCount,
       messagesLimit: VY_LIMITS[plan] ?? 10,
-      isUnlimited: plan !== "STARTER",
+      isUnlimited: false,
     });
   } catch (error) {
     console.error("[api/vy GET] error:", error);
