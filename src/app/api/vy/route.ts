@@ -51,7 +51,7 @@ SCOPE: You only talk about AI, technology and learning. If asked about anything 
 LANGUAGE: Respond in the same language the user writes in. If they write in Spanish, respond in Spanish. If they write in English, respond in English.`;
 
 const VY_LIMITS: Record<string, number> = {
-  STARTER: 8, PRO: 30, PREMIUM: 8, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
+  STARTER: 8, PRO: 30, PREMIUM: 20, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
 };
 
 export async function POST(req: NextRequest) {
