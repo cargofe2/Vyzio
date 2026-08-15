@@ -180,17 +180,18 @@ export async function PUT(req: NextRequest) {
     if (!question) return NextResponse.json({ error: "Question not found" }, { status: 404 });
 
     const isCorrect = selectedIndex === question.correctIndex;
-    const previousAttempt = await prisma.quizAttempt.findFirst({
-      where: { userId: user.id, questionId },
+    const previousCorrectAttempt = await prisma.quizAttempt.findFirst({
+      where: { userId: user.id, questionId, isCorrect: true },
     });
-    const isPerfect = isCorrect && !previousAttempt;
+    const isPerfect = isCorrect && !previousCorrectAttempt;
+    const alreadyAnsweredCorrectly = !!previousCorrectAttempt;
 
     await prisma.quizAttempt.create({
       data: { userId: user.id, questionId, selectedIndex, isCorrect, isPerfect, timeSpentSec },
     });
 
     let xpAwarded = 0;
-    if (isCorrect) {
+    if (isCorrect && !alreadyAnsweredCorrectly) {
       const gamification = await prisma.gamification.findUnique({ where: { userId: user.id } });
       if (gamification) {
         xpAwarded = isPerfect ? 100 : 60;
