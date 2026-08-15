@@ -355,13 +355,6 @@ export default function ProfilePage() {
             <button onClick={() => setAvatarPickerOpen(false)} style={{ padding: "10px", background: "#324055", color: "#fff", border: "none", borderRadius: "10px", fontSize: "13px", cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>{t("close")}</button>
           </div>
         </div>
-      )}
-
-      <div style={{ padding: "0 16px 16px", marginBottom: "80px" }}>
-        <a href="https://accounts.bymyzai.com" target="_blank" rel="noopener noreferrer" style={{ display: "block", padding: "12px 16px", background: "#161C27", border: "1px solid #324055", borderRadius: "12px", textDecoration: "none" }}>
-          <p style={{ fontSize: "13px", fontWeight: 600, color: "#B3BDD1", fontFamily: "var(--font-dm-sans), sans-serif" }}>{lang === "en" ? "⚙️ Manage account" : "⚙️ Gestionar cuenta"}</p>
-          <p style={{ fontSize: "11px", color: "#7E8798", marginTop: "2px", fontFamily: "var(--font-dm-sans), sans-serif" }}>{lang === "en" ? "Change email, password or delete account" : "Cambiar email, contraseña o eliminar cuenta"}</p>
-        </a>
       </div>
       <NavBar lang={lang} />
     </div>
