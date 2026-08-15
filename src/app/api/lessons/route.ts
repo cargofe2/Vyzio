@@ -50,13 +50,16 @@ export async function GET(req: NextRequest) {
 
     // Get lessons for a world
     if (worldId) {
-      const world = await prisma.world.findUnique({ where: { id: worldId } });
+      const world = await prisma.world.findUnique({ where: { id: worldId }, include: { level: true } });
+      const user2 = await prisma.user.findUnique({ where: { clerkId }, include: { subscription: true } });
+      const plan = user2?.subscription?.plan ?? "STARTER";
+      const levelIsFree = (world as any)?.level?.isFree ?? true;
       const lessons = await prisma.lesson.findMany({
-        where: { worldId, isPublished: true },
+        where: { worldId, isPublished: true, ...(!levelIsFree && plan === "STARTER" ? { isFree: true } : {}) },
         orderBy: { order: "asc" },
         include: {
           quizQuestions: {
-            select: { id: true, question: true, options: true, correctIndex: true, explanation: true, order: true },
+            select: { id: true, question: true, options: true, order: true },
             orderBy: { order: "asc" },
           },
         },
