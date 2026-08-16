@@ -440,7 +440,7 @@ function LevelMapInteractive() {
               } else if (selected === i) { bg = "rgba(123,97,255,0.1)"; border = "2px solid #7B61FF"; }
               return (
                 <button key={i} onClick={() => handleAnswer(i)} disabled={isDiag ? false : answered}
-                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "14px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}>
+                  style={{ width: "100%", padding: "14px 16px", borderRadius: "14px", textAlign: "left", fontSize: "15px", fontWeight: 500, cursor: "pointer", background: bg, border, color, transition: "all 0.2s", fontFamily: "'DM Sans',sans-serif" }}>
                   <span style={{ fontWeight: 700, marginRight: "8px", color: "#818CF8" }}>{["A","B","C","D"][i]}.</span>{opt}
                 </button>
               );
@@ -451,7 +451,7 @@ function LevelMapInteractive() {
               <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: reveal.isCorrect ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>
                 {reveal.isCorrect ? "✅ ¡Correcto!" : "❌ Incorrecto"}
               </p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.5, fontFamily: "'DM Sans',sans-serif" }}>{reveal.explanation}</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", lineHeight: 1.5, fontFamily: "'DM Sans',sans-serif" }}>{reveal.explanation}</p>
             </div>
           )}
         </div>
@@ -482,8 +482,8 @@ function LevelMapInteractive() {
           <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "19px", lineHeight: 1.3 }}>{lesson.title}</h1>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
-          <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label} · {lesson.durationMin} min</span>
-          <span style={{ fontSize: "10px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
+          <span style={{ fontSize: "12px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label} · {lesson.durationMin} min</span>
+          <span style={{ fontSize: "12px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
           <div style={{ height: "100%", width: lesson.progress?.completed ? "100%" : "10%", background: "linear-gradient(90deg,#7B61FF,#A78BFA)", borderRadius: "2px" }} />
@@ -506,7 +506,7 @@ function LevelMapInteractive() {
             {battleResult && (
               <div style={{ padding: "14px", borderRadius: "14px", background: battleResult.passed ? "rgba(52,211,153,0.1)" : "rgba(255,107,107,0.1)", border: `1px solid ${battleResult.passed ? "rgba(52,211,153,0.3)" : "rgba(255,107,107,0.3)"}` }}>
                 <p style={{ fontSize: "12px", fontWeight: 800, color: battleResult.passed ? "#34D399" : "#FF6B6B", marginBottom: "6px" }}>{battleResult.passed ? "✓ APROBADO" : "✗ REINTENTA — Intento " + battleResult.attempts}</p>
-                <p style={{ fontSize: "13px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)" }}>{battleResult.feedback}</p>
+                <p style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(255,255,255,0.8)" }}>{battleResult.feedback}</p>
               </div>
             )}
           </div>
@@ -573,16 +573,16 @@ function LevelMapInteractive() {
             )}
             {blocks.map((block, i) => {
               if (block.type === "text") return (
-                <p key={i} style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.85)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
+                <p key={i} style={{ fontSize: "17px", lineHeight: 1.8, color: "rgba(255,255,255,0.85)", marginBottom: "16px", fontFamily: "'DM Sans',sans-serif" }}
                   dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
               );
               if (block.type === "heading") return (
-                <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "17px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
+                <h3 key={i} style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "18px", color: "#fff", margin: "22px 0 12px" }}>{block.text}</h3>
               );
               if (block.type === "callout") return (
                 <div key={i} style={{ padding: "14px", borderRadius: "14px", background: "rgba(123,97,255,0.08)", border: "1px solid rgba(123,97,255,0.2)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "12px", fontWeight: 700, color: "#818CF8", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>💡 IMPORTANTE</p>
-                  <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans',sans-serif" }}
+                  <p style={{ fontSize: "16px", lineHeight: 1.7, color: "rgba(255,255,255,0.8)", fontFamily: "'DM Sans',sans-serif" }}
                     dangerouslySetInnerHTML={{ __html: (block.text ?? "").replace(/\*\*(.*?)\*\*/g, "<strong style='color:#fff'>$1</strong>") }} />
                 </div>
               );
@@ -593,7 +593,7 @@ function LevelMapInteractive() {
               if (block.type === "tip") return (
                 <div key={i} style={{ padding: "12px", borderRadius: "12px", background: "rgba(251,146,60,0.06)", border: "1px solid rgba(251,146,60,0.18)", marginBottom: "16px" }}>
                   <p style={{ fontSize: "12px", fontWeight: 700, color: "#FB923C", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>⚡ TIP</p>
-                  <p style={{ fontSize: "14px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
+                  <p style={{ fontSize: "15px", lineHeight: 1.6, color: "rgba(255,255,255,0.65)", fontFamily: "'DM Sans',sans-serif" }}>{block.text}</p>
                 </div>
               );
               if (block.type === "glossary") return (
@@ -602,8 +602,8 @@ function LevelMapInteractive() {
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     {(block.terms ?? []).map((t, ti) => (
                       <div key={ti}>
-                        <p style={{ fontSize: "14px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>{t.term}</p>
-                        <p style={{ fontSize: "14px", lineHeight: 1.5, color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans',sans-serif" }}>{t.def}</p>
+                        <p style={{ fontSize: "15px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif" }}>{t.term}</p>
+                        <p style={{ fontSize: "15px", lineHeight: 1.5, color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans',sans-serif" }}>{t.def}</p>
                       </div>
                     ))}
                   </div>
