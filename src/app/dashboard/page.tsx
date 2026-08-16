@@ -231,7 +231,7 @@ export default function DashboardPage() {
 
       {/* Hero — saludo */}
       <div style={{ padding: "14px 16px 0" }}>
-        <p style={{ color: "#8B94A8", fontSize: "12px", fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "5px" }}>
+        <p style={{ color: "#8B94A8", fontSize: "14px", fontFamily: "'DM Sans',sans-serif", display: "flex", alignItems: "center", gap: "5px" }}>
           {t("hello")} {dbName || user?.firstName || t("student")}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 13.5l-2-3.5a1.3 1.3 0 0 1 2.2-1.3l1.6 2.3"/><path d="M10.3 11L7.5 6.2a1.3 1.3 0 0 1 2.2-1.3l3.3 5.1"/><path d="M9.7 4.9a1.3 1.3 0 0 1 2.4-.9l3 5.4"/><path d="M12.2 4.6a1.3 1.3 0 0 1 2.4-.8l2.6 4.9"/><path d="M6.5 12l-1.2-.7a1.3 1.3 0 0 0-1.7 1.9l3.2 4.4a6 6 0 0 0 6.9 2.1l1.5-.5a5 5 0 0 0 3.1-2.9l1.6-4a1.4 1.4 0 0 0-2.5-1.2"/></svg>
         </p>
@@ -275,7 +275,7 @@ export default function DashboardPage() {
       {/* ZAI — estilo prompt */}
       <div style={{ padding: "10px 16px 0" }}>
         <Link href="/vy" style={{ textDecoration: "none" }}>
-          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", display: "flex", alignItems: "center", gap: "14px" }}>
+          <div style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px", padding: "18px", display: "flex", flexDirection: "column", gap: "12px" }}>
             <div style={{ position: "relative", width: "44px", height: "44px", flexShrink: 0 }}>
               <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "conic-gradient(from 0deg, #A78BFA, #7B61FF, #4C3AA8, #7B61FF, #A78BFA)", opacity: 0.9, animation: "spin 4s linear infinite" }} />
               <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5), transparent 45%)" }} />
@@ -284,10 +284,10 @@ export default function DashboardPage() {
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: "10px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "3px" }}>ZAI</p>
-              <p style={{ fontSize: "14px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>{t("zaiPrompt")}</p>
+              <p style={{ fontSize: "12px", color: "#7E8798", fontFamily: "'DM Sans',sans-serif", marginBottom: "3px" }}>ZAI</p>
+              <p style={{ fontSize: "16px", color: "#F8FAFF", fontWeight: 600, fontFamily: "'DM Sans',sans-serif" }}>{t("zaiPrompt")}</p>
             </div>
-            <span style={{ flexShrink: 0, padding: "9px 15px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "999px", fontSize: "12px", fontWeight: 700, color: "#A78BFA", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
+            <span style={{ padding: "11px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "12px", fontSize: "14px", fontWeight: 700, color: "#A78BFA", textAlign: "center", display: "block", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>
               {t("zaiBtn")}
             </span>
           </div>
@@ -316,7 +316,7 @@ export default function DashboardPage() {
           <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
             <div style={{ height: "100%", width: `${Math.min(rankProgress, 100)}%`, background: `linear-gradient(90deg,${rankColor},#468BFF)`, borderRadius: "4px", transition: "width 0.5s ease" }} />
           </div>
-          <p style={{ fontSize: "10px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "6px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} {t("xpNext")}</p>
+          <p style={{ fontSize: "12px", color: "#8B94A8", fontFamily: "'DM Sans',sans-serif", marginTop: "8px", textAlign: "right" }}>{xp.toLocaleString()} / {nextXP.toLocaleString()} {t("xpNext")}</p>
         </div>
         </Link>
       </div>
