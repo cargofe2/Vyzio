@@ -513,7 +513,7 @@ function LevelMapInteractive() {
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
           <span style={{ fontSize: "12px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label} · {lesson.durationMin} min</span>
           {lesson.type === "READING" && (
-            <button onClick={toggleTTS} style={{ display:"flex",alignItems:"center",gap:"5px",padding:"3px 10px",borderRadius:"20px",border:ttsPlaying?"1px solid rgba(123,97,255,0.5)":"1px solid rgba(123,97,255,0.2)",background:ttsPlaying?"rgba(123,97,255,0.15)":"rgba(123,97,255,0.06)",color:ttsPlaying?"#A78BFA":"#7E8798",fontSize:"12px",fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+            <button onClick={toggleTTS} style={{ display:"flex",alignItems:"center",gap:"6px",padding:"6px 14px",borderRadius:"20px",border:ttsPlaying?"1px solid rgba(123,97,255,0.5)":"1px solid rgba(123,97,255,0.2)",background:ttsPlaying?"rgba(123,97,255,0.15)":"rgba(123,97,255,0.06)",color:ttsPlaying?"#A78BFA":"#7E8798",fontSize:"13px",fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
               {ttsPlaying ? "⏸" : "▶"} {ttsPlaying ? (lang==="en"?"Pause":"Pausar") : (lang==="en"?"Listen":"Escuchar")}
             </button>
           )}
