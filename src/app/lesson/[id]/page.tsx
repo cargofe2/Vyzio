@@ -93,7 +93,9 @@ function LevelMapInteractive() {
     if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
     const blocks = lesson?.content?.blocks ?? [];
     const parts = [lesson?.title ? lesson.title + ". " : ""];
+    let firstHeading = true;
     for (const block of blocks) {
+      if (block.type === "heading" && firstHeading) { firstHeading = false; continue; }
       if (["heading","text","callout","tip"].includes(block.type) && block.text)
         parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
       else if (block.type === "glossary" && block.terms?.length) {
