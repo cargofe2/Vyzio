@@ -108,48 +108,8 @@ function LevelMapInteractive() {
     window.speechSynthesis.speak(utt);
     setTtsPlaying(true);
   }
-  function toggleTTS() {
-    if (!("speechSynthesis" in window)) return;
-    if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
-    const blocks = lesson?.content?.blocks ?? [];
-    const parts: string[] = [];
-    for (const block of blocks) {
-      if (["heading","text","callout","tip"].includes(block.type) && block.text)
-        parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
-      else if (block.type === "glossary" && block.terms?.length) {
-        parts.push(lang === "es" ? "Glosario." : "Glossary.");
-        block.terms.forEach((t: any) => parts.push(`${t.term}: ${t.def}`));
-      }
-    }
-    const utt = new SpeechSynthesisUtterance(parts.join(" "));
-    utt.lang = lang === "es" ? "es-ES" : "en-US";
-    utt.rate = 0.92;
-    utt.onend = () => setTtsPlaying(false);
-    utt.onerror = () => setTtsPlaying(false);
-    window.speechSynthesis.speak(utt);
-    setTtsPlaying(true);
-  }
-  function toggleTTS() {
-    if (!("speechSynthesis" in window)) return;
-    if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
-    const blocks = lesson?.content?.blocks ?? [];
-    const parts: string[] = [];
-    for (const block of blocks) {
-      if (["heading","text","callout","tip"].includes(block.type) && block.text)
-        parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
-      else if (block.type === "glossary" && block.terms?.length) {
-        parts.push(lang === "es" ? "Glosario." : "Glossary.");
-        block.terms.forEach((t: any) => parts.push(`${t.term}: ${t.def}`));
-      }
-    }
-    const utt = new SpeechSynthesisUtterance(parts.join(" "));
-    utt.lang = lang === "es" ? "es-ES" : "en-US";
-    utt.rate = 0.92;
-    utt.onend = () => setTtsPlaying(false);
-    utt.onerror = () => setTtsPlaying(false);
-    window.speechSynthesis.speak(utt);
-    setTtsPlaying(true);
-  }
+ 
+ 
 
   useEffect(() => {
     async function load() {
