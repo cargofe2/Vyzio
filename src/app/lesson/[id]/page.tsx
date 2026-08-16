@@ -87,6 +87,7 @@ function LevelMapInteractive() {
   const [nextUrl, setNextUrl] = useState<string>('/worlds');
   const [lightbox, setLightbox] = useState<string|null>(null);
   const [ttsPlaying, setTtsPlaying] = useState(false);
+  useEffect(() => { return () => { window.speechSynthesis?.cancel(); }; }, []);
   function toggleTTS() {
     if (!("speechSynthesis" in window)) return;
     if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
