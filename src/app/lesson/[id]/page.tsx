@@ -86,6 +86,70 @@ function LevelMapInteractive() {
   const [nextLessonId, setNextLessonId] = useState<string|null>(null);
   const [nextUrl, setNextUrl] = useState<string>('/worlds');
   const [lightbox, setLightbox] = useState<string|null>(null);
+  const [ttsPlaying, setTtsPlaying] = useState(false);
+  function toggleTTS() {
+    if (!("speechSynthesis" in window)) return;
+    if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
+    const blocks = lesson?.content?.blocks ?? [];
+    const parts = [];
+    for (const block of blocks) {
+      if (["heading","text","callout","tip"].includes(block.type) && block.text)
+        parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
+      else if (block.type === "glossary" && block.terms?.length) {
+        parts.push(lang === "es" ? "Glosario." : "Glossary.");
+        block.terms.forEach(t => parts.push(t.term + ": " + t.def));
+      }
+    }
+    const utt = new SpeechSynthesisUtterance(parts.join(" "));
+    utt.lang = lang === "es" ? "es-ES" : "en-US";
+    utt.rate = 0.92;
+    utt.onend = () => setTtsPlaying(false);
+    utt.onerror = () => setTtsPlaying(false);
+    window.speechSynthesis.speak(utt);
+    setTtsPlaying(true);
+  }
+  function toggleTTS() {
+    if (!("speechSynthesis" in window)) return;
+    if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
+    const blocks = lesson?.content?.blocks ?? [];
+    const parts: string[] = [];
+    for (const block of blocks) {
+      if (["heading","text","callout","tip"].includes(block.type) && block.text)
+        parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
+      else if (block.type === "glossary" && block.terms?.length) {
+        parts.push(lang === "es" ? "Glosario." : "Glossary.");
+        block.terms.forEach((t: any) => parts.push(`${t.term}: ${t.def}`));
+      }
+    }
+    const utt = new SpeechSynthesisUtterance(parts.join(" "));
+    utt.lang = lang === "es" ? "es-ES" : "en-US";
+    utt.rate = 0.92;
+    utt.onend = () => setTtsPlaying(false);
+    utt.onerror = () => setTtsPlaying(false);
+    window.speechSynthesis.speak(utt);
+    setTtsPlaying(true);
+  }
+  function toggleTTS() {
+    if (!("speechSynthesis" in window)) return;
+    if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
+    const blocks = lesson?.content?.blocks ?? [];
+    const parts: string[] = [];
+    for (const block of blocks) {
+      if (["heading","text","callout","tip"].includes(block.type) && block.text)
+        parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
+      else if (block.type === "glossary" && block.terms?.length) {
+        parts.push(lang === "es" ? "Glosario." : "Glossary.");
+        block.terms.forEach((t: any) => parts.push(`${t.term}: ${t.def}`));
+      }
+    }
+    const utt = new SpeechSynthesisUtterance(parts.join(" "));
+    utt.lang = lang === "es" ? "es-ES" : "en-US";
+    utt.rate = 0.92;
+    utt.onend = () => setTtsPlaying(false);
+    utt.onerror = () => setTtsPlaying(false);
+    window.speechSynthesis.speak(utt);
+    setTtsPlaying(true);
+  }
 
   useEffect(() => {
     async function load() {
@@ -483,6 +547,11 @@ function LevelMapInteractive() {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", alignItems: "center" }}>
           <span style={{ fontSize: "12px", fontWeight: 700, padding: "2px 8px", borderRadius: "20px", background: `${typeCfg.color}18`, color: typeCfg.color, fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? {"Video":"Video","Lectura":"Reading","Quiz":"Quiz","Proyecto":"Project","Práctica":"Practice"}[typeCfg.label] ?? typeCfg.label : typeCfg.label} · {lesson.durationMin} min</span>
+          {lesson.type === "READING" && (
+            <button onClick={toggleTTS} style={{ display:"flex",alignItems:"center",gap:"5px",padding:"3px 10px",borderRadius:"20px",border:ttsPlaying?"1px solid rgba(123,97,255,0.5)":"1px solid rgba(123,97,255,0.2)",background:ttsPlaying?"rgba(123,97,255,0.15)":"rgba(123,97,255,0.06)",color:ttsPlaying?"#A78BFA":"#7E8798",fontSize:"12px",fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+              {ttsPlaying ? "⏸" : "▶"} {ttsPlaying ? (lang==="en"?"Pause":"Pausar") : (lang==="en"?"Listen":"Escuchar")}
+            </button>
+          )}
           <span style={{ fontSize: "12px", color: "#FB923C", fontWeight: 700, fontFamily: "'DM Sans',sans-serif" }}>+{lesson.xpReward} XP</span>
         </div>
         <div style={{ height: "3px", background: "rgba(255,255,255,0.06)", borderRadius: "2px" }}>
