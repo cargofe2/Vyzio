@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+﻿import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
@@ -53,9 +53,9 @@ const RANKS = [
   { rank: "INNOVATOR", xp: 15000 },
   { rank: "VISIONARY", xp: 30000 },
   { rank: "PIONEER", xp: 55000 },
-  { rank: "MASTER", xp: 90000 },
-  { rank: "LEGEND", xp: 140000 },
-  { rank: "AI_TITAN", xp: 200000 },
+  { rank: "MASTER", xp: 70000 },
+  { rank: "LEGEND", xp: 85000 },
+  { rank: "AI_TITAN", xp: 95000 },
 ];
 
 function getRank(xp: number): string {
