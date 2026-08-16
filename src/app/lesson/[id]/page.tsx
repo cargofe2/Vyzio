@@ -92,7 +92,7 @@ function LevelMapInteractive() {
     if (!("speechSynthesis" in window)) return;
     if (ttsPlaying) { window.speechSynthesis.cancel(); setTtsPlaying(false); return; }
     const blocks = lesson?.content?.blocks ?? [];
-    const parts = [];
+    const parts = [lesson?.title ? lesson.title + ". " : ""];
     for (const block of blocks) {
       if (["heading","text","callout","tip"].includes(block.type) && block.text)
         parts.push(block.text.replace(/\*\*(.*?)\*\*/g, "$1"));
