@@ -316,7 +316,7 @@ function LevelMapInteractive() {
     <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
         <img src="/logo.png" alt="Bymyzai" width={36} height={36} style={{ borderRadius: "50%", flexShrink: 0 }} />
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "Loading lesson..." : "Cargando lección..."}</p>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", fontFamily: "'DM Sans',sans-serif" }}>"Loading lesson..."</p>
       </div>
     </div>
   );
