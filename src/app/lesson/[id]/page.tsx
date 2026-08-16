@@ -103,9 +103,9 @@ function LevelMapInteractive() {
     const utt = new SpeechSynthesisUtterance(parts.join(" "));
     const voices = window.speechSynthesis.getVoices();
     const target = lang === "es" ? "es" : "en";
-    const best = voices.find(v => v.lang.startsWith(target) && v.localService === false) || voices.find(v => v.lang.startsWith(target)) || null;
+    const best = voices.find(v => (v.lang === "es-US" || v.lang === "es-MX") && v.localService === false) || voices.find(v => v.lang.startsWith(target) && v.localService === false) || voices.find(v => v.lang.startsWith(target)) || null;
     if (best) utt.voice = best;
-    utt.lang = lang === "es" ? "es-ES" : "en-US";
+    utt.lang = lang === "es" ? "es-US" : "en-US";
     utt.rate = 0.85;
     utt.onend = () => setTtsPlaying(false);
     utt.onerror = () => setTtsPlaying(false);
