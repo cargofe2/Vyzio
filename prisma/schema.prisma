@@ -223,6 +223,10 @@ model Gamification {
   daysStudied       Int @default(0)
   tournamentsWon    Int @default(0)
 
+  // Cupo diario de Boss Battle. battleDate marca el dia al que pertenece battleCount.
+  battleCount Int       @default(0)
+  battleDate  DateTime?
+
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

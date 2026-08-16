@@ -18,7 +18,12 @@ export async function GET(
     const lesson = await prisma.lesson.findUnique({
       where: { id },
       include: {
-        quizQuestions: { orderBy: { order: "asc" } },
+        // select explicito: sin el, Prisma devuelve todas las columnas y la respuesta
+        // correcta viaja al navegador. La correccion la da PUT /api/progress al contestar.
+        quizQuestions: {
+          select: { id: true, question: true, options: true, order: true },
+          orderBy: { order: "asc" },
+        },
         world: { include: { level: true } },
       },
     });

@@ -9,9 +9,10 @@ import ZaiCompanion from "@/components/ZaiCompanion";
 import { useZai } from "@/lib/ZaiContext";
 import { playCorrect, playIncorrect, playComplete, playXP } from "@/lib/sounds";
 
+// Sin correctIndex ni explanation a proposito: la respuesta correcta ya no viaja
+// al navegador junto con la pregunta. Llega desde el servidor al contestar.
 interface QuizQuestion {
-  id: string; question: string; options: string[];
-  correctIndex: number; explanation: string; order: number;
+  id: string; question: string; options: string[]; order: number;
 }
 interface Lesson {
   id: string; number: number; title: string; type: string;
@@ -74,6 +75,8 @@ function LevelMapInteractive() {
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
+  // Correccion devuelta por el servidor tras contestar. Null mientras no se ha respondido.
+  const [reveal, setReveal] = useState<{ correctIndex: number; explanation: string; isCorrect: boolean } | null>(null);
   const [score, setScore] = useState(0);
   const [xpEarned, setXpEarned] = useState(0);
   const [answers, setAnswers] = useState<{question: string; answer: string}[]>([]);
@@ -229,10 +232,14 @@ function LevelMapInteractive() {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lessonId: lesson.id, submission: battleSubmission.trim() }),
       });
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        const data = await res.json();
         setBattleResult(data);
         if (data.passed) await completeLesson(); else { playIncorrect(); triggerMood("incorrect"); }
+      } else {
+        // Sin esto un 429 o un 403 se tragaban en silencio y el boton quedaba muerto.
+        setBattleResult({ passed: false, feedback: data.message ?? "No se pudo evaluar tu entrega. Intenta de nuevo.", attempts: 0 });
+        playIncorrect(); triggerMood("incorrect");
       }
     } catch (err) { console.error(err); }
     finally { setBattleLoading(false); }
@@ -276,8 +283,20 @@ function LevelMapInteractive() {
     setSelected(idx); setAnswered(true);
     const q = lesson.quizQuestions[currentQ];
     if (!IS_DIAGNOSTIC(id)) {
-      await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, selectedIndex: idx }) });
-      if (idx === q.correctIndex) { setScore(s => s + 1); playCorrect(); triggerMood("correct"); } else { playIncorrect(); triggerMood("incorrect"); }
+      try {
+        const res = await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId: q.id, selectedIndex: idx }) });
+        const data = await res.json().catch(() => null);
+        if (res.ok && data && typeof data.correctIndex === "number") {
+          setReveal({ correctIndex: data.correctIndex, explanation: data.explanation ?? "", isCorrect: !!data.isCorrect });
+          if (data.isCorrect) { setScore(s => s + 1); playCorrect(); triggerMood("correct"); }
+          else { playIncorrect(); triggerMood("incorrect"); }
+        } else {
+          // No se pudo corregir: devolvemos el control para que pueda reintentar.
+          setSelected(null); setAnswered(false);
+        }
+      } catch {
+        setSelected(null); setAnswered(false);
+      }
     } else {
       setAnswers(p => [...p, { question: q.question, answer: q.options[idx] }]);
     }
@@ -286,7 +305,7 @@ function LevelMapInteractive() {
   async function nextQuestion() {
     if (!lesson) return;
     if (currentQ < lesson.quizQuestions.length - 1) {
-      setCurrentQ(c => c + 1); setSelected(null); setAnswered(false);
+      setCurrentQ(c => c + 1); setSelected(null); setAnswered(false); setReveal(null);
     } else {
       if (IS_DIAGNOSTIC(id)) await completeDiagnostic(answers);
       else await completeLesson(Math.round((score / lesson.quizQuestions.length) * 100));
@@ -415,8 +434,8 @@ function LevelMapInteractive() {
               let bg = "rgba(123,97,255,0.04)", border = "1px solid rgba(123,97,255,0.1)", color = "#fff";
               if (isDiag) {
                 if (selected === i) { bg = "rgba(123,97,255,0.18)"; border = "2px solid #7B61FF"; }
-              } else if (answered) {
-                if (i === q.correctIndex) { bg = "rgba(52,211,153,0.12)"; border = "2px solid #34D399"; color = "#34D399"; }
+              } else if (answered && reveal) {
+                if (i === reveal.correctIndex) { bg = "rgba(52,211,153,0.12)"; border = "2px solid #34D399"; color = "#34D399"; }
                 else if (i === selected) { bg = "rgba(248,113,113,0.12)"; border = "2px solid #F87171"; color = "#F87171"; }
               } else if (selected === i) { bg = "rgba(123,97,255,0.1)"; border = "2px solid #7B61FF"; }
               return (
@@ -427,12 +446,12 @@ function LevelMapInteractive() {
               );
             })}
           </div>
-          {!isDiag && answered && (
-            <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: selected === q.correctIndex ? "rgba(52,211,153,0.08)" : "rgba(251,146,60,0.08)", border: `1px solid ${selected === q.correctIndex ? "rgba(52,211,153,0.2)" : "rgba(251,146,60,0.2)"}` }}>
-              <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: selected === q.correctIndex ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>
-                {selected === q.correctIndex ? "✅ ¡Correcto!" : "❌ Incorrecto"}
+          {!isDiag && answered && reveal && (
+            <div style={{ marginTop: "16px", padding: "14px", borderRadius: "14px", background: reveal.isCorrect ? "rgba(52,211,153,0.08)" : "rgba(251,146,60,0.08)", border: `1px solid ${reveal.isCorrect ? "rgba(52,211,153,0.2)" : "rgba(251,146,60,0.2)"}` }}>
+              <p style={{ fontWeight: 700, fontSize: "12px", marginBottom: "4px", color: reveal.isCorrect ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>
+                {reveal.isCorrect ? "✅ ¡Correcto!" : "❌ Incorrecto"}
               </p>
-              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.5, fontFamily: "'DM Sans',sans-serif" }}>{q.explanation}</p>
+              <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", lineHeight: 1.5, fontFamily: "'DM Sans',sans-serif" }}>{reveal.explanation}</p>
             </div>
           )}
         </div>

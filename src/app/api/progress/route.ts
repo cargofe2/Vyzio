@@ -17,16 +17,30 @@ const PutSchema = z.object({
 
 export const dynamic = "force-dynamic";
 
-// Rate limiting: 60 req/min per user
+// Freno anti-ráfaga: 60 req/min por usuario, por instancia.
+// NO es un límite distribuido — en serverless cada instancia lleva su propio contador.
+// La protección real contra XP duplicado es el reclamo atómico de compleción (más abajo)
+// y el chequeo de intento correcto previo en el PUT. Esto solo amortigua ráfagas.
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 60;
 const rateMap = new Map<string, { count: number; resetAt: number }>();
+
 function checkRateLimit(clerkId: string): boolean {
   const now = Date.now();
+
+  // Purga de entradas vencidas: sin esto el Map crece sin límite mientras viva la instancia.
+  if (rateMap.size > 1000) {
+    for (const [key, value] of rateMap) {
+      if (now > value.resetAt) rateMap.delete(key);
+    }
+  }
+
   const entry = rateMap.get(clerkId);
   if (!entry || now > entry.resetAt) {
-    rateMap.set(clerkId, { count: 1, resetAt: now + 60000 });
+    rateMap.set(clerkId, { count: 1, resetAt: now + RATE_WINDOW_MS });
     return true;
   }
-  if (entry.count >= 60) return false;
+  if (entry.count >= RATE_MAX) return false;
   entry.count++;
   return true;
 }
@@ -80,34 +94,47 @@ export async function POST(req: NextRequest) {
 
     if (!lesson) return NextResponse.json({ error: "Lesson not found" }, { status: 404 });
 
-    const existing = await prisma.lessonProgress.findUnique({
-      where: { userId_lessonId: { userId: user.id, lessonId } },
-    });
+    // Reclamo atómico de la primera compleción.
+    // Dos peticiones simultáneas ya no pueden otorgar XP dos veces: la base de datos
+    // decide quién gana, no una lectura previa que ambas ven igual.
+    let firstCompletion = false;
+    try {
+      await prisma.lessonProgress.create({
+        data: {
+          userId: user.id, lessonId, completed: true,
+          completedAt: new Date(), score, timeSpentSec,
+          xpEarned: lesson.xpReward,
+        },
+      });
+      firstCompletion = true;
+    } catch {
+      // La fila ya existía (violación de índice único). Intentamos la transición false -> true.
+      const claimed = await prisma.lessonProgress.updateMany({
+        where: { userId: user.id, lessonId, completed: false },
+        data: {
+          completed: true, completedAt: new Date(), score, timeSpentSec,
+          xpEarned: lesson.xpReward,
+        },
+      });
+      firstCompletion = claimed.count === 1;
 
-    const alreadyCompleted = existing?.completed ?? false;
+      // Ya estaba completada: refrescamos datos de sesión sin volver a pagar XP.
+      if (!firstCompletion) {
+        await prisma.lessonProgress.update({
+          where: { userId_lessonId: { userId: user.id, lessonId } },
+          data: { score, timeSpentSec },
+        });
+      }
+    }
 
-    await prisma.lessonProgress.upsert({
-      where: { userId_lessonId: { userId: user.id, lessonId } },
-      create: {
-        userId: user.id, lessonId, completed: true,
-        completedAt: new Date(), score, timeSpentSec,
-        xpEarned: alreadyCompleted ? 0 : lesson.xpReward,
-      },
-      update: {
-        completed: true, completedAt: new Date(), score,
-        xpEarned: alreadyCompleted ? existing?.xpEarned : lesson.xpReward,
-      },
-    });
+    const alreadyCompleted = !firstCompletion;
 
     let xpAwarded = 0;
     let newRank: string = user.gamification?.rank ?? "NOVICE";
     let rankChanged = false;
 
-    if (!alreadyCompleted && user.gamification) {
+    if (firstCompletion && user.gamification) {
       xpAwarded = lesson.xpReward;
-      const newXP = user.gamification.xpTotal + xpAwarded;
-      newRank = getRank(newXP);
-      rankChanged = newRank !== user.gamification.rank;
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -135,22 +162,32 @@ export async function POST(req: NextRequest) {
         else if (newStreak > 30 && newStreak % 30 === 0) streakBonus = 1000;
       }
       xpAwarded += streakBonus;
-      const newXPWithBonus = user.gamification.xpTotal + xpAwarded;
 
-      await prisma.gamification.update({
+      // Todo por incremento: el valor final lo calcula Postgres, no una lectura previa.
+      // Así dos peticiones concurrentes suman, en vez de pisarse.
+      const updated = await prisma.gamification.update({
         where: { userId: user.id },
         data: {
-          xpTotal: newXPWithBonus,
+          xpTotal: { increment: xpAwarded },
           xpWeekly: { increment: xpAwarded },
           vyCoins: { increment: Math.round(xpAwarded / 10) },
-          rank: newRank as any,
           lessonsCompleted: { increment: 1 },
           streakDays: newStreak,
           streakMax: Math.max(user.gamification.streakMax, newStreak),
           lastStudyDate: new Date(),
-          daysStudied: { increment: lastStudyDay?.getTime() !== today.getTime() ? 1 : 0 },
+          daysStudied: { increment: isNewDay ? 1 : 0 },
         },
       });
+
+      // El rango se deriva del total ya consolidado en base de datos.
+      newRank = getRank(updated.xpTotal);
+      rankChanged = newRank !== updated.rank;
+      if (rankChanged) {
+        await prisma.gamification.update({
+          where: { userId: user.id },
+          data: { rank: newRank as any },
+        });
+      }
     }
 
     const completedCount = await prisma.lessonProgress.count({
@@ -204,6 +241,7 @@ export async function PUT(req: NextRequest) {
 
     let xpAwarded = 0;
     if (isCorrect && !alreadyAnsweredCorrectly) {
+      xpAwarded = isPerfect ? 100 : 60;
       const gamification = await prisma.gamification.findUnique({ where: { userId: user.id } });
       if (gamification) {
       await prisma.gamification.update({

@@ -37,15 +37,42 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "plan_required", message: "Los Boss Battles de niveles avanzados requieren plan Pro." }, { status: 403 });
     }
 
+    // Cupo diario global por usuario, contado en Postgres.
+    // El conteo anterior filtraba por (userId, lessonId), que tiene indice unico:
+    // siempre daba 0 o 1 y el limite no saltaba nunca.
+    const limit = BATTLE_LIMITS[plan] ?? 2;
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const todayAttempts = await prisma.lessonProgress.count({
-      where: { userId: user.id, updatedAt: { gte: today }, lessonId },
+
+    const gam = await prisma.gamification.findUnique({
+      where: { userId: user.id },
+      select: { battleCount: true, battleDate: true },
     });
-    const limit = BATTLE_LIMITS[plan] ?? 2;
-    if (todayAttempts >= limit) {
-      return NextResponse.json({ error: "battle_limit", message: `Limite de ${limit} intentos diarios alcanzado.`, attemptsLimit: limit }, { status: 429 });
+
+    const lastBattleDay = gam?.battleDate ? new Date(gam.battleDate) : null;
+    if (lastBattleDay) lastBattleDay.setHours(0, 0, 0, 0);
+    const sameDay = lastBattleDay?.getTime() === today.getTime();
+    const usedToday = sameDay ? (gam?.battleCount ?? 0) : 0;
+
+    if (usedToday >= limit) {
+      return NextResponse.json({
+        error: "battle_limit",
+        message: `Limite de ${limit} intentos diarios alcanzado. Vuelve manana.`,
+        attemptsLimit: limit,
+        attemptsRemaining: 0,
+      }, { status: 429 });
     }
+
+    // Se consume el cupo ANTES de llamar a Anthropic: eso es lo que corta el gasto.
+    await prisma.gamification.update({
+      where: { userId: user.id },
+      data: sameDay
+        ? { battleCount: { increment: 1 } }
+        : { battleCount: 1, battleDate: new Date() },
+    });
+
+    const attemptsRemaining = Math.max(0, limit - usedToday - 1);
 
     const content = lesson.content as any;
     const brief = content?.blocks?.map((b: any) => b.text).filter(Boolean).join("\n") ?? lesson.title;
@@ -77,7 +104,7 @@ export async function POST(req: NextRequest) {
       update: { submission, battlePassed: passed, battleFeedback: feedback, attempts },
     });
 
-    return NextResponse.json({ passed, feedback, attempts });
+    return NextResponse.json({ passed, feedback, attempts, attemptsLimit: limit, attemptsRemaining });
   } catch (error) {
     console.error("[api/boss-battle] error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
