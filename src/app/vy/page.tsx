@@ -109,10 +109,10 @@ export default function VYPage() {
           <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#fff", fontSize: "14px" }}>ZAI</p>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#34D399" }} />
-            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "online" : "en linea"}</p>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{lang === "en" ? "online" : "en linea"}</p>
           </div>
         </div>
-        <span style={{ fontSize: "10px", color: used >= 10 ? "#F87171" : "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{used}/10 {lang === "en" ? "today" : "hoy"}</span>
+        <span style={{ fontSize: "12px", color: used >= 10 ? "#F87171" : "rgba(255,255,255,0.2)", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{used}/10 {lang === "en" ? "today" : "hoy"}</span>
       </div>
 
       <div style={{ flex: 1, padding: "14px 16px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "10px" }}>
