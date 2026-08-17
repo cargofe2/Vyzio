@@ -21,6 +21,14 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   return NextResponse.json({ user });
 }
 
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const guard = await requireFounder();
+  if (!guard.ok) return guard.res;
+  const { id } = await params;
+  await prisma.user.delete({ where: { id } });
+  return NextResponse.json({ deleted: true });
+}
+
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const guard = await requireFounder();
   if (!guard.ok) return guard.res;

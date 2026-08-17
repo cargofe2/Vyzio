@@ -42,6 +42,12 @@ export default function AdminUsersPage() {
     search();
   }
 
+  async function deleteUser(u: UserRow) {
+    if (!confirm(`¿ELIMINAR permanentemente a ${u.email}? Esta acción no se puede deshacer.`)) return;
+    await fetch(`/api/admin/users/${u.id}`, { method: "DELETE" });
+    search();
+  }
+
   async function changePlan(u: UserRow, plan: string) {
     await fetch(`/api/admin/users/${u.id}`, {
       method: "PATCH", headers: { "Content-Type": "application/json" },
@@ -100,6 +106,7 @@ export default function AdminUsersPage() {
                     <button style={btn} onClick={() => toggleBan(u)}>Reincluir</button>
                   )}
                   <p style={{ fontSize: "10px", color: "#7E8798" }}>Clerk ID: {u.clerkId} · Última vez: {new Date(u.lastSeenAt).toLocaleString()}</p>
+                  <button style={btnDanger} onClick={() => deleteUser(u)}>🗑 Eliminar cuenta</button>
                 </div>
               )}
             </div>
