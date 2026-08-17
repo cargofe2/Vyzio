@@ -2,14 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import Anthropic from "@anthropic-ai/sdk";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
 
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(20, "1 m"),
-  prefix: "vy",
-});
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +44,7 @@ SCOPE: You only talk about AI, technology and learning. If asked about anything 
 LANGUAGE: Respond in the same language the user writes in. If they write in Spanish, respond in Spanish. If they write in English, respond in English.`;
 
 const VY_LIMITS: Record<string, number> = {
-  STARTER: 8, PRO: 30, PREMIUM: 8, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
+  STARTER: 8, PRO: 30, PREMIUM: 20, FAMILY: 30, SCHOOL: 20, ENTERPRISE: 200,
 };
 
 export async function POST(req: NextRequest) {
@@ -62,8 +55,6 @@ export async function POST(req: NextRequest) {
     const { message } = await req.json();
     if (!message?.trim()) return NextResponse.json({ error: "Message required" }, { status: 400 });
 
-    const { success } = await ratelimit.limit(clerkId);
-    if (!success) return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 
     // Get user and check limits
     const user = await prisma.user.findUnique({
@@ -126,10 +117,10 @@ export async function POST(req: NextRequest) {
       message: assistantMessage,
       messagesUsedToday: todayCount + 1,
       messagesLimit: limit,
-      isUnlimited: plan !== "STARTER",
+      isUnlimited: false,
     });
   } catch (error) {
-    console.error("[api/vy] error:", error);
+    console.error("[api/vy] error:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
     return NextResponse.json({ error: "Error al conectar con ZAI." }, { status: 500 });
   }
 }
@@ -161,7 +152,7 @@ export async function GET() {
       messages,
       messagesUsedToday: todayCount,
       messagesLimit: VY_LIMITS[plan] ?? 10,
-      isUnlimited: plan !== "STARTER",
+      isUnlimited: false,
     });
   } catch (error) {
     console.error("[api/vy GET] error:", error);
