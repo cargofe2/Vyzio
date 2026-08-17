@@ -1,25 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function ContactPage() {
   const [lang, setLang] = useState<"es" | "en">("es");
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("sending");
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    try {
-      const res = await fetch("https://formspree.io/f/xoeakyvw", {
-        method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
-      });
-      if (res.ok) { setStatus("ok"); form.reset(); }
-      else setStatus("error");
-    } catch { setStatus("error"); }
-  }
+  const [state, handleSubmit] = useForm("xoeakyvw");
 
   const t = {
     es: {
@@ -34,8 +19,7 @@ export default function ContactPage() {
       send: "Enviar mensaje",
       sending: "Enviando...",
       ok: "Mensaje enviado. Te responderemos pronto.",
-      error: "Hubo un error. Intenta de nuevo.",
-      note: "Administrado por BYMYZAI LLC - Entity ID 0451511216 - Basking Ridge, NJ 07920",
+      note: "Este formulario es administrado por BYMYZAI LLC Â· Entity ID 0451511216 Â· Basking Ridge, NJ 07920",
     },
     en: {
       badge: "BYMYZAI LLC",
@@ -44,13 +28,12 @@ export default function ContactPage() {
       name: "Full name",
       email: "Email address",
       subject: "Subject",
-      subjects: ["Technical support", "Legal and privacy", "Billing", "Press", "Other"],
+      subjects: ["Technical support", "Legal & privacy", "Billing", "Press", "Other"],
       message: "Message",
       send: "Send message",
       sending: "Sending...",
       ok: "Message sent. We will get back to you soon.",
-      error: "Something went wrong. Please try again.",
-      note: "Managed by BYMYZAI LLC - Entity ID 0451511216 - Basking Ridge, NJ 07920",
+      note: "This form is managed by BYMYZAI LLC Â· Entity ID 0451511216 Â· Basking Ridge, NJ 07920",
     },
   };
 
@@ -71,18 +54,18 @@ export default function ContactPage() {
   const labelStyle = {
     fontSize: "13px",
     color: "#B3BDD1",
-    fontWeight: 600 as const,
+    fontWeight: 600,
     display: "block",
     marginBottom: "6px",
   };
 
-  if (status === "ok") {
+  if (state.succeeded) {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans',sans-serif" }}>
         <div style={{ textAlign: "center", padding: "40px" }}>
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>OK</div>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>âœ“</div>
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#36D399", fontSize: "24px", marginBottom: "8px" }}>{c.ok}</h2>
-          <a href="/" style={{ color: "#7B61FF", fontSize: "14px", fontWeight: 600 }}>Bymyzai</a>
+          <a href="/" style={{ color: "#7B61FF", fontSize: "14px", fontWeight: 600 }}>â† Bymyzai</a>
         </div>
       </div>
     );
@@ -110,36 +93,38 @@ export default function ContactPage() {
 
           <div>
             <label style={labelStyle}>{c.name} *</label>
-            <input name="name" type="text" required style={inputStyle} />
+            <input id="name" type="text" name="name" required style={inputStyle} />
+            <ValidationError prefix="Name" field="name" errors={state.errors} style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }} />
           </div>
 
           <div>
             <label style={labelStyle}>{c.email} *</label>
-            <input name="email" type="email" required style={inputStyle} />
+            <input id="email" type="email" name="email" required style={inputStyle} />
+            <ValidationError prefix="Email" field="email" errors={state.errors} style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }} />
           </div>
 
           <div>
             <label style={labelStyle}>{c.subject} *</label>
-            <select name="subject" required style={inputStyle}>
-              <option value="">--</option>
+            <select id="subject" name="subject" required style={inputStyle}>
+              <option value="">â€”</option>
               {c.subjects.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
+            <ValidationError prefix="Subject" field="subject" errors={state.errors} style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }} />
           </div>
 
           <div>
             <label style={labelStyle}>{c.message} *</label>
-            <textarea name="message" required rows={5} style={{ ...inputStyle, resize: "vertical" }} />
+            <textarea id="message" name="message" required rows={5} style={{ ...inputStyle, resize: "vertical" }} />
+            <ValidationError prefix="Message" field="message" errors={state.errors} style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }} />
           </div>
 
           <button
             type="submit"
-            disabled={status === "sending"}
-            style={{ background: "#7B61FF", color: "#fff", border: "none", borderRadius: "8px", padding: "12px 24px", fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "15px", cursor: status === "sending" ? "wait" : "pointer", opacity: status === "sending" ? 0.7 : 1 }}
+            disabled={state.submitting}
+            style={{ background: "#7B61FF", color: "#fff", border: "none", borderRadius: "8px", padding: "12px 24px", fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: "15px", cursor: state.submitting ? "wait" : "pointer", opacity: state.submitting ? 0.7 : 1 }}
           >
-            {status === "sending" ? c.sending : c.send}
+            {state.submitting ? c.sending : c.send}
           </button>
-
-          {status === "error" && <p style={{ color: "#FF6B6B", fontSize: "13px", textAlign: "center", margin: 0 }}>{c.error}</p>}
 
         </form>
 
