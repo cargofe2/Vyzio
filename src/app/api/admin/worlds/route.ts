@@ -20,6 +20,18 @@ export async function GET() {
   return NextResponse.json({ levels });
 }
 
+export async function PATCH(req: NextRequest) {
+  const guard = await requireFounder();
+  if (!guard.ok) return guard.res;
+  const { worldId, freeLessonLimit } = await req.json();
+  if (!worldId) return NextResponse.json({ error: "worldId requerido" }, { status: 400 });
+  const world = await prisma.world.update({
+    where: { id: worldId },
+    data: { freeLessonLimit: Number(freeLessonLimit) ?? 0 },
+  });
+  return NextResponse.json({ world });
+}
+
 export async function POST(req: NextRequest) {
   const guard = await requireFounder();
   if (!guard.ok) return guard.res;

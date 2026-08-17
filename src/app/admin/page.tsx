@@ -5,6 +5,7 @@ import Link from "next/link";
 interface WorldRow {
   id: string; name: string; emoji: string; number: number; order: number;
   _count: { lessons: number };
+  freeLessonLimit: number;
 }
 interface LevelRow {
   id: string; name: string; number: number; isFree: boolean;
@@ -53,6 +54,14 @@ export default function AdminHome() {
     load();
   }
 
+  async function updateFreeLimit(worldId: string, val: number) {
+    await fetch("/api/admin/worlds", {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ worldId, freeLessonLimit: val }),
+    });
+    load();
+  }
+
   if (loading) return <p style={{ color: "#7E8798", fontFamily: "'DM Sans',sans-serif" }}>Cargando...</p>;
 
   return (
@@ -84,12 +93,19 @@ export default function AdminHome() {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
             {lvl.worlds.map(w => (
-              <Link key={w.id} href={`/admin/worlds/${w.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ background: "#161C27", border: "1px solid #324055", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div key={w.id} style={{ background: "#161C27", border: "1px solid #324055", borderRadius: "10px", padding: "10px 12px" }}>
+                <Link href={`/admin/worlds/${w.id}`} style={{ textDecoration: "none", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
                   <span style={{ color: "#F8FAFF", fontSize: "13px", fontFamily: "'DM Sans',sans-serif" }}>{w.emoji} {w.name}</span>
                   <span style={{ ...label }}>{w._count.lessons} lecc.</span>
-                </div>
-              </Link>
+                </Link>
+                {!lvl.isFree && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ ...label }}>Free:</span>
+                    <input type="number" min={0} defaultValue={w.freeLessonLimit} onBlur={e => updateFreeLimit(w.id, Number(e.target.value))} style={{ ...inputStyle, width: "50px", padding: "2px 6px" }} />
+                    <span style={{ ...label }}>lecc.</span>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -54,10 +54,7 @@ export async function GET(req: NextRequest) {
       const user2 = await prisma.user.findUnique({ where: { clerkId }, include: { subscription: true } });
       const plan = user2?.subscription?.plan ?? "STARTER";
       const levelIsFree = (world as any)?.level?.isFree ?? true;
-      const FREE_LESSON_LIMITS: Record<string, number> = {
-        "world-4": 3, "world-22": 2, "world-32": 1,
-      };
-      const freeLimitForWorld = FREE_LESSON_LIMITS[worldId] ?? 0;
+      const freeLimitForWorld = (world as any)?.freeLessonLimit ?? 0;
       const allLessons = await prisma.lesson.findMany({
         where: { worldId, isPublished: true },
         orderBy: { order: "asc" },

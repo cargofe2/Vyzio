@@ -97,6 +97,7 @@ model World {
   emoji       String @default("🌍")
   order       Int
   xpReward    Int    @default(500)
+  freeLessonLimit  Int    @default(0)
 
   levelId String
   level   Level  @relation(fields: [levelId], references: [id])
