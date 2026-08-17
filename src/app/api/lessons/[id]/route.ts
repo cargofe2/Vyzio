@@ -34,7 +34,14 @@ export async function GET(
     const plan = user?.subscription?.plan ?? "STARTER";
     const levelIsFree = (lesson as any).world?.level?.isFree ?? true;
     const lessonIsFree = lesson.isFree === true;
-    if (!levelIsFree && !lessonIsFree && plan === "STARTER" && !isEvalMode(clerkId)) {
+    const FREE_LESSON_LIMITS: Record<string, number> = {
+      "world-4": 3, "world-22": 2, "world-32": 1,
+    };
+    const worldId = (lesson as any).world?.id ?? "";
+    const freeLimit = FREE_LESSON_LIMITS[worldId] ?? 0;
+    const lessonOrder = lesson.order ?? 999;
+    const isWithinFreeLimit = freeLimit > 0 && lessonOrder <= freeLimit;
+    if (!levelIsFree && !lessonIsFree && !isWithinFreeLimit && plan === "STARTER" && !isEvalMode(clerkId)) {
       return NextResponse.json({ error: "PAYWALL", requiredPlan: "PRO" }, { status: 402 });
     }
 
