@@ -4,7 +4,7 @@ import { useForm, ValidationError } from "@formspree/react";
 
 export default function ContactPage() {
   const [lang, setLang] = useState<"es" | "en">("es");
-  const [state, handleSubmit] = useForm("xppayovj");
+  const [state, handleSubmit] = useForm("xoeakyvw");
 
   const t = {
     es: {
@@ -19,7 +19,7 @@ export default function ContactPage() {
       send: "Enviar mensaje",
       sending: "Enviando...",
       ok: "Mensaje enviado. Te responderemos pronto.",
-      note: "Este formulario es administrado por BYMYZAI LLC · Entity ID 0451511216 · Basking Ridge, NJ 07920",
+      note: "Este formulario es administrado por BYMYZAI LLC Â· Entity ID 0451511216 Â· Basking Ridge, NJ 07920",
     },
     en: {
       badge: "BYMYZAI LLC",
@@ -33,7 +33,7 @@ export default function ContactPage() {
       send: "Send message",
       sending: "Sending...",
       ok: "Message sent. We will get back to you soon.",
-      note: "This form is managed by BYMYZAI LLC · Entity ID 0451511216 · Basking Ridge, NJ 07920",
+      note: "This form is managed by BYMYZAI LLC Â· Entity ID 0451511216 Â· Basking Ridge, NJ 07920",
     },
   };
 
@@ -63,9 +63,9 @@ export default function ContactPage() {
     return (
       <div style={{ minHeight: "100vh", background: "#0F1420", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans',sans-serif" }}>
         <div style={{ textAlign: "center", padding: "40px" }}>
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>âœ“</div>
           <h2 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#36D399", fontSize: "24px", marginBottom: "8px" }}>{c.ok}</h2>
-          <a href="/" style={{ color: "#7B61FF", fontSize: "14px", fontWeight: 600 }}>← Bymyzai</a>
+          <a href="/" style={{ color: "#7B61FF", fontSize: "14px", fontWeight: 600 }}>â† Bymyzai</a>
         </div>
       </div>
     );
@@ -106,7 +106,7 @@ export default function ContactPage() {
           <div>
             <label style={labelStyle}>{c.subject} *</label>
             <select id="subject" name="subject" required style={inputStyle}>
-              <option value="">—</option>
+              <option value="">â€”</option>
               {c.subjects.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
             <ValidationError prefix="Subject" field="subject" errors={state.errors} style={{ color: "#FF6B6B", fontSize: "12px", marginTop: "4px" }} />
