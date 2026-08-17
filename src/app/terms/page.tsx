@@ -11,7 +11,7 @@ const sections_es = [
   { id: "7", title: "Certificaciones", content: "Los certificados son verificables públicamente mediante código único. No son credenciales académicas oficiales, títulos universitarios ni certificaciones emitidas por el gobierno. Representan competencias demostradas dentro del currículo de Bymyzai." },
   { id: "8", title: "Limitación de Responsabilidad", content: "La Plataforma se ofrece tal cual. No seremos responsables por daños indirectos derivados del uso de la Plataforma, incluyendo errores en contenido generado por IA." },
   { id: "9", title: "Ley Aplicable", content: "Estos Términos se rigen por las leyes del Estado de New Jersey, Estados Unidos." },
-  { id: "10", title: "Contacto", content: "Para consultas: cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
+  { id: "10", title: "Contacto", content: "Para consultas: info@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
 ];
 
 const sections_en = [
@@ -24,7 +24,7 @@ const sections_en = [
   { id: "7", title: "Certifications", content: "Certificates are publicly verifiable via unique code. They are not official academic credentials, university degrees, or government-issued certifications. They represent demonstrated competencies within the Bymyzai curriculum." },
   { id: "8", title: "Limitation of Liability", content: "The Platform is provided as-is. We are not liable for indirect damages arising from the use of the Platform, including errors in AI-generated content." },
   { id: "9", title: "Governing Law", content: "These Terms are governed by the laws of the State of New Jersey, United States." },
-  { id: "10", title: "Contact", content: "For inquiries: cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
+  { id: "10", title: "Contact", content: "For inquiries: info@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
 ];
 
 export default function TermsPage() {
@@ -80,7 +80,7 @@ export default function TermsPage() {
                 <div style={{ padding: "0 20px 20px 20px", color: "#B3BDD1", fontSize: "14px", lineHeight: 1.7, borderTop: "1px solid #242E40" }}>
                   <p style={{ marginTop: "16px", marginBottom: 0 }}>{s.content}</p>
                   {s.id === "10" && (
-                    <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "8px", fontWeight: 600 }}>cgonzalez@bymyzai.com</a>
+                    <a href="mailto:info@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "8px", fontWeight: 600 }}>info@bymyzai.com</a>
                   )}
                 </div>
               )}
@@ -93,7 +93,7 @@ export default function TermsPage() {
           <p style={{ color: "#7E8798", fontSize: "12px", margin: 0 }}>
             BYMYZAI LLC · Entity ID 0451511216 · 405 King George Road 221, Basking Ridge, NJ 07920
           </p>
-          <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", fontSize: "13px", fontWeight: 600, display: "block", marginTop: "6px" }}>cgonzalez@bymyzai.com</a>
+          <a href="mailto:info@bymyzai.com" style={{ color: "#7B61FF", fontSize: "13px", fontWeight: 600, display: "block", marginTop: "6px" }}>info@bymyzai.com</a>
         </div>
 
       </div>

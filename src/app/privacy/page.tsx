@@ -8,9 +8,9 @@ const sections_es = [
   { id: "4", title: "Con Quién Compartimos Datos", content: "Proveedores de infraestructura: Vercel, Supabase, Clerk, Anthropic. No vendemos datos personales a terceros con fines publicitarios." },
   { id: "5", title: "Transferencias Internacionales", content: "Nuestros proveedores pueden procesar datos fuera de tu país de residencia. Al registrarte, otorgas consentimiento expreso para estas transferencias, necesarias para operar el Servicio." },
   { id: "6", title: "Certificados Públicos", content: "Los certificados verificables pueden exhibir tu nombre y nivel certificado, visibles públicamente mediante código único." },
-  { id: "7", title: "Tus Derechos", content: "Puedes solicitar acceso, corrección, eliminación o portabilidad de tus datos escribiendo a cgonzalez@bymyzai.com." },
-  { id: "8", title: "Padres y Tutores", content: "Pueden solicitar acceso, corrección o eliminación de los datos de su hijo/a contactando a cgonzalez@bymyzai.com." },
-  { id: "9", title: "Contacto", content: "cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
+  { id: "7", title: "Tus Derechos", content: "Puedes solicitar acceso, corrección, eliminación o portabilidad de tus datos escribiendo a info@bymyzai.com." },
+  { id: "8", title: "Padres y Tutores", content: "Pueden solicitar acceso, corrección o eliminación de los datos de su hijo/a contactando a info@bymyzai.com." },
+  { id: "9", title: "Contacto", content: "info@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
 ];
 
 const sections_en = [
@@ -20,9 +20,9 @@ const sections_en = [
   { id: "4", title: "Who We Share Data With", content: "Infrastructure providers: Vercel, Supabase, Clerk, Anthropic. We do not sell personal data to third parties for advertising purposes." },
   { id: "5", title: "International Transfers", content: "Our providers may process data outside your country of residence. By registering, you give explicit consent for these transfers, necessary to operate the Service." },
   { id: "6", title: "Public Certificates", content: "Verifiable certificates may display your name and certified level, publicly visible via unique code." },
-  { id: "7", title: "Your Rights", content: "You may request access, correction, deletion or portability of your data by writing to cgonzalez@bymyzai.com." },
-  { id: "8", title: "Parents and Guardians", content: "They may request access, correction or deletion of their child's data by contacting cgonzalez@bymyzai.com." },
-  { id: "9", title: "Contact", content: "cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
+  { id: "7", title: "Your Rights", content: "You may request access, correction, deletion or portability of your data by writing to info@bymyzai.com." },
+  { id: "8", title: "Parents and Guardians", content: "They may request access, correction or deletion of their child's data by contacting info@bymyzai.com." },
+  { id: "9", title: "Contact", content: "info@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920." },
 ];
 
 export default function PrivacyPage() {
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
                 <div style={{ padding: "0 20px 20px 20px", color: "#B3BDD1", fontSize: "14px", lineHeight: 1.7, borderTop: "1px solid #242E40" }}>
                   <p style={{ marginTop: "16px", marginBottom: 0 }}>{s.content}</p>
                   {(s.id === "7" || s.id === "8" || s.id === "9") && (
-                    <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "8px", fontWeight: 600 }}>cgonzalez@bymyzai.com</a>
+                    <a href="mailto:info@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "8px", fontWeight: 600 }}>info@bymyzai.com</a>
                   )}
                 </div>
               )}
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
           <p style={{ color: "#7E8798", fontSize: "12px", margin: 0 }}>
             BYMYZAI LLC · Entity ID 0451511216 · 405 King George Road 221, Basking Ridge, NJ 07920
           </p>
-          <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", fontSize: "13px", fontWeight: 600, display: "block", marginTop: "6px" }}>cgonzalez@bymyzai.com</a>
+          <a href="mailto:info@bymyzai.com" style={{ color: "#7B61FF", fontSize: "13px", fontWeight: 600, display: "block", marginTop: "6px" }}>info@bymyzai.com</a>
         </div>
 
       </div>
