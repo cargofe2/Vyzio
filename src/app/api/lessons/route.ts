@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
         },
       });
       const lessons = (!levelIsFree && plan === "STARTER")
-        ? (freeLimitForWorld > 0 ? allLessons.slice(0, freeLimitForWorld) : allLessons.filter((l: any) => l.isFree))
+        ? (freeLimitForWorld > 0 ? allLessons.slice(0, freeLimitForWorld) : [])
         : allLessons;
 
       // Get user progress
