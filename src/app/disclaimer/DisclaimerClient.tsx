@@ -1,127 +1,98 @@
 "use client";
 import { useState } from "react";
 
+const sections_es = [
+  { id: "1", title: "Contenido Educativo", content: "Bymyzai proporciona educación en inteligencia artificial con fines informativos y de desarrollo únicamente. Todo el contenido — incluyendo lecciones, proyectos, evaluaciones e interacciones con ZAI — no constituye asesoramiento profesional, académico, legal, financiero ni laboral. Completar cualquier nivel, certificado o programa de Bymyzai no garantiza empleo, admisión a ninguna institución ni certificación profesional.", callout: "Los certificados de Bymyzai representan hitos de aprendizaje dentro de la plataforma. No son credenciales académicas acreditadas bajo la ley estadounidense ni internacional." },
+  { id: "2", title: "Uso de Inteligencia Artificial", content: "Bymyzai utiliza modelos de IA de terceros (incluyendo Claude de Anthropic) para las lecciones, el mentor ZAI y las funciones personalizadas. Las respuestas generadas por IA pueden contener errores o información desactualizada. ZAI no tiene emociones reales, memoria persistente ni juicio independiente. Bymyzai no utiliza tus datos para entrenar modelos de IA externos sin consentimiento explícito.", callout: null },
+  { id: "3", title: "Edad Mínima Requerida", content: "Bymyzai está disponible exclusivamente para usuarios de 16 años o más. Los usuarios de entre 16 y 17 años deben contar con el consentimiento verificable de sus padres o tutores antes de crear una cuenta. Los usuarios menores de 16 años tienen prohibido registrarse o usar la plataforma.", callout: "Padres: Si su hijo menor de 16 años se ha registrado en Bymyzai, contáctenos en cgonzalez@bymyzai.com y eliminaremos la cuenta en 5 días hábiles." },
+  { id: "4", title: "Usuarios Internacionales y RGPD", content: "Bymyzai es operado por BYMYZAI LLC, una compañía de responsabilidad limitada registrada en New Jersey, EE.UU. (Entity ID 0451511216). Si te encuentras en el EEE, el Reino Unido o Suiza, cuentas con derechos adicionales bajo el RGPD: acceso, rectificación, supresión, limitación, portabilidad y retirada del consentimiento en cualquier momento.", callout: "Base jurídica (Art. 6 RGPD): Ejecución de contrato, interés legítimo en la operación de la plataforma y consentimiento explícito donde sea requerido." },
+  { id: "5", title: "Contacto", content: "Para consultas sobre este aviso o tus derechos: cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920. Respondemos en 30 días. Los usuarios del EEE pueden también presentar una reclamación ante su autoridad de control local.", callout: null },
+];
+
+const sections_en = [
+  { id: "1", title: "Educational Content", content: "Bymyzai provides AI literacy and skills education for informational and developmental purposes only. All content — including lessons, projects, assessments, and AI mentor interactions — does not constitute professional, academic, legal, financial, or career advice. Completion of any Bymyzai level, certificate, or program does not guarantee employment, admission to any institution, or professional certification.", callout: "Bymyzai certificates represent demonstrated learning milestones within the platform. They are not accredited academic credentials under U.S. or international law." },
+  { id: "2", title: "Use of Artificial Intelligence", content: "Bymyzai uses third-party AI models (including Anthropic's Claude) to power lessons, the ZAI mentor, and personalized features. AI-generated responses may contain errors or outdated information. The ZAI mentor has no real emotions, no persistent memory, and no independent judgment. Bymyzai does not use your data to train external AI models without explicit consent.", callout: null },
+  { id: "3", title: "Minimum Age Requirement", content: "Bymyzai is available exclusively to users aged 16 and older. Users between 16 and 17 years of age must have verifiable parental or guardian consent before creating an account. Users under 16 are strictly prohibited from registering or using the platform.", callout: "Parents: If your child under 16 has registered on Bymyzai, contact cgonzalez@bymyzai.com and we will delete the account within 5 business days." },
+  { id: "4", title: "International Users & GDPR", content: "Bymyzai is operated by BYMYZAI LLC, a New Jersey Limited Liability Company (Entity ID 0451511216). If you are located in the EEA, United Kingdom, or Switzerland, you have additional rights under the GDPR, including: access, rectification, erasure, restriction, portability, and withdrawal of consent at any time.", callout: "Legal basis (GDPR Art. 6): Contract performance, legitimate interest in platform operation, and explicit consent where required." },
+  { id: "5", title: "Contact", content: "For questions regarding this disclaimer or your data rights: cgonzalez@bymyzai.com — BYMYZAI LLC, 405 King George Road 221, Basking Ridge, NJ 07920. We respond within 30 days. EEA users may also lodge a complaint with their local supervisory authority.", callout: null },
+];
+
 export default function DisclaimerClient() {
-  const [lang, setLang] = useState<"en" | "es">("es");
-  const s = {
-    page: { minHeight: "100vh", background: "#0F1420", padding: "40px 20px", fontFamily: "'DM Sans',sans-serif" },
-    wrap: { maxWidth: "700px", margin: "0 auto", color: "#B3BDD1", lineHeight: 1.7 },
-    h1: { fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "26px", marginBottom: "8px" },
-    date: { fontSize: "12px", color: "#7E8798", marginBottom: "24px" },
-    h2: { fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "18px", margin: "24px 0 10px" },
-    p: { marginBottom: "16px" },
-    a: { color: "#7B61FF" },
-    callout: { background: "#1E2533", border: "1px solid #324055", borderLeft: "3px solid #F2C04D", borderRadius: "8px", padding: "12px 16px", marginTop: "12px", marginBottom: "16px", fontSize: "14px" },
-    betaNotice: { background: "#1E2533", border: "1px solid #324055", borderLeft: "3px solid #7B61FF", borderRadius: "8px", padding: "14px 16px", marginBottom: "32px", fontSize: "14px" },
-    toggle: { display: "flex", gap: "4px", background: "#1E2533", border: "1px solid #324055", borderRadius: "8px", padding: "4px", marginBottom: "32px", width: "fit-content" },
-    btnActive: { background: "#7B61FF", color: "#fff", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" },
-    btnInactive: { background: "none", color: "#7E8798", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" },
-    ul: { paddingLeft: "20px", marginBottom: "16px" },
-    li: { marginBottom: "6px" },
-  } as const;
-
-  const en = (
-    <>
-      <h1 style={s.h1}>Disclaimer — Bymyzai</h1>
-      <p style={s.date}>Last updated: July 2025</p>
-
-      <div style={s.betaNotice}>
-        <strong style={{ color: "#A78BFA", display: "block", marginBottom: "6px" }}>Public Beta Notice</strong>
-        Bymyzai is currently available as a Public Beta. The platform is actively being tested and refined before its official commercial launch. During this period, features, content, pricing, availability, and functionality may change without prior notice. Some areas of the platform may still be under development or subject to improvement as feedback is incorporated. Use of the platform during this beta period is intended for testing, evaluation, and continuous improvement.
-      </div>
-
-      <p style={s.p}>Please read this disclaimer carefully before using Bymyzai.</p>
-
-      <h2 style={s.h2}>1. Educational Content</h2>
-      <p style={s.p}>Bymyzai provides AI literacy and skills education for informational and developmental purposes only. All content — including lessons, projects, assessments, and AI mentor interactions — does not constitute professional, academic, legal, financial, or career advice.</p>
-      <p style={s.p}>Completion of any Bymyzai level, certificate, or program does not guarantee employment, admission to any institution, or professional certification. Results depend on each learner's individual effort and circumstances.</p>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Note:</strong> Bymyzai certificates represent demonstrated learning milestones within the platform. They are not accredited academic credentials under U.S. or international law.</div>
-
-      <h2 style={s.h2}>2. Use of Artificial Intelligence</h2>
-      <p style={s.p}>Bymyzai uses third-party AI models (including Anthropic's Claude) to power interactive lessons, the ZAI mentor, and personalized features. By using the platform, you acknowledge:</p>
-      <ul style={s.ul}>
-        <li style={s.li}>AI-generated responses may contain errors or outdated information.</li>
-        <li style={s.li}>AI output is not a substitute for qualified human professional advice.</li>
-        <li style={s.li}>The ZAI mentor has no real emotions, no persistent memory, and no independent judgment.</li>
-        <li style={s.li}>Your interactions may be processed by third-party AI providers subject to their own policies.</li>
-        <li style={s.li}>Bymyzai does not use your personal learning data to train external AI models without explicit opt-in consent.</li>
-      </ul>
-
-      <h2 style={s.h2}>3. Minimum Age Requirement</h2>
-      <p style={s.p}>Bymyzai is available exclusively to users aged 16 and older. Users between 16 and 17 years of age must have verifiable parental or guardian consent before creating an account.</p>
-      <ul style={s.ul}>
-        <li style={s.li}>Users under 16 are strictly prohibited from registering or using the platform.</li>
-        <li style={s.li}>Parental consent for users aged 16–17 is obtained via email confirmation prior to account activation.</li>
-        <li style={s.li}>Parents or guardians may request access, correction, or deletion of their child's data at <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
-      </ul>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Parents:</strong> If your child under 16 has registered on Bymyzai, contact <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> and we will delete the account within 5 business days.</div>
-
-      <h2 style={s.h2}>4. International Users & GDPR</h2>
-      <p style={s.p}>Bymyzai is operated by Carlos Eduardo Gonzalez Fernandez, an individual based in New Jersey, United States, governed by the laws of New Jersey and applicable U.S. federal law.</p>
-      <p style={s.p}>If you are located in the EEA, United Kingdom, or Switzerland, you have additional rights under the GDPR, including: access, rectification, erasure, restriction, portability, and withdrawal of consent at any time.</p>
-      <p style={s.p}>By using Bymyzai from outside the United States, you consent to the transfer and processing of your data in the United States. We apply appropriate safeguards consistent with GDPR requirements.</p>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Legal basis (GDPR Art. 6):</strong> Contract performance, legitimate interest in platform operation, and explicit consent where required.</div>
-
-      <h2 style={s.h2}>5. Contact</h2>
-      <p style={{ ...s.p, marginBottom: "40px" }}>For questions regarding this disclaimer or your data rights: <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>. We respond within 30 days. EEA users may also lodge a complaint with their local supervisory authority.</p>
-    </>
-  );
-
-  const es = (
-    <>
-      <h1 style={s.h1}>Aviso Legal — Bymyzai</h1>
-      <p style={s.date}>Ultima actualizacion: julio 2025</p>
-
-      <div style={s.betaNotice}>
-        <strong style={{ color: "#A78BFA", display: "block", marginBottom: "6px" }}>Aviso de Beta Publica</strong>
-        Bymyzai esta disponible actualmente como Beta Publica. La plataforma se encuentra en proceso activo de prueba y refinamiento previo a su lanzamiento comercial oficial. Durante este periodo, las funciones, el contenido, los precios, la disponibilidad y las funcionalidades pueden cambiar sin previo aviso. Algunas areas de la plataforma pueden estar aun en desarrollo o sujetas a mejoras a medida que se incorpora el feedback de los usuarios. El uso de la plataforma durante este periodo beta esta destinado a pruebas, evaluacion y mejora continua.
-      </div>
-
-      <p style={s.p}>Lee este aviso detenidamente antes de usar Bymyzai.</p>
-
-      <h2 style={s.h2}>1. Contenido Educativo</h2>
-      <p style={s.p}>Bymyzai proporciona educacion en inteligencia artificial con fines informativos y de desarrollo unicamente. Todo el contenido — incluyendo lecciones, proyectos, evaluaciones e interacciones con ZAI — no constituye asesoramiento profesional, academico, legal, financiero ni laboral.</p>
-      <p style={s.p}>Completar cualquier nivel, certificado o programa de Bymyzai no garantiza empleo, admision a ninguna institucion ni certificacion profesional. Los resultados dependen del esfuerzo y circunstancias individuales de cada estudiante.</p>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Nota:</strong> Los certificados de Bymyzai representan hitos de aprendizaje dentro de la plataforma. No son credenciales academicas acreditadas bajo la ley estadounidense ni internacional.</div>
-
-      <h2 style={s.h2}>2. Uso de Inteligencia Artificial</h2>
-      <p style={s.p}>Bymyzai utiliza modelos de IA de terceros (incluyendo Claude de Anthropic) para las lecciones, el mentor ZAI y las funciones personalizadas. Al usar la plataforma, reconoces que:</p>
-      <ul style={s.ul}>
-        <li style={s.li}>Las respuestas generadas por IA pueden contener errores o informacion desactualizada.</li>
-        <li style={s.li}>El resultado de la IA no sustituye el consejo profesional humano calificado.</li>
-        <li style={s.li}>ZAI no tiene emociones reales, memoria persistente ni juicio independiente.</li>
-        <li style={s.li}>Tus interacciones pueden ser procesadas por proveedores de IA de terceros sujetos a sus propias politicas.</li>
-        <li style={s.li}>Bymyzai no utiliza tus datos para entrenar modelos de IA externos sin consentimiento explicito.</li>
-      </ul>
-
-      <h2 style={s.h2}>3. Edad Minima Requerida</h2>
-      <p style={s.p}>Bymyzai esta disponible exclusivamente para usuarios de 16 anos de edad o mas. Los usuarios de entre 16 y 17 anos deben contar con el consentimiento verificable de sus padres o tutores antes de crear una cuenta.</p>
-      <ul style={s.ul}>
-        <li style={s.li}>Los usuarios menores de 16 anos tienen prohibido registrarse o usar la plataforma.</li>
-        <li style={s.li}>El consentimiento parental para usuarios de 16 a 17 anos se obtiene por confirmacion por correo previo a la activacion de la cuenta.</li>
-        <li style={s.li}>Los padres o tutores pueden solicitar acceso, correccion o eliminacion de los datos de su hijo en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>.</li>
-      </ul>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Padres:</strong> Si su hijo menor de 16 anos se ha registrado en Bymyzai, contactenos en <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a> y eliminaremos la cuenta en 5 dias habiles.</div>
-
-      <h2 style={s.h2}>4. Usuarios Internacionales y RGPD</h2>
-      <p style={s.p}>Bymyzai es operado por Carlos Eduardo Gonzalez Fernandez, individuo con domicilio en Nueva Jersey, Estados Unidos, regido por las leyes del Estado de Nueva Jersey y la legislacion federal aplicable.</p>
-      <p style={s.p}>Si te encuentras en el EEE, el Reino Unido o Suiza, cuentas con derechos adicionales bajo el RGPD: acceso, rectificacion, supresion, limitacion, portabilidad y retirada del consentimiento en cualquier momento.</p>
-      <p style={s.p}>Al usar Bymyzai desde fuera de Estados Unidos, consientes la transferencia y el tratamiento de tus datos en Estados Unidos. Aplicamos salvaguardias apropiadas conforme al RGPD.</p>
-      <div style={s.callout}><strong style={{ color: "#F2C04D" }}>Base juridica (Art. 6 RGPD):</strong> Ejecucion de contrato, interes legitimo en la operacion de la plataforma y consentimiento explicito donde sea requerido.</div>
-
-      <h2 style={s.h2}>5. Contacto</h2>
-      <p style={{ ...s.p, marginBottom: "40px" }}>Para consultas sobre este aviso o tus derechos: <a href="mailto:privacy@bymyzai.com" style={s.a}>privacy@bymyzai.com</a>. Respondemos en 30 dias. Los usuarios del EEE pueden tambien presentar una reclamacion ante su autoridad de control local.</p>
-    </>
-  );
+  const [lang, setLang] = useState<"es" | "en">("es");
+  const [open, setOpen] = useState<string | null>(null);
+  const sections = lang === "es" ? sections_es : sections_en;
 
   return (
-    <div style={s.page}>
-      <div style={s.wrap}>
-        <div style={s.toggle}>
-          <button style={lang === "es" ? s.btnActive : s.btnInactive} onClick={() => setLang("es")}>ES</button>
-          <button style={lang === "en" ? s.btnActive : s.btnInactive} onClick={() => setLang("en")}>EN</button>
+    <div style={{ minHeight: "100vh", background: "#0F1420", padding: "40px 20px", fontFamily: "'DM Sans',sans-serif" }}>
+      <div style={{ maxWidth: "720px", margin: "0 auto" }}>
+
+        <div style={{ marginBottom: "32px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+            <div>
+              <p style={{ fontSize: "12px", color: "#7B61FF", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "6px" }}>BYMYZAI LLC</p>
+              <h1 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, color: "#F8FAFF", fontSize: "28px", margin: 0 }}>
+                {lang === "es" ? "Aviso Legal" : "Disclaimer"}
+              </h1>
+              <p style={{ fontSize: "12px", color: "#7E8798", marginTop: "6px" }}>
+                {lang === "es" ? "Última actualización: agosto 2026" : "Last updated: August 2026"}
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: "4px", background: "#1E2533", border: "1px solid #324055", borderRadius: "8px", padding: "4px" }}>
+              <button onClick={() => setLang("es")} style={{ background: lang === "es" ? "#7B61FF" : "none", color: lang === "es" ? "#fff" : "#7E8798", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}>ES</button>
+              <button onClick={() => setLang("en")} style={{ background: lang === "en" ? "#7B61FF" : "none", color: lang === "en" ? "#fff" : "#7E8798", border: "none", borderRadius: "5px", padding: "4px 16px", fontFamily: "'DM Sans',sans-serif", fontWeight: 600, fontSize: "13px", cursor: "pointer" }}>EN</button>
+            </div>
+          </div>
         </div>
-        {lang === "en" ? en : es}
+
+        <div style={{ background: "#1E2533", border: "1px solid #324055", borderLeft: "3px solid #7B61FF", borderRadius: "10px", padding: "16px 20px", marginBottom: "32px", fontSize: "14px", color: "#B3BDD1" }}>
+          <strong style={{ color: "#A78BFA", display: "block", marginBottom: "6px" }}>
+            {lang === "es" ? "Aviso de Beta Pública" : "Public Beta Notice"}
+          </strong>
+          {lang === "es"
+            ? "Bymyzai está disponible actualmente como Beta Pública. La plataforma se encuentra en proceso activo de prueba y refinamiento. Durante este periodo, las funciones, el contenido, los precios y las funcionalidades pueden cambiar sin previo aviso."
+            : "Bymyzai is currently available as a Public Beta. The platform is actively being tested and refined. During this period, features, content, pricing, and functionality may change without prior notice."}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {sections.map((s) => (
+            <div key={s.id} style={{ background: "#161C27", border: "1px solid #324055", borderRadius: "10px", overflow: "hidden" }}>
+              <button
+                onClick={() => setOpen(open === s.id ? null : s.id)}
+                style={{ width: "100%", background: "none", border: "none", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", textAlign: "left" }}
+              >
+                <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <span style={{ background: "#242E40", color: "#7B61FF", fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "11px", borderRadius: "6px", padding: "2px 8px", minWidth: "28px", textAlign: "center" }}>{s.id}</span>
+                  <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "15px" }}>{s.title}</span>
+                </span>
+                <span style={{ color: "#7B61FF", fontSize: "18px", fontWeight: 700, transform: open === s.id ? "rotate(45deg)" : "rotate(0deg)", display: "inline-block" }}>+</span>
+              </button>
+              {open === s.id && (
+                <div style={{ padding: "0 20px 20px 20px", color: "#B3BDD1", fontSize: "14px", lineHeight: 1.7, borderTop: "1px solid #242E40" }}>
+                  <p style={{ marginTop: "16px", marginBottom: s.callout ? "12px" : 0 }}>{s.content}</p>
+                  {s.callout && (
+                    <div style={{ background: "#242E40", border: "1px solid #324055", borderLeft: "3px solid #F2C04D", borderRadius: "8px", padding: "10px 14px", fontSize: "13px", color: "#B3BDD1" }}>
+                      {s.callout}
+                      {s.id === "3" && (
+                        <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "6px", fontWeight: 600 }}>cgonzalez@bymyzai.com</a>
+                      )}
+                    </div>
+                  )}
+                  {s.id === "5" && (
+                    <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", display: "inline-block", marginTop: "8px", fontWeight: 600 }}>cgonzalez@bymyzai.com</a>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: "40px", padding: "20px", background: "#161C27", border: "1px solid #324055", borderRadius: "10px", textAlign: "center" }}>
+          <p style={{ color: "#7E8798", fontSize: "12px", margin: 0 }}>
+            BYMYZAI LLC · Entity ID 0451511216 · 405 King George Road 221, Basking Ridge, NJ 07920
+          </p>
+          <a href="mailto:cgonzalez@bymyzai.com" style={{ color: "#7B61FF", fontSize: "13px", fontWeight: 600, display: "block", marginTop: "6px" }}>cgonzalez@bymyzai.com</a>
+        </div>
+
       </div>
     </div>
   );
