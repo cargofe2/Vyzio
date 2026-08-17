@@ -314,11 +314,11 @@ export default function ProfilePage() {
 
         <section>
           <div style={{ display: "flex", gap: "8px", padding: "0 4px" }}>
-            <Link href="/terms" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("terms")}</Link>
+            <Link href="/terms" style={{ fontSize: "13px", color: "#7B61FF", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{t("terms")}</Link>
             <span style={{ color: "#324055" }}>·</span>
-            <Link href="/privacy" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("privacy")}</Link>
+            <Link href="/privacy" style={{ fontSize: "13px", color: "#7B61FF", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{t("privacy")}</Link>
             <span style={{ color: "#324055" }}>·</span>
-            <Link href="/disclaimer" style={{ fontSize: "11px", color: "#7E8798", textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("disclaimer")}</Link>
+            <Link href="/disclaimer" style={{ fontSize: "13px", color: "#7B61FF", textDecoration: "none", fontFamily: "'DM Sans',sans-serif", fontWeight: 600 }}>{t("disclaimer")}</Link>
           </div>
         </section>
       </div>
