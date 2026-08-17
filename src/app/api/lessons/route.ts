@@ -66,7 +66,8 @@ export async function GET(req: NextRequest) {
         },
       });
       const isPaywalled = !levelIsFree && plan === "STARTER" && freeLimitForWorld === 0;
-      const lessons = isPaywalled ? [] : (!levelIsFree && plan === "STARTER" ? allLessons.slice(0, freeLimitForWorld) : allLessons);
+      const freeCount = !levelIsFree && plan === "STARTER" ? freeLimitForWorld : allLessons.length;
+      const lessons = allLessons;
 
       // Get user progress
       const user = await prisma.user.findUnique({ where: { clerkId } });
@@ -89,6 +90,7 @@ export async function GET(req: NextRequest) {
           ...l,
           title: userLang === "en" && l.title_en ? l.title_en : l.title,
           progress: lessonProgress[l.id] ?? null,
+          locked: !levelIsFree && plan === "STARTER" && l.order > freeCount,
         })),
       });
     }

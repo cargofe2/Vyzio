@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useUserLang } from "@/hooks/useUserLang";
 
 interface World { id: string; name: string; name_en?: string; emoji: string; description: string; lessonCount: number; pctComplete: number; order: number; slug: string; levelId?: string; isOptional?: boolean; }
-interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; }
+interface Lesson { id: string; number: number; title: string; type: string; durationMin: number; xpReward: number; order: number; progress: { completed: boolean; score: number | null } | null; locked?: boolean; }
 
 const LEVEL_NAMES: Record<string, string> = {
   "level-1": "Nivel 0 · Origins", "level-new-1": "Nivel 1 · Explorer", "level-new-2": "Nivel 2 · Thinker",
@@ -344,8 +344,8 @@ function WorldsContent() {
             const isNext = !done && lessons.slice(0, i).every(l => l.progress?.completed);
             const typeCfg = TYPE_CONFIG[lesson.type] ?? TYPE_CONFIG.READING;
             return (
-              <Link key={lesson.id} href={`/lesson/${lesson.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", borderRadius: "18px", background: done ? "rgba(52,211,153,0.05)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)" }}>
+              <Link key={lesson.id} href={lesson.locked ? "/pricing" : `/lesson/${lesson.id}`} style={{ textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", borderRadius: "18px", background: done ? "rgba(52,211,153,0.05)" : lesson.locked ? "rgba(255,255,255,0.02)" : isNext ? v.bg : "rgba(123,97,255,0.04)", border: done ? "1px solid rgba(52,211,153,0.18)" : lesson.locked ? "1px solid rgba(255,255,255,0.06)" : isNext ? `1px solid ${v.border}` : "1px solid rgba(123,97,255,0.08)", opacity: lesson.locked ? 0.5 : 1 }}>
                   <div style={{ width: "36px", height: "36px", borderRadius: "11px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "rgba(52,211,153,0.12)" : typeCfg.bg, border: `1px solid ${done ? "rgba(52,211,153,0.2)" : typeCfg.color + "30"}`, fontFamily: "'Syne',sans-serif", fontSize: done ? "14px" : "16px", fontWeight: 800, color: done ? "#34D399" : typeCfg.color }}>
                     {done ? "✓" : renderWorldIcon(typeCfg.icon, 16)}
                   </div>
