@@ -65,9 +65,8 @@ export async function GET(req: NextRequest) {
           },
         },
       });
-      const lessons = (!levelIsFree && plan === "STARTER")
-        ? (freeLimitForWorld > 0 ? allLessons.slice(0, freeLimitForWorld) : [])
-        : allLessons;
+      const isPaywalled = !levelIsFree && plan === "STARTER" && freeLimitForWorld === 0;
+      const lessons = isPaywalled ? [] : (!levelIsFree && plan === "STARTER" ? allLessons.slice(0, freeLimitForWorld) : allLessons);
 
       // Get user progress
       const user = await prisma.user.findUnique({ where: { clerkId } });
@@ -84,6 +83,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         world,
+        paywalled: isPaywalled,
         lessons: lessons.map((l: any) => ({
           ...l,
           ...l,

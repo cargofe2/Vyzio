@@ -247,6 +247,7 @@ function WorldsContent() {
   const [selectedWorld, setSelectedWorld] = useState<World | null>(null);
   const [loading, setLoading] = useState(true);
   const [plan, setPlan] = useState("STARTER");
+  const [paywalled, setPaywalled] = useState(false);
   const [evalMode, setEvalMode] = useState(false);
 
   useEffect(() => {
