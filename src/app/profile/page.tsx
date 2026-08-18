@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useEffect, useState, ReactElement } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
@@ -209,7 +209,7 @@ export default function ProfilePage() {
           </button>
           <div style={{ flex: 1 }}>
             <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}>
-              <h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || t("student")}</h1>
+              <h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || t("student")}</h1>{plan !== "STARTER" && <span style={{ display:"inline-flex",alignItems:"center",gap:"3px",fontSize:"9px",padding:"3px 8px",borderRadius:"20px",fontWeight:800,background:"linear-gradient(135deg,#7B61FF,#468BFF)",color:"#fff",fontFamily:"'Syne',sans-serif",marginLeft:"6px",letterSpacing:"0.05em",boxShadow:"0 0 10px #7B61FF44",verticalAlign:"middle" }}>PRO</span>}
               <button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>âœŽ</button>
             </div>
             <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
