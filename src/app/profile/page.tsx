@@ -104,6 +104,7 @@ export default function ProfilePage() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [avatarId, setAvatarId] = useState("orb-1");
   const [plan, setPlan] = useState<string>("STARTER");
+  const [portalLoading, setPortalLoading] = useState(false);
   const [currentLevel, setCurrentLevel] = useState<{ id: string; name: string; name_en?: string } | null>(null);
   const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
   const [unlockedAvatars, setUnlockedAvatars] = useState<string[]>([]);
@@ -127,6 +128,16 @@ export default function ProfilePage() {
     { id: "level-new-7", label: { es: "Nivel 7 — Researcher", en: "Level 7 — Researcher" } },
     { id: "level-new-8", label: { es: "Nivel 8 — Residency",  en: "Level 8 — Residency" } },
   ];
+
+  async function manageSubscription() {
+    setPortalLoading(true);
+    try {
+      const res = await fetch("/api/stripe/portal", { method: "POST" });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch { alert("Error"); }
+    finally { setPortalLoading(false); }
+  }
 
   async function saveName() {
     if (!nameInput.trim()) return;
@@ -312,6 +323,7 @@ export default function ProfilePage() {
             </div>
           )}
         </section>
+        {plan !== "STARTER" && (<section style={{ marginBottom: "12px" }}><button onClick={manageSubscription} disabled={portalLoading} style={{ width: "100%", padding: "12px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.3)", borderRadius: "12px", color: "#C7D2FE", fontSize: "13px", fontWeight: 700, cursor: portalLoading ? "wait" : "pointer", fontFamily: "DM Sans,sans-serif", opacity: portalLoading ? 0.7 : 1 }}>{portalLoading ? "..." : lang === "en" ? "Manage subscription" : "Gestionar suscripcion"}</button></section>)}
 
         <section>
           <div style={{ display: "flex", gap: "8px", padding: "0 4px" }}>
