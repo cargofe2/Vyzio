@@ -5,7 +5,7 @@ const sections_es = [
   { id: "1", title: "Aceptacion", content: "Al registrarte y usar la Plataforma, aceptas estos Terminos en su totalidad. Si no estas de acuerdo, no debes usar la Plataforma. BYMYZAI LLC se reserva el derecho de modificar estos Terminos en cualquier momento con notificacion previa de 30 dias." },
   { id: "2", title: "Elegibilidad y Edad Minima", content: "La Plataforma esta disponible unicamente para personas de 16 anos o mas. Si tienes entre 16 y 17 anos, declaras contar con el consentimiento de tu padre, madre o tutor legal. BYMYZAI LLC puede suspender cuentas que no cumplan este requisito sin previo aviso." },
   { id: "3", title: "Descripcion del Servicio", content: "Bymyzai es una plataforma educativa de inteligencia artificial con contenido gamificado, mentor de IA (ZAI), progresion por niveles y certificacion de competencias. El servicio se presta tal cual y puede modificarse sin previo aviso." },
-  { id: "4", title: "Planes y Pagos", content: "Ofrecemos un plan gratuito (STARTER) y planes de pago (PRO Mensual $5/mes, PRO Anual $39/ano). Las suscripciones se renuevan automaticamente. Puedes cancelar en cualquier momento. Reembolso completo disponible dentro de los 14 dias siguientes a la primera suscripcion." },
+  { id: "4", title: "Planes y Pagos", content: "Ofrecemos un plan gratuito (STARTER) y planes de pago (PRO Mensual $5/mes, PRO Anual $49/ano). Las suscripciones se renuevan automaticamente. Puedes cancelar en cualquier momento. Reembolso completo disponible dentro de los 14 dias siguientes a la primera suscripcion." },
   { id: "5", title: "Propiedad Intelectual", content: "Todo el contenido educativo, marca, software, curriculum, metodologia y diseno de la Plataforma son propiedad exclusiva de BYMYZAI LLC. Queda prohibida su reproduccion, distribucion o uso comercial sin autorizacion escrita. El contenido que envies conserva tu titularidad; nos otorgas licencia para almacenarlo, mostrarlo y evaluarlo." },
   { id: "6", title: "Uso del Mentor ZAI", content: "ZAI es un sistema de inteligencia artificial que puede generar respuestas incorrectas o incompletas. No sustituye la supervision de un docente, tutor legal o profesional cualificado. BYMYZAI LLC no asume responsabilidad por decisiones tomadas basandose en respuestas de ZAI." },
   { id: "7", title: "Certificaciones", content: "Los certificados de Bymyzai son verificables publicamente mediante codigo unico. No son credenciales academicas oficiales, titulos universitarios ni certificaciones emitidas por el gobierno. Representan competencias demostradas dentro del curriculum de Bymyzai. No garantizamos reconocimiento oficial ante instituciones o empleadores." },
@@ -22,7 +22,7 @@ const sections_en = [
   { id: "1", title: "Acceptance", content: "By registering and using the Platform, you accept these Terms in full. If you disagree, you must not use the Platform. BYMYZAI LLC reserves the right to modify these Terms at any time with 30 days prior notice." },
   { id: "2", title: "Eligibility and Minimum Age", content: "The Platform is available exclusively to users aged 16 or older. If you are between 16 and 17 years old, you declare that you have parental or guardian consent. BYMYZAI LLC may suspend accounts that do not meet this requirement without prior notice." },
   { id: "3", title: "Service Description", content: "Bymyzai is an AI education platform with gamified content, an AI mentor (ZAI), level-based progression, and competency certification. The service is provided as-is and may be modified without prior notice." },
-  { id: "4", title: "Plans and Payments", content: "We offer a free plan (STARTER) and paid plans (PRO Monthly $5/mo, PRO Annual $39/yr). Subscriptions renew automatically. You may cancel at any time. Full refund available within 14 days of first subscription." },
+  { id: "4", title: "Plans and Payments", content: "We offer a free plan (STARTER) and paid plans (PRO Monthly $5/mo, PRO Annual $49/yr). Subscriptions renew automatically. You may cancel at any time. Full refund available within 14 days of first subscription." },
   { id: "5", title: "Intellectual Property", content: "All educational content, brand, software, curriculum, methodology and design of the Platform are the exclusive property of BYMYZAI LLC. Reproduction, distribution or commercial use without written authorization is prohibited. Content you submit remains yours; you grant us a license to store, display and evaluate it." },
   { id: "6", title: "Use of ZAI Mentor", content: "ZAI is an AI system that may generate incorrect or incomplete responses. It does not replace the supervision of a teacher, legal guardian or qualified professional. BYMYZAI LLC assumes no responsibility for decisions made based on ZAI responses." },
   { id: "7", title: "Certifications", content: "Bymyzai certificates are publicly verifiable via unique code. They are not official academic credentials, university degrees or government-issued certifications. They represent demonstrated competencies within the Bymyzai curriculum. We do not guarantee official recognition by institutions or employers." },
@@ -60,7 +60,7 @@ Al acceder, registrarse o utilizar la plataforma Bymyzai (en adelante "la Plataf
 3.4 Queda prohibida la creacion de multiples cuentas por el mismo usuario.
 
 4. PLANES Y PAGOS
-4.1 BYMYZAI LLC ofrece los siguientes planes: STARTER (gratuito), PRO Mensual ($5.00 USD/mes) y PRO Anual ($39.00 USD/ano).
+4.1 BYMYZAI LLC ofrece los siguientes planes: STARTER (gratuito), PRO Mensual ($5.00 USD/mes) y PRO Anual ($49.00 USD/ano).
 4.2 Las suscripciones de pago se renuevan automaticamente al final de cada periodo salvo cancelacion previa.
 4.3 El Usuario puede cancelar su suscripcion en cualquier momento desde su perfil.
 4.4 POLITICA DE REEMBOLSO: Se otorgara reembolso completo si se solicita dentro de los 14 dias calendario siguientes a la primera suscripcion. No se otorgaran reembolsos despues de este periodo salvo error de facturacion comprobable.
@@ -155,7 +155,7 @@ By accessing, registering for, or using the Bymyzai platform (hereinafter "the P
 3.4 Creating multiple accounts by the same user is prohibited.
 
 4. PLANS AND PAYMENTS
-4.1 BYMYZAI LLC offers the following plans: STARTER (free), PRO Monthly ($5.00 USD/month) and PRO Annual ($39.00 USD/year).
+4.1 BYMYZAI LLC offers the following plans: STARTER (free), PRO Monthly ($5.00 USD/month) and PRO Annual ($49.00 USD/year).
 4.2 Paid subscriptions automatically renew at the end of each period unless cancelled beforehand.
 4.3 The User may cancel their subscription at any time from their profile.
 4.4 REFUND POLICY: A full refund will be granted if requested within 14 calendar days of the first subscription. No refunds will be granted after this period except for demonstrable billing errors.
