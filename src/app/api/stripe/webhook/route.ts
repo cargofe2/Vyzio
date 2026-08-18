@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         const sub = event.data.object as Stripe.Subscription;
         const userId = sub.metadata?.userId;
         if (!userId) break;
-        const status = sub.status === "active" ? "ACTIVE" : "CANCELLED";
+        const status = sub.status === "active" ? "ACTIVE" : "CANCELED";
         await prisma.subscription.updateMany({
           where: { userId },
           data: { status, stripeSubscriptionId: sub.id },
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         if (!userId) break;
         await prisma.subscription.updateMany({
           where: { userId },
-          data: { plan: "STARTER", status: "CANCELLED" },
+          data: { plan: "STARTER", status: "CANCELED" },
         });
         break;
       }
