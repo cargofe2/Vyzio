@@ -216,17 +216,17 @@ export default function ProfilePage() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
           <button onClick={() => setAvatarPickerOpen(true)} style={{ width: "64px", height: "64px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,97,255,0.12)", border: `2px solid ${rankCfg.color}`, flexShrink: 0, overflow: "hidden", padding: 0, cursor: "pointer", position: "relative" }}>
             <AvatarIcon id={avatarId} size={60} />
-            <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "9px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
+            <span style={{ position: "absolute", bottom: "-2px", right: "-2px", width: "18px", height: "18px", borderRadius: "50%", background: "#7B61FF", border: "2px solid #0F1420", fontSize: "13px", display: "flex", alignItems: "center", justifyContent: "center" }}>✎</span>
           </button>
           <div style={{ flex: 1 }}>
             <div style={{ display:"flex",alignItems:"center",gap:"6px",marginBottom:"2px" }}>
               <h1 style={{ fontFamily:"'Syne',sans-serif",fontWeight:900,fontSize:"17px",color:"#fff" }}>{displayName || user?.fullName || t("student")}</h1>
               <button onClick={() => { setNameInput(displayName||""); setEditingName(true); }} style={{ background:"none",border:"none",color:"#7B61FF",cursor:"pointer",fontSize:"12px",padding:"2px 4px" }}>✎</button>
             </div>
-            <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
-            <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: rankCfg.color + "18", color: rankCfg.color, border: "1px solid " + rankCfg.color + "33", fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
-            {plan !== "STARTER" && <span style={{ fontSize: "9px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: "#7B61FF18", color: "#7B61FF", border: "1px solid #7B61FF33", fontFamily: "'DM Sans',sans-serif", marginLeft: "4px" }}>PRO</span>}
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.2)", marginBottom: "3px", fontFamily: "'DM Sans',sans-serif" }}>{user?.primaryEmailAddress?.emailAddress}</p>
+            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)", marginBottom: "6px", fontFamily: "'DM Sans',sans-serif" }}>@{user?.username ?? user?.firstName?.toLowerCase() ?? "usuario"}</p>
+            <span style={{ fontSize: "13px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: rankCfg.color + "18", color: rankCfg.color, border: "1px solid " + rankCfg.color + "33", fontFamily: "'DM Sans',sans-serif" }}>{rankCfg.label} · Lv.{gamification?.rankLevel ?? 1}</span>
+            {plan !== "STARTER" && <span style={{ fontSize: "13px", padding: "2px 8px", borderRadius: "8px", fontWeight: 700, background: "#7B61FF18", color: "#7B61FF", border: "1px solid #7B61FF33", fontFamily: "'DM Sans',sans-serif", marginLeft: "4px" }}>PRO</span>}
             {editingName && (<div style={{ display:"flex",gap:"6px",marginTop:"6px" }}><input value={nameInput} onChange={e => setNameInput(e.target.value)} autoFocus style={{ flex:1,background:"#0F1420",border:"1px solid #7B61FF",borderRadius:"8px",padding:"4px 8px",color:"#F8FAFF",fontSize:"14px",fontFamily:"DM Sans,sans-serif" }} /><button onClick={saveName} style={{ padding:"4px 10px",background:"#7B61FF",color:"#fff",borderRadius:"7px",fontSize:"11px",fontWeight:700,border:"none",cursor:"pointer" }}>OK</button><button onClick={() => setEditingName(false)} style={{ padding:"4px 8px",background:"#324055",color:"#fff",borderRadius:"7px",fontSize:"11px",border:"none",cursor:"pointer" }}>X</button></div>)}
           </div>
           <LangToggle />
@@ -249,7 +249,7 @@ export default function ProfilePage() {
           {[[String(gamification?.lessonsCompleted ?? 0), t("lessons")], [xp.toLocaleString(), t("xpTotal")], [`${gamification?.streakDays ?? 0}`, t("streak")]].map(([v, l], i) => (
             <div key={l} style={{ padding: "12px", textAlign: "center", borderLeft: i > 0 ? "1px solid rgba(123,97,255,0.1)" : "none" }}>
               <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 900, fontSize: "15px", color: "#fff" }}>{v}</div>
-              <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.25)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
+              <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.25)", marginTop: "2px", fontFamily: "'DM Sans',sans-serif" }}>{l}</div>
             </div>
           ))}
         </div>
@@ -263,7 +263,7 @@ export default function ProfilePage() {
             <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>{renderWorldIcon(LEVEL_ICON[currentLevel?.id ?? "level-1"] ?? "🌱", 20)}</div>
             <div>
               <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{t("currentLevel")} {levelName}</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{t("continueNow")}</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{t("continueNow")}</p>
             </div>
           </div>
         </Link>
@@ -273,25 +273,25 @@ export default function ProfilePage() {
           <div style={{ width: "40px", height: "40px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center" }}>{renderWorldIcon("🎓", 20)}</div>
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{t("certificates")}</p>
-            <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{t("certDesc")}</p>
+            <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.35)", fontFamily: "'DM Sans',sans-serif" }}>{t("certDesc")}</p>
           </div>
-          <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "11px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("goArrow")}</Link>
+          <Link href="/worlds" style={{ padding: "6px 12px", background: "#7B61FF", color: "#fff", borderRadius: "10px", fontSize: "13px", fontWeight: 700, textDecoration: "none", fontFamily: "'DM Sans',sans-serif" }}>{t("goArrow")}</Link>
         </div>
 
         {/* Certificados lista */}
         <section style={{ marginBottom: "20px" }}>
-          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>{t("certificates")}</h2>
+          <h2 style={{ fontSize: "14px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>{t("certificates")}</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {LEVELS.map(lvl => (
               <div key={lvl.id} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <div style={{ width: "32px", height: "32px", background: "rgba(123,97,255,0.1)", border: "1px solid rgba(123,97,255,0.2)", borderRadius: "9px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{renderWorldIcon(LEVEL_ICON[lvl.id] ?? "🌱", 16)}</div>
-                  <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label[lang]}</p>
+                  <p style={{ fontSize: "14px", fontWeight: 600, color: "#fff", fontFamily: "'DM Sans',sans-serif" }}>{lvl.label[lang]}</p>
                 </div>
                 {certMsg[lvl.id] ? (
-                  <p style={{ fontSize: "10px", color: certMsg[lvl.id].startsWith("✓") ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>{certMsg[lvl.id]}</p>
+                  <p style={{ fontSize: "14px", color: certMsg[lvl.id].startsWith("✓") ? "#34D399" : "#FB923C", fontFamily: "'DM Sans',sans-serif" }}>{certMsg[lvl.id]}</p>
                 ) : (
-                  <button onClick={() => claimCertificate(lvl.id)} disabled={certLoading === lvl.id} style={{ padding: "6px 12px", borderRadius: "10px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", color: "#C7D2FE", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                  <button onClick={() => claimCertificate(lvl.id)} disabled={certLoading === lvl.id} style={{ padding: "6px 12px", borderRadius: "10px", background: "rgba(123,97,255,0.15)", border: "1px solid rgba(123,97,255,0.3)", color: "#C7D2FE", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
                     {certLoading === lvl.id ? "..." : t("claim")}
                   </button>
                 )}
@@ -302,24 +302,24 @@ export default function ProfilePage() {
 
         {/* Logros */}
         <section>
-          <h2 style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>{t("achievements")}</h2>
+          <h2 style={{ fontSize: "14px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "rgba(255,255,255,0.25)", marginBottom: "10px", fontFamily: "'DM Sans',sans-serif" }}>{t("achievements")}</h2>
           {loading ? (
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>{t("loading")}</p>
+            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.25)", textAlign: "center", fontFamily: "'DM Sans',sans-serif" }}>{t("loading")}</p>
           ) : achievements.length > 0 ? (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {achievements.map((a, i) => (
                 <div key={i} style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "14px", padding: "12px" }}>
                   <div style={{ fontSize: "24px", marginBottom: "6px" }}>{a.achievement.emoji}</div>
-                  <p style={{ fontWeight: 700, fontSize: "11px", color: "#fff", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.name}</p>
-                  <p style={{ fontSize: "9px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.description}</p>
+                  <p style={{ fontWeight: 700, fontSize: "13px", color: "#fff", marginBottom: "2px", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.name}</p>
+                  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{a.achievement.description}</p>
                 </div>
               ))}
             </div>
           ) : (
             <div style={{ background: "rgba(123,97,255,0.05)", border: "1px solid rgba(123,97,255,0.1)", borderRadius: "16px", padding: "24px", textAlign: "center" }}>
               <div style={{ width: "44px", height: "44px", margin: "0 auto 10px", borderRadius: "14px", background: "rgba(123,97,255,0.12)", border: "1px solid rgba(123,97,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#A78BFA" }}>{renderWorldIcon("🏆", 24)}</div>
-              <p style={{ fontSize: "12px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
-              <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
+              <p style={{ fontSize: "14px", fontWeight: 600, color: "#fff", marginBottom: "4px", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchiev")}</p>
+              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans',sans-serif" }}>{t("noAchievSub")}</p>
             </div>
           )}
         </section>
@@ -341,7 +341,7 @@ export default function ProfilePage() {
           <div onClick={e => e.stopPropagation()} style={{ background: "#1E2533", border: "1px solid #324055", borderRadius: "18px 18px 0 0", padding: "20px", width: "100%", maxWidth: "480px", maxHeight: "70vh", overflowY: "auto", display: "flex", flexDirection: "column", gap: "14px" }}>
             <p style={{ fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#F8FAFF", fontSize: "15px" }}>{t("chooseAvatar")}</p>
             <div>
-              <p style={{ fontSize: "10px", fontWeight: 700, color: "#7E8798", marginBottom: "8px" }}>{t("free")}</p>
+              <p style={{ fontSize: "14px", fontWeight: 700, color: "#7E8798", marginBottom: "8px" }}>{t("free")}</p>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 {FREE_AVATAR_IDS.map(id => (
                   <button key={id} disabled={avatarSaving} onClick={() => selectAvatar(id)} style={{ width: "48px", height: "48px", borderRadius: "12px", padding: 0, background: avatarId === id ? "rgba(123,97,255,0.25)" : "#161C27", border: avatarId === id ? "1px solid #7B61FF" : "1px solid #324055", cursor: "pointer", overflow: "hidden" }}><AvatarIcon id={id} size={48} /></button>
@@ -350,8 +350,8 @@ export default function ProfilePage() {
             </div>
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                <p style={{ fontSize: "10px", fontWeight: 700, color: "#7E8798" }}>{t("premium")}</p>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: "#F2C04D" }}>🪙 {gamification?.vyCoins ?? 0}</span>
+                <p style={{ fontSize: "14px", fontWeight: 700, color: "#7E8798" }}>{t("premium")}</p>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: "#F2C04D" }}>🪙 {gamification?.vyCoins ?? 0}</span>
               </div>
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                 {PREMIUM_AVATAR_IDS.map(([id, price]) => {
