@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,17 +11,19 @@
   --byzai-cyan: #26C6DA;
   --byzai-bg: #0F1420;
   --byzai-surface: #161C27;
-  --byzai-card: #1E2533;
-  --byzai-card-highlight: #242E40;
+  --byzai-card: #232D40;
+  --byzai-card-highlight: #2A3550;
   --byzai-border: #324055;
   --byzai-divider: #2A3445;
   --byzai-text-primary: #F8FAFF;
   --byzai-text-secondary: #B3BDD1;
   --byzai-text-tertiary: #7E8798;
   --byzai-success: #36D399;
-  --byzai-warning: #26C6DA;
+  --byzai-warning: #F2C04D;
   --byzai-info: #468BFF;
   --byzai-danger: #FF6B6B;
+  --byzai-card-border: rgba(255,255,255,0.06);
+  --byzai-xp-accent: #F2C04D;
   --byzai-world-fundamentos: #468BFF;
   --byzai-world-historia: #26C6DA;
   --byzai-world-creatividad: #FF7DAE;
